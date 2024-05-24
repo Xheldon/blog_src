@@ -1,0 +1,69 @@
+---
+layout:     post
+title:      "如何简单的做一碗大米饭"
+subtitle:   "虽然简单，却都是细节"
+date:       2020-11-21 13:30:25
+header-img: "img/in-post/da-mi-fan/head.png"
+categories: life
+header-mask: 0.4
+catalog: true
+author: Xheldon
+tags:
+    - 主食
+    - 生活
+    - 美食
+---
+
+### 食材
+
+* 大米
+* 水
+
+### 食具
+
+* 电饭煲
+
+### 准备工作
+
+一个人吃大概 180ml，女生吃的少就 100 ~ 150 之间的量，我是 180，两个人就 double，以此类推：
+![]({{ site.static_url }}/img/in-post/da-mi-fan/IMG_2604.png)
+
+也有上面写什么「一合」的，一个意思：
+![]({{ site.static_url }}/img/in-post/da-mi-fan/IMG_2605.png)
+
+将他们放到电饭锅里：
+![]({{ site.static_url }}/img/in-post/da-mi-fan/IMG_2607.png)
+
+放锅里愣着干啥，接水淘一淘啊：
+![]({{ site.static_url }}/img/in-post/da-mi-fan/IMG_2608.png)
+
+我一般是淘两遍之后，就可以了，然后接适量水，什么叫适量呢，就是手指头插进去后量一下，超过手指大概 1 ~ 2 厘米就 OK，少了的话米干，多了的话米软，看个人喜好。
+
+有时候故意做多一点，留着剩下的米饭下午炒个酱油或者蛋炒饭，此时需要水稍微少点：
+![]({{ site.static_url }}/img/in-post/da-mi-fan/IMG_2609.png)
+
+放入电饭煲的时候记得把内锅的水擦干：
+![]({{ site.static_url }}/img/in-post/da-mi-fan/IMG_2610.png)
+![]({{ site.static_url }}/img/in-post/da-mi-fan/IMG_2611.png)
+
+按开关（这个用我说吗？）：
+![]({{ site.static_url }}/img/in-post/da-mi-fan/IMG_2612.png)
+
+开关显示 0 表示煮好了：
+![]({{ site.static_url }}/img/in-post/da-mi-fan/IMG_2617.png)
+
+开盖：
+![]({{ site.static_url }}/img/in-post/da-mi-fan/IMG_2618.png)
+
+用勺子盛出来：
+![]({{ site.static_url }}/img/in-post/da-mi-fan/IMG_2619.png)
+
+然后把内锅接点水，把刚才盛米饭的勺子也放进去，方便一会儿吃完饭刷锅，否则米饭会变硬，就很难扣下来了：
+![]({{ site.static_url }}/img/in-post/da-mi-fan/IMG_2620.png)
+
+说到米饭干了很难扣下来，想起来开封的城墙，有些就是用米汤面糊当水泥的作用，给垒起来的，可见粘度和硬度之大。
+
+惯例眼气一下粘糕：
+![]({{ site.static_url }}/img/nian_gao.png)
+
+就可以吃了。

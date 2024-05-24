@@ -3,27 +3,27 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Kaijun's Blog
-subtitle: To Be A Lean Developer!
-author: Kaijun Chen
-language:
-timezone:
+title: Xheldon Blog
+subtitle: The Answer to Life, the Universe and Everything is...
+author: Xheldon
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://kaijun.rocks/hexo-theme-huxblog
-root: /hexo-theme-huxblog/
-permalink: :year/:month/:day/:title/
+url: http://www.xheldon.com
+# root: /
+# 注意这里与 Jekyll 不用的是，这个地方用的是 category 但 post 中使用的是 categories
+# name 才是最终的文件名，title 是相对于 _posts 的完整路径
+permalink: :category/:name.html
 permalink_defaults:
 
 #Custom Setting Start
 
 # Site settings
-SEOTitle: Kaijun的博客 | Kaijun's Blog
+SEOTitle: Xheldon Blog
 header-img: img/home-bg.jpg
-email: Kaijun.cn@gmail.com
-description: ""
-keyword: ""
+# email: c1006044256@gmail.com
+description: "The Answer to Life, the Universe and Everything is..."
+keyword: "Xheldon, 生活, 美食, 旅游, 前端, 技术, 分享"
 
 
 # SNS settings
@@ -32,20 +32,20 @@ weibo_username:     Demonbane
 zhihu_username:     Demonbane
 github_username:    Kaijun
 twitter_username:   Demonbane_x
-facebook_username:  demonbane.cn
-linkedin_username:  kaijun-chen-42089354
+# facebook_username:  demonbane.cn
+# linkedin_username:  kaijun-chen-42089354
 
 # Build settings
 anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
 
 
 # Disqus settings
-disqus_username: hexo-theme-huxblog
+# disqus_username: hexo-theme-huxblog
 
 # Duoshuo settings
 # duoshuo_username: kaijun
 # Share component is depend on Comment so we can NOT use share only.
-duoshuo_share: true                     # set to false if you want to use Comment without Sharing
+# duoshuo_share: true                     # set to false if you want to use Comment without Sharing
 
 
 # Analytics settings
@@ -98,7 +98,8 @@ friends: [
 # Directory
 source_dir: source
 public_dir: public
-tag_dir: tags
+# tag_dir: tags
+tag_dir: i_dont_wanna_use_default_tags
 archive_dir: i_dont_wanna_use_default_archives
 category_dir: categories
 code_dir: downloads/code

@@ -1,0 +1,317 @@
+---
+layout: post
+date: 2021-12-22 00:32:10 +0800
+categories: tech
+header-style: text
+tags:
+    - 集成
+title: 我的博客自动化流程
+lastUpdateTime: 2022-01-19 12:48:58 +0800
+---
+
+之前有同学问我博客是用的什么，我说就是 Github Pages 的 Jekyll，然后用 Build 后的 HTML 托管，但是这么说好像有点粗糙，而且这个过程有些各个服务集成的工作，因此这里我就详细说一下，同时将代码放出来。
+
+## 总体流程
+
+Markdown 文件的总体的流程图：
+
+![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/04849A4D-455F-4549-9030-53EF2C142669/1CA9FF6C-9B0A-4EB3-9814-A7BEBF9375C7_2/j8AGJOA4y32BWX6DX9aGBJ487Hzxocg7lZqxl9HtynQz/1CA9FF6C-9B0A-4EB3-9814-A7BEBF9375C7_2.png)
+
+博客中图片的总体流程图：
+
+![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/04849A4D-455F-4549-9030-53EF2C142669/C4EEEFBD-C8E6-4EEA-BA47-BAEC621423DF_2/byOhFeNx7c5ybdg07u2BObAjiYDQpsCRxvg1g3NWn20z/C4EEEFBD-C8E6-4EEA-BA47-BAEC621423DF_2.png)
+
+关于图片处理的几点说明：
+
+1. 本地开发的时候，图片的仓库是博客仓库的 submodule，本地写博客新增了图片后，需要先将图片 push 到图片仓库，触发仓库的 action 同步到腾讯云 COS，然后再 push 博客代码即可，否则图片引用链接会找不到。
+
+2. 写博客的时候，引用图片的时候会写相对路径，然后 Jekyll 有三个配置文件，分别用在本地开发、.com 网站引用、.cn 网站引用，三个 yml 的唯一不同是对静态资源的引用不同： 
+
+3. 本地配置文件：static_url: /static
+
+4. .com 配置文件：static_url: https://static.xheldon.com
+
+5. .cn 配置文件：static_url: https://static.xheldon.cn
+
+6. 需要引用图片资源的时候，在 markdown 中的写法是：{%raw%}\!\[\]\({{ site.static_url}}/img/in-post/qing-zheng-lu-yu/IMG_3789.png) {%endraw%} 即可（Jekyll 会先对 Markdown 文件处理，替换掉里面的 Liquid 变量之后，才会 build 成 HTML。
+
+
+
+## 起因
+
+因为之前想使用 Notion 作为数据源，来更新博客，于是这就需要有一台服务器，因此我买了一台腾讯云的轻量服务器作为拉取 Notion 数据的服务端，效果见这里:
+
+[订阅&付费软件 - Xheldon Blog](https://www.xheldon.com/subscribe/)
+
+其次，还有一个原因是，写博客肯定是需要放图片的，一开始我使用的是 jsDelivr 的 Github 仓库加速服务：
+
+[jsDelivr - A free, fast, and reliable CDN for Open Source](https://www.jsdelivr.com/)
+
+不过很囧的是，jsDelivr 的加速服务对每个仓库只有 50M 的限制，也即是你可以加速一些公共 js/css 等，但是图片显然是不适合的。
+
+基于此，在我有一个服务器的时候，一切的答案就很明显了：再买个域名，然后开通 CDN 加速服务即可。
+
+然后更更近一步的，既然都买了域名了，加上访问我博客的大多数都是大陆 ip，为什么不再搞一个国内版的博客呢？域名就叫 `https://xheldon.cn` 好了。
+
+于是说干就干，下面就是这个过程的总结。
+
+## 服务器和域名
+
+### 购买
+
+服务器买的是腾讯云的轻量服务器，4 核 8 G的，4M 带宽，因为是打骨折（就是做活动 0.几折的价格）的时候买的，所以很便宜。
+
+买了域名之后，在中国大陆当然是要备案，没有备案你的域名是不给你解析的，如果访问该域名会自动显示 ‘该域名未备案，已停止解析’ 等的字样。不过好在腾讯云提供免费备案的服务，而且现在流程也简单了很多，你只需要填写腾讯云的备案申请表即可，填写诸如家庭地址、联系方式、网站用途、申请理由等信息，如果写的不符工信部的要求，比如在申请理由一栏里面写 ‘审核个屁快给老子开通’ 之类的，直接提交到管局是肯定会被驳回的，如果填写的有问题，（腾讯管域名审核的政府机构叫‘管局’），会有工作人员联系你具体事项，帮你修改确认后提交。
+
+### 配置
+
+配置有以下几步， 略去不表：
+
+1. 申请免费的 https 证书，开启 https。
+
+2. 设置 CDN 加速域名。
+
+3. 购买 COS 作为图片的存储地方（新用户免费送）。
+
+4. 启一个 Express 的 node 服务，对外通过 Nginx 反向代理暴露 80 端口，服务器从 Gitee 拉取的静态 html 资源，以及响应一些接口请求，为什么不直接从 Github 拉而要很麻烦的从 这些接口请求有：
+
+5. 响应来自 Gitee 的 webhooks，通知服务器拉取 Gitee 最新的 HTML 文件。
+
+6. 响应来自博客的 Notion 查询请求，服务端会请求 notion 的服务器，查询
+
+其中有些地方需要说明一下：
+
+1. 轻量服务器我选的是 Node + Nginx 的 Docker 的镜像，你也可以选 Java 的或者自定义的，都行。
+
+2. 轻量服务器默认安装的 Node 和 Nginx 都是以 lighthouse 用户权限装的，经常安装包的时候提示权限不足，于是我图省事儿，删了原装的 Nginx 和 Node，自己用 root 用户装了一遍。
+
+3. 有时候我会需要从服务器 ftp 上传一些文件，如上面提到的，申请的ssl 证书之类的，需要配置 ftp 相关的东西，这个腾讯云有相关文档，搜一下就出来了，略。
+
+4. 备案需要等个至少一周以上，我好像等了两周。
+
+## 仓库配置
+
+### 配置 Github Actions build 静态文件
+
+因为我不想暴露我的博客的源码文件，再加上 Github Pages 支持的 Jekyll 插件有限，无法满足我的需求（如不仅在首页分页，分类页也想分页的话，Github Pages 支持的插件就做不到），因此我决定自己 Build 源码成 HTML。
+
+又由于 Github Pages 免费版的限制，无法将私有仓库开启 Github Pages，因此我将另一个仓库设置为公开，而源码仓库设置为私有，代码提交到私有仓库后，经 Github Action build 后，Push 到那个公开仓库。
+
+关于 GIthub Pages 和 Github Action 的使用，可以参见我之前写的这篇：
+
+[免费使用私有仓库发布 GitHub Pages - Xheldon Blog](https://www.xheldon.com/tech/the-using-of-github-pages.html)
+
+不过因为又搞了个国内的域名，所以配置文件也有一些修改，下面是新的配置文件：
+
+{%raw%}
+
+```
+name: 博客打包任务
+
+# 代码 push 到 master 分支的时候运行该 workflow
+# TODO：不运行 commit 信息中包含特定关键词的 push
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出分支
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: fasle # false 是用 personal token，true 是使用 GitHub token
+          fetch-depth: 0 # 保证能够 push 成功
+
+      # 设置 ruby 环境    
+      - name: 设置 Ruby 环境
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: 2.6
+
+      # 安装依赖
+      - name: bundle 安装依赖
+        run: bundle install
+
+      # 打包静态资源
+      - name: 构建 xheldon.com 页面
+        if: ${{ startsWith(github.event.head_commit.message, 'com') || startsWith(github.event.head_commit.message, 'all') }}
+        run: bundle exec jekyll build
+
+      - name: xheldon.com 写入信息
+        if: ${{ hashFiles('./_site') }}
+        working-directory: ./_site
+        run: |
+            echo "www.xheldon.com" > CNAME
+            echo -e "# [Xheldon's blog](https://www.xheldon.com)" > README.md
+    
+      - name: 推送到 x_blog 仓库
+        if: ${{ hashFiles('./_site') }}
+        working-directory: ./_site
+        run: |
+          pwd
+          git init
+          git checkout -b master
+          git add -A
+          git -c user.name='github actions by ${{github.actor}}' -c user.email='NO' commit -m '${{github.event.head_commit.message}}' 
+          git push "https://${{github.actor}}:${{secrets.X_BLOG_SITE}}@github.com/Xheldon/x_blog.git" HEAD:master -f -q
+
+      - name: 构建 xheldon.cn 页面
+        if: ${{ startsWith(github.event.head_commit.message, 'cn') || startsWith(github.event.head_commit.message, 'all') }}
+        run: bundle exec jekyll build --config=_config.cn.yml -d _site_cn
+
+      # gitee 和 github 的用户名一样
+      - name: 推送到 x_blog_cn 仓库
+        if: ${{ hashFiles('./_site_cn') }}
+        working-directory: ./_site_cn
+        run: |
+          pwd
+          git init
+          git checkout -b master
+          git add -A
+          git -c user.name='gitub actions by ${{github.actor}} push to gitee' -c user.email='NO' commit -m '${{github.event.head_commit.message}}' 
+          git push "https://${{github.actor}}:${{secrets.X_BLOG_SITE_CN}}@gitee.com/Xheldon/x_blog_cn.git"  HEAD:master -f -q
+
+```
+
+{%endraw%}
+
+### 配置另一个仓库，打开 Github Pages
+
+这一步就不用多说了，打开个 Github 仓库的开关而已。
+
+### 配置 Conding Webhooks 
+
+在 Gitee 的仓库管理-Webhooks 中配置你的 WebHook 地址，我的是 https://www.xheldon.cn/hooks_cn_push。
+
+### 配置服务器响应 Webhooks
+
+服务端起的 Express 服务，直接放代码： 
+
+{%raw%}
+
+```
+app.post('/hooks_cn_push', async (req, res) => {
+    // Note: 收到 x_blog_cn 的 webhooks, 执行 git pull, 将 x_blog_cn 拉取到 public 目录
+    // Note: 签名验证，暂时略
+    // Note: 拉取分支
+    const branch = req.body.repository.clone_url;
+    const headers = req.headers;
+    console.log('headers:', headers);
+    // Note: 验证一下 header 的合法性
+    if (
+        headers['x-gitee-event'] === 'Push Hook'
+            && headers['x-gitee-token'] === GITEE_WEBHOOKS_SECRET
+    ) {
+        exec(`sudo rm -rf ./_public && sudo git clone ${branch} ./_public && sudo rsync -chir --delete ./_public/ ./public/ && sudo rm -rf ./_public`, {
+            cwd: './',
+    
+        }, (err, stdout, stderr) => {
+            if (err) {
+                console.log('err:', err, stderr);
+                res.status(400).send({
+                    msg: '服务器内部 git clone 仓库失败:',
+                    stderr,
+                    stdout,
+                    err,
+                })
+            } else {
+                // Note: stdout 没有任何输出表示正常
+                console.log('out:', stdout);
+                if (!stdout) {
+                    res.json({
+                        msg: '没问题',
+                        status: 200,
+                        stderr,
+                        stdout,
+                        err,
+                    });
+                } else {
+                    res.json({
+                        msg: 'git clone 的时候返回了一些内容，请过目',
+                        status: 200,
+                        stderr,
+                        stdout,
+                        err,
+                    });
+                }
+            }
+        });
+    } else {
+        res.json({
+            msg: '恶意请求！',
+            status: 403
+        });
+    }
+});
+```
+
+{%endraw%}
+
+### 配置图片仓库的 Action
+
+图片上传到图片仓库 `x_blog-static` 之后，会触发 Github Action，然后增量更新到腾讯云 COS，直接放代码： 
+
+{%raw%}
+
+```
+name: 腾讯云 cos 同步任务
+
+# 代码 push 到本仓库的时候触发该 ci
+# 分析提交的 commits（不只是 head commit），将全部的 added modify 归结到一起（去重）调用上传方法
+#  将 delete 的，调用删除方法
+on:
+  push:
+    branches: [master]
+
+jobs:
+  CheckOutAndUpload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出分支
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      
+      - name: 设置 node 环境
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: 14.x
+          architecture: x64
+          cache: npm
+
+      - name: 安装依赖
+        run: npm i
+
+      - name: 运行上传脚本
+        uses: actions/github-script@v5
+        env:
+          COS_SECRET_ID: ${{secrets.COS_SECRET_ID}}
+          COS_SECRET_KEY: ${{secrets.COS_SECRET_KEY}}
+          COS_BUCKET: ${{secrets.COS_BUCKET}}
+          COS_REGION: ${{secrets.COS_REGION}}
+        with:
+          script: |
+            const script = require('./upload.js')
+            await script({github, context, core})
+```
+
+{%endraw%}
+
+当然，有一些环境变量，如 COS 等的秘钥，可以参照上面放的那篇 Github Action 在自己在仓库中配置即可。
+
+上面执行了一个 js 文件，会获取 commit 的情况，确定本次 commit 新增了什么、删除了什么、修改了什么、重命名了什么等，然后再一次性的批量上传，仓库是公共的，[在这里](https://github.com/Xheldon/x_blog-static)。
+
+## 未来计划
+
+正如 [这篇文章所](https://www.xheldon.com/tech/use-craft-extension-to-write-blog.html) 言，本篇文章也是在 Craft 通过插件同步到 Github 仓库的，优点很多里面已经说得很清楚了，就不解释了，目前唯一的问题是通过 Craft 插入的图片是个问题，虽然官方已经放出了无 CORS 限制的 fetch API（仅 Mac 可用），但是目前还没想好该怎么将上传到 Craft 的图片同步到腾讯云会比较优雅。
+
+目前的计划是，废弃掉在 Github 保存图片的步骤，直接将 Craft 中的图片通过 extension 发送到腾讯云 COS。
+
+
+
