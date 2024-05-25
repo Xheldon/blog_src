@@ -32,10 +32,10 @@ layout: layout
                         col-xs-12
                         postlist-container
                     ">
-                    <%- page.content %>
+                    <%- page.content || body %>
                     <% if (!page.nogittalk) { %>
                         <div class="text-danger">- EOF -</div>
-                        <div style="font-size: 12px; color: #ccc!important;">本文最先发布在: <a style="color: #ccc;" href="<%= site.url + page.url %>" title="<%= page.title %>"><%= page.title %> - Xheldon Blog</a></div>
+                        <div style="font-size: 12px; color: #ccc!important;">1本文最先发布在: <a style="color: #ccc;" href="<%= config.url + page.url %>" title="<%= page.title %>"><%= page.title %> - Xheldon Blog</a></div>
                         <hr style="visibility: hidden;">
                         <div class="giscus"></div>
                         <hr>
@@ -49,7 +49,7 @@ layout: layout
                     sidebar-container
                 ">
                     <%- include('_partial/components/featured-tags') %>
-                    <%- include('_partial/components/twitter-timeline') %>
+                    <!-- <%- include('_partial/components/twitter-timeline') %> -->
                     <%- include('_partial/components/friends') %>
                 </div>
             <% } else { %>
@@ -63,7 +63,7 @@ layout: layout
                     ">
                         {{ content }}
                 <div class="text-danger">- EOF -</div>
-                <div style="font-size: 12px; color: #ccc!important;">本文最先发布在: <a style="color: #ccc;" href="<%= site.url + page.url %>" title="<%= page.title %>"><%= page.title %> - Xheldon Blog</a></div>
+                <div style="font-size: 12px; color: #ccc!important;">2本文最先发布在: <a style="color: #ccc;" href="<%= config.url + page.url %>" title="<%= page.title %>"><%= page.title %> - Xheldon Blog</a></div>
                 <% if (!page.nogittalk) { %>
                     <hr style="visibility: hidden;">
                     <div class="giscus"></div>

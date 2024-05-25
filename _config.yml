@@ -17,7 +17,6 @@ baseurl: ""
 # 注意这里与 Jekyll 不用的是，这个地方用的是 category 但 post 中使用的是 categories
 # name 才是最终的文件名，title 是相对于 _posts 的完整路径
 permalink: :category/:name.html
-permalink_defaults:
 
 
 # Custom part
@@ -75,15 +74,15 @@ static_url: /
 source_dir: source
 public_dir: public
 # tag_dir: tags
-tag_dir: i_dont_wanna_use_default_tags
-archive_dir: i_dont_wanna_use_default_archives
+# tag_dir: i_dont_wanna_use_default_tags
+# archive_dir: i_dont_wanna_use_default_archives
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
 
 # Writing
-new_post_name: :name.md # File name of new posts
+# new_post_name: :name.md # File name of new posts
 default_layout: post
 titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab

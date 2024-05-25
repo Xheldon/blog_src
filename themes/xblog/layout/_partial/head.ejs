@@ -39,7 +39,7 @@
       date(page.date, "YYYY-M-DTh:mm:ss") %>"> <% } %>
     <% if (page.author) { %> <meta property="article:author" content="<%= page.author %>" /> <% } %>
       <% (page.tags || []).map(function(tag) { %>
-        <meta property="article:tag" content="<%= tag %>" />
+        <meta property="article:tag" content="<%= tag.name %>" />
       <% }) %>
       <% } else { %>
         <meta property="og:type" content="website" />

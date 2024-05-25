@@ -1,4 +1,3 @@
-<!-- Footer -->
 <footer>
   <div class="container">
     <div class="row">
@@ -91,13 +90,13 @@
 </script>
 
 <!-- jQuery -->
-<%- js('js/jquery.min.js') %>
+<%- js('/js/jquery.min.js') %>
 
 <!-- Bootstrap Core JavaScript -->
-<%- js('js/bootstrap.min.js') %>
+<%- js('/js/bootstrap.min.js') %>
 
 <!-- Custom Theme JavaScript -->
-<%- js('js/xblog.min.js?202405251426') %>
+<%- js('/js/xblog.min.js?202405251426') %>
 
 <!-- Vercel web analysis -->
 <% if (!config['is-cn']) {%>
@@ -105,8 +104,8 @@
 <% } %>
 
 <!-- Service Worker -->
-<% if (config['service-worker']) { %> <%- js('js/snackbar.js') %> <%-
-js('js/sw-registration.js') %> <% } %>
+<% if (config['service-worker']) { %> <%- js('/js/snackbar.js') %> <%-
+js('/js/sw-registration.js') %> <% } %>
 
 <!-- async load function -->
 <script>
@@ -136,7 +135,7 @@ js('js/sw-registration.js') %> <% } %>
 <script>
   // only load tagcloud.js in archives.html
   if ($('#tag_cloud').length !== 0) {
-    async('js/jquery.tagcloud.js', function () {
+    async('/js/jquery.tagcloud.js', function () {
       $.fn.tagcloud.defaults = {
         //size: {start: 1, end: 1, unit: 'em'},
         color: { start: '#bbbbee', end: '#2f93b4' },
@@ -150,7 +149,7 @@ js('js/sw-registration.js') %> <% } %>
 
 <!--fastClick.js -->
 <script>
-  async('js/fastclick.min.js', function () {
+  async('/js/fastclick.min.js', function () {
     var $nav = document.querySelector('nav');
     if ($nav) FastClick.attach($nav);
   });
@@ -215,7 +214,7 @@ js('js/sw-registration.js') %> <% } %>
    * Doc: https://github.com/davist11/jQuery-One-Page-Nav
    * Fork by Hux to support padding
    */
-  async("js/jquery.nav.js",
+  async('/js/jquery.nav.js',
     function () {
       $('.catalog-body').onePageNav({
         currentClass: 'active',
