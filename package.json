@@ -1,9 +1,13 @@
 {
-  "name": "hexo-site",
+  "name": "xblog",
   "version": "0.0.0",
   "private": true,
   "hexo": {
     "version": "7.2.0"
+  },
+  "scripts": {
+    "dev": "grunt watch && hexo server",
+    "bs": "grunt"
   },
   "dependencies": {
     "hexo": "^7.2.0",
@@ -17,5 +21,11 @@
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0"
   },
-  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610",
+  "devDependencies": {
+    "grunt": "^1.6.1",
+    "grunt-contrib-less": "^3.0.0",
+    "grunt-contrib-uglify": "^5.2.2",
+    "grunt-contrib-watch": "^1.1.0"
+  }
 }

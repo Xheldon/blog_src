@@ -1,0 +1,141 @@
+<head>
+  <meta charset="utf-8" />
+  <title>
+    <% if (page.title) { %> <%= page.title + ' - ' + config.SEOTitle %> <% }
+    else { %> <%= config.SEOTitle %> <% } %>
+  </title>
+  <!-- 跳转逻辑未迁移，时间长了应该没人访问那个页面了，舍弃之 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="google-site-verification"
+    content="EX6ES0UVArXTvp5aeeWrkXGn5M5MZ10bYqXanXDEzAs"
+  />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
+  <% if (page.layout==='post' ) { %>
+  <meta
+    name="description"
+    content="<%= (page.subtitle || '') + (page.callout || '') %>"
+  />
+  <% } else { %>
+  <meta
+    name="description"
+    content="<% page.description || config.description %>"
+  />
+  <% } %>
+  <meta name="keywords" content="<%= config.keyword %>" />
+  <meta name="theme-color" content="<%= config['chrome-tab-theme-color'] %>" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <!-- Open Graph -->
+  <meta
+    property="og:title"
+    content="<% if (page.title) { %><%= page.title %> - <%= config.SEOTitle %><% } else { %><%= config.SEOTitle %><% } %>"
+  />
+  <% if (page.layout==='post') { %>
+    <meta property="og:type" content="article" />
+    <% if (page.date) { %> <meta property="article:published_time" content="<%=
+      date(page.date, "YYYY-M-DTh:mm:ss") %>"> <% } %>
+    <% if (page.author) { %> <meta property="article:author" content="<%= page.author %>" /> <% } %>
+      <% (page.tags || []).map(function(tag) { %>
+        <meta property="article:tag" content="<%= tag %>" />
+      <% }) %>
+      <% } else { %>
+        <meta property="og:type" content="website" />
+      <% } %>
+  
+  <% if (page.layout==='post' ) { %>
+  <meta
+    name="og:description"
+    content="<%= (page.subtitle || '') + (page.callout || '') %>"
+  />
+  <% } else { %>
+  <meta
+    name="og:description"
+    content="<% page.description || config.description %>"
+  />
+  <% } %> <% if (page['header-img']) { %>
+  <meta
+    property="twitter:image"
+    content="<%= config.static_url %>/<% if (page['header-img']) { %><%= page['header-img'].replace('https://static.xheldon.cn/', '') %><% } else { %><%= config['header-img'] %><% } %>"
+  />
+  <meta
+    property="og:image"
+    content="<%= config.static_url %>/<% if (page['header-img']) { %><%= page['header-img'].replace('https://static.xheldon.cn/', '') %><% } else { %><%= config['header-img'] %><% } %>"
+  />
+  <% } else { %>
+  <meta
+    property="twitter:image"
+    content="<%= config.url %><%= config['sidebar-avatar'] %>"
+  />
+  <meta
+    property="og:image"
+    content="<%= config.url %><%= config['sidebar-avatar'] %>"
+  />
+  <% } %>
+
+  <meta property="og:url" content="<%= config.url %><%= page.url %>" />
+  <meta property="og:site_name" content="<%= config.SEOTitle %>" />
+  <meta name="google-adsense-account" content="ca-pub-5486286026923411" />
+  <script
+    async
+    src="https://fundingchoicesmessages.google.com/i/pub-5486286026923411?ers=1"
+    nonce="hkl-3cDcQhqR8uwDMTDGjQ"
+  ></script>
+  <script nonce="hkl-3cDcQhqR8uwDMTDGjQ">
+    (function () {
+      function signalGooglefcPresent() {
+        if (!window.frames['googlefcPresent']) {
+          if (document.body) {
+            const iframe = document.createElement('iframe');
+            iframe.style =
+              'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;';
+            iframe.style.display = 'none';
+            iframe.name = 'googlefcPresent';
+            document.body.appendChild(iframe);
+          } else {
+            setTimeout(signalGooglefcPresent, 0);
+          }
+        }
+      }
+      signalGooglefcPresent();
+    })();
+  </script>
+  <script
+    async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5486286026923411"
+    crossorigin="anonymous"
+  ></script>
+
+  <!-- Web App Manifest -->
+  <link rel="manifest" href="<%= config.baseurl %>/js/manifest.json" />
+  <link rel="shortcut icon" href="<%= config.root %>img/favicon.ico" />
+  <link
+    rel="canonical"
+    href="<%= config.url + config.root + (page.path||'').replace('index.html', '') %>"
+  />
+
+  <!-- Bootstrap Core CSS -->
+  <%- css('css/bootstrap.min.css') %>
+
+  <!-- Custom CSS -->
+  <%- css('css/xblog.min.css') %>
+
+  <!-- Pygments Highlight CSS -->
+  <!-- <% css('css/highlight') %> -->
+
+  <!-- Custom Fonts -->
+  <link
+    href="/css/font-awesome.min.css"
+    rel="stylesheet"
+    type="text/css"
+  />
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
