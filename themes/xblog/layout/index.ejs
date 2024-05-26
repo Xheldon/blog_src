@@ -1,47 +1,91 @@
 ---
-layout: page
-description: "The Answer to Life, the Universe and Everything is..."
-header-mask: 0.4
-nogittalk: true
+layout: layout
 ---
-<!-- Main Content -->
 
-<% page.posts.each(function(post){ %>
-<div class="post-preview">
+<!-- 按照之前 Jekyll 的设计，index 应该依赖的是 pages 布局，但是 Hexo 中无法在 layout 布局之间传参（只能 include），不能通过 front matter 告诉父级布局 -->
 
-    <a href="<%- config.root %><%- post.path %>">
-        <h2 class="post-title">
-            <%- post.title || "Untitled" %>
-        </h2>
-        <h3 class="post-subtitle">
-            <%- post.subtitle || "" %>
-        </h3>
+<%- include('_partial/intro-header-page', {
+  type: 'page', 
+  short: page.short,
+  headerMask: 0.4,
+  description: 'The Answer to Life, the Universe and Everything is...',
+  headerImg: '',
+  headerBgCss: '',
+  headerStyle: 'full',
+  title: 'Xheldon Blog'
+  }) %>
+<%- include('_partial/loading') %>
+
+<div class="container">
+  <div class="row">
+    <div
+      class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-12 col-xs-12 postlist-container"
+    >
+      <% page.posts.forEach(function(post){ %>
+      <div class="post-preview">
+        <a href="<%- config.root %><%- post.path %>">
+          <h2 class="post-title"><%- post.title || "Untitled" %></h2>
+        </a>
         <div class="post-content-preview">
-            <%- truncate(strip_html(post.content), {length: 200, omission: '...'}) %>...
+          <div class="post-content-desc">
+            <% if (post.subtitle) { %>
+            <h3 class="post-subtitle"><%= post.subtitle %></h3>
+            <% } else { %>
+            <h3 class="post-subtitle"><%= post.callout %></h3>
+            <% } %>
+            <span>
+              <%- truncate(strip_html(post.content), {
+                length: 200,
+                omission: '...'
+              }) %>
+            </span>
+          </div>
+          <% if (post['header-img']) { %>
+          <!-- https://cloud.tencent.com/document/product/436/42214/ -->
+          <div class="post-preview-thum">
+            <% if (post['header-img'].includes("https://")) { -%>
+            <img
+              width="100px"
+              height="100px"
+              src="<%= post['header-img'] %>/hasaki"
+            />
+            <% } else { %>
+            <img
+              width="100px"
+              height="100px"
+              src="<%= site.static_url %>/<%= post['header-img'] %>/hasaki"
+            />
+            <% } %>
+          </div>
+          <% } %>
         </div>
-    </a>
-    <p class="post-meta">
-        Posted by <%- post.author || config.author %> on
-        <%= post.date.format(config.date_format) %>
-    </p>
+        <p class="post-meta">
+          写于 <%= date(Date.parse(post.date), "YYYY年MM月DD日") %>
+        </p>
+      </div>
+      <hr />
+      <% }); %>
 
-</div>
-<hr>
-<% }); %>
+      <!-- Pager -->
 
-
-<!-- Pager -->
-
-<ul class="pager">
-    <% if (page.prev){ %>
+      <ul class="pager">
+        <% if (page.prev){ %>
         <li class="previous">
-            <a href="<%- config.root %><%- page.prev_link %>">&larr; 下一页</a>
+          <a href="<%- config.root %><%- page.prev_link %>">&larr; 上一页</a>
         </li>
-    <% } %>
-    <% if (page.next){ %>
+        <% } %> <% if (page.next){ %>
         <li class="next">
-            <a href="<%- config.root %><%- page.next_link %>">上一页 &rarr;</a>
+          <a href="<%- config.root %><%- page.next_link %>">下一页 &rarr;</a>
         </li>
-    <% } %>
-</ul>
-
+        <% } %>
+      </ul>
+    </div>
+    <div
+      class="col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 col-sm-12 col-xs-12 sidebar-container"
+    >
+      <%- include('_partial/featured-tags') %>
+      <!-- <%- include('_partial/twitter-timeline') %> -->
+      <%- include('_partial/friends') %>
+    </div>
+  </div>
+</div>

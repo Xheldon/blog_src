@@ -2,7 +2,16 @@
 layout: layout
 ---
 
-<%- include('_partial/components/intro-header', {type: 'page', short: true}) %>
+<%- include('_partial/intro-header-page', {
+    type: 'page',
+    short: true,
+    headerMask: 0.4,
+    description: '时间是人类发展的舞台',
+    headerImg: 'img/tag-bg.png',
+    headerBgCss: '',
+    headerStyle: 'full',
+    title: '归档',
+    }) %>
 
 <!-- Main Content -->
 <div class="container">

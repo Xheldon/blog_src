@@ -4,7 +4,7 @@ title:      梦的解析之小赵
 subtitle:   “今天的这个梦，总体氛围是在恐惧与害怕中度过的”，小赵对我说。
 date:       2016-09-19 22:34:23
 categories: life
-header-img: "img/in-post/the-analysis-of-dream/d-1.png"
+header-img: "/img/in-post/the-analysis-of-dream/d-1.png"
 no-catalog: true
 author: Xheldon
 tags:

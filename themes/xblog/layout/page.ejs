@@ -2,8 +2,10 @@
 layout: layout
 ---
 <!-- Page Header -->
-<%- include('_partial/components/intro-header', {type: 'page', short: page.short}) %>
-<%- include('_partial/components/loading') %>
+<!-- 与 Liquid 不同的是，Fornt Matter 仅对 post 文件生效，ejs 模板不能自定义 Front Matter 传入 -->
+
+<%- include('_partial/intro-header-post') %>
+<%- include('_partial/loading') %>
 
 <!-- Main Content -->
 <div class="container" <% if (page.fullcontent === true) { %>style="width: 100%;"<% } %>>
@@ -20,8 +22,8 @@ layout: layout
                     <hr>
                     <div id="giscus"></div>
                 <% } %>
-                <%- include('_partial/components/featured-tags') %>
-                <%- include('_partial/components/friends') %>
+                <%- include('_partial/featured-tags') %>
+                <%- include('_partial/friends') %>
             </div>
         <%} else { %>
             <% if (!page.fullcontent) { %>
@@ -48,9 +50,9 @@ layout: layout
                     col-xs-12
                     sidebar-container
                 ">
-                    <%- include('_partial/components/featured-tags') %>
-                    <!-- <%- include('_partial/components/twitter-timeline') %> -->
-                    <%- include('_partial/components/friends') %>
+                    <%- include('_partial/featured-tags') %>
+                    <!-- <%- include('_partial/twitter-timeline') %> -->
+                    <%- include('_partial/friends') %>
                 </div>
             <% } else { %>
                 <div class="
@@ -78,8 +80,8 @@ layout: layout
                         col-xs-12
                         sidebar-container
                     ">
-                    <%- include('_partial/components/featured-tags', {bottom: true}) %>
-                    <%- include('_partial/components/friends') %>
+                    <%- include('_partial/featured-tags', {bottom: true}) %>
+                    <%- include('_partial/friends') %>
                 </div>
             <% } %>
         <% } %>
@@ -87,7 +89,7 @@ layout: layout
 </div>
 
 <% if (!page.nogittalk) { %>
-    <%- include('_partial/components/giscus') %>
+    <%- include('_partial/giscus') %>
 <% } %>
 
 <% if (config['page-mathjax']) { %>

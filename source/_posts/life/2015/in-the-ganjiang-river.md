@@ -4,7 +4,7 @@ title:  "赣江边上, 滕王阁前"
 subtitle:   “阁中帝子今何在？槛外长江空自流”
 date:   2015-06-05 22:13:35 +0800
 categories: life
-header-img: "img/in-post/in-the-ganjiang-river/ganjiang.png"
+header-img: "/img/in-post/in-the-ganjiang-river/ganjiang.png"
 author: Xheldon
 tags:
     - 随笔

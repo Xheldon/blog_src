@@ -5,7 +5,7 @@
 # Site
 title: Xheldon Blog
 SEOTitle: Xheldon Blog
-header-img: img/index-bg.png
+header-img: /img/index-bg.png
 email: c1006044256@gmail.com
 description: "The Answer to Life, the Universe and Everything is..."
 keyword: "Xheldon, 生活, 美食, 旅游, 前端, 技术, 分享"
@@ -13,7 +13,7 @@ author: Xheldon
 url: http://www.xheldon.com
 baseurl: ""
 
-# root: 
+root: /
 # 注意这里与 Jekyll 不用的是，这个地方用的是 category 但 post 中使用的是 categories
 # name 才是最终的文件名，title 是相对于 _posts 的完整路径
 permalink: :category/:name.html
@@ -65,17 +65,16 @@ friends: [
     }
 ]
 
-# static_url: https://static.xheldon.cn
-static_url: /
+static_url: https://static.xheldon.cn
+# static_url: /
 
 #Custom Setting End
 
 # Directory
 source_dir: source
 public_dir: public
-# tag_dir: tags
-# tag_dir: i_dont_wanna_use_default_tags
-# archive_dir: i_dont_wanna_use_default_archives
+tag_dir: i_dont_wanna_use_default_tags
+archive_dir: i_dont_wanna_use_default_archives
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
@@ -118,6 +117,8 @@ pagination_dir: page
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 theme: xblog
+markdown:
+  preset: 'default'
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html

@@ -6,7 +6,7 @@ layout: layout
 <!-- <img src="<%= config['url'] %><%= config['root'] %>img/icon_wechat.png" width="0" height="0"> -->
 <!-- <img src="<%= site.baseurl %>/<% if (page['header-img']) { %><%= page['header-img'] %><% } else { %><%= site['header-img'] %><% } %>" width="0" height="0"> -->
 
-<%- include('_partial/components/intro-header', {type: 'post'}) %>
+<%- include('_partial/intro-header-post') %>
 
 <!-- Post Content -->
 <article>
@@ -23,7 +23,7 @@ layout: layout
                         <div class="time-tips">❗️&nbsp;注意：离本文创建时间已经过去了 <code id="from_time"></code> 天，请注意时效性</div>
                         <script>
                             var timeDom = document.getElementById('from_time');
-                            var pageTime = Date.parser(<%= page.date %>);
+                            var pageTime = Date.parse('<%= page.date %>');
                             var currentTime = Date.now();
                             var fromNow = ((currentTime - (pageTime * 1000)) / (24 * 3600 * 1000)).toFixed(0);
                             if (Number(fromNow) <= 0) {
@@ -95,15 +95,15 @@ layout: layout
                 col-lg-8 col-lg-offset-2
                 col-md-10 col-md-offset-1
                 sidebar-container">
-                <%- include('_partial/components/featured-tags') %>
-                <%- include('_partial/components/friends') %>
+                <%- include('_partial/featured-tags') %>
+                <%- include('_partial/friends') %>
             </div>
         </div>
     </div>
 </article>
 
 <% if (page.mathjax) { %>
-    <%- include('_partial/components/mathjax_support') %>
+    <%- include('_partial/mathjax_support') %>
 <% } %>
 
 <% if (page.mermaid) { %>
@@ -138,7 +138,7 @@ layout: layout
     </script>
 <% } %>
 
-<%- include('_partial/components/giscus') %>
+<%- include('_partial/giscus') %>
 
 <% if(config['anchorjs']) { %>
 <!-- async load function -->

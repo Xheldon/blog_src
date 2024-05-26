@@ -9,7 +9,7 @@ function getValue(str) {
     return (index + 1) > str.length - 1 ? '' : str.slice(index + 1).trim();
 }
 
-hexo.extend.tag.register('render_caption', function(args, content) {
+hexo.extend.tag.register('render_caption', function(args) {
     const [caption, img] = args.map(getValue);
     return `<p caption='${caption}'><img src='${img}' alt='${caption}' title='${caption}'></p>`;
 }, {
@@ -23,11 +23,11 @@ hexo.extend.tag.register('render_bookmark', function(args, content) {
     } else if (bid) {
         return `<p class='embed-responsive embed-responsive-16by9' style='border-bottom: 1px solid #ddd;'><iframe src='//player.bilibili.com/player.html?bvid=${bid}&high_quality=1&as_wide=1' scrolling='no' border='0' frameborder='no' framespacing='0' allowfullscreen></iframe></p>`;
     }
-    return `<p><a class='link-bookmark' href='${url}' target='_blank'><span data-bookmark-img='${img}' data-bookmark-title='${firstChar}'><img src='${img}'/></span><span><span>${title}</span><span>${content}</span><span>${url}</span></span></a></p>`;
+    return `<p><a class='link-bookmark' href='${url}' target='_blank'><span data-bookmark-img='${img}' data-bookmark-title='${firstChar}'><img src='${img}'/></span><span><span> ${title}</span><span> ${content}</span><span> ${url}</span></span></a></p>`;
 }, {
     ends: true,
 });
-hexo.extend.tag.register('render_video', function(args, content) {
+hexo.extend.tag.register('render_video', function(args) {
     const [caption, img, suffix] = args.map(getValue);
     return `<p caption='${caption}'><video controls muted><source src='${img}' type='video/${suffix}' /></video></p>`;
 }, {
@@ -41,7 +41,7 @@ hexo.extend.tag.register('render_callout', function(args, content) {
 });
 hexo.extend.tag.register('render_quote', function(args, content) {
     const [color] = args.map(getValue);
-    return `<blockquote style='border-color: ${color};color: ${color}'><p>${content}</p></blockquote>`;
+    return `<blockquote style='border-color: ${color};color: ${color}'><p> ${content}</p></blockquote>`;
 }, {
     ends: true,
 });
