@@ -4,7 +4,7 @@ title:      "2020元旦日本行"
 subtitle:   “日本真的是一个神奇的国家” 媳妇儿说
 date:       2020-01-06 09:37:00
 author:     Xheldon
-header-img: "/img/in-post/japan-travel/j-10.png"
+header-img: "https://static.xheldon.cn/img/in-post/japan-travel/j-10.png"
 categories: life
 header-mask: 0.4
 catalog: true

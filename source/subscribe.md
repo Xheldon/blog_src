@@ -2,7 +2,7 @@
 layout: page
 description: 「订阅年年有，今年特别多」
 hide-in-nav: true
-header-img: "img/book-list-bg.png"
+header-img: "https://static.xheldon.cn/img/book-list-bg.png"
 permalink: /subscribe/
 multilingual: false
 header-mask: 0.4
@@ -11,9 +11,6 @@ title: 订阅&付费软件
 lastUpdateTime: 2022-02-23 11:31:59 +0800
 ---
 
-{% comment %}
-如果后续从 Notion 的 database 中读取的数据多了，考虑做成一个 html 模板
-{% endcomment %}
 <div class='notion-container'>
     <blockquote>
         说明: 本页数据来自 Notion database，由于 Notion API 的限制每秒最多只能

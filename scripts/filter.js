@@ -3,10 +3,11 @@
  */
 hexo.extend.filter.register('post_permalink', function(data) {
     // 在这里修改 post.name 的值
+    console.log('before:', data);
     const arr = data.split('/').filter(Boolean);
     const categories = arr[0];
     const name = arr[1];
-    return `${categories}/${name.split('-').filter(Boolean).slice(2).join('-')}`;
+    return `${categories}/${name.split('-').filter(Boolean).slice(3).join('-')}`;
   });
 
  /*  hexo.extend.filter.register('template_locals', function(locals){

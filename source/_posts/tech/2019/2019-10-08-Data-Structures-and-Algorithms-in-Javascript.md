@@ -4,6 +4,7 @@ title:  "JavaScript 中的数据结构和算法"
 date:   2019-10-08 00:17:33 +0800
 mermaid: true
 categories: tech
+mermaid: true
 header-style: text
 tags:
     - 技术

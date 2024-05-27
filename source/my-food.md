@@ -2,7 +2,7 @@
 layout: page
 description: 推荐和避坑系列
 hide-in-nav: true
-header-img: "img/book-list-bg.png"
+header-img: "https://static.xheldon.cn/img/book-list-bg.png"
 permalink: /my-food/
 multilingual: false
 header-mask: 0.4

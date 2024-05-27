@@ -4,7 +4,7 @@ title:  "我的数字生活"
 subtitle:  “21 世纪最重要的是不要浪费时间在没有意义的事情上”
 date:   2020-02-14 18:53:50 +0800
 categories: life
-header-img: "/img/in-post/the-digital-life-of-mine/Untitled18.png"
+header-img: "https://static.xheldon.cn/img/in-post/the-digital-life-of-mine/Untitled18.png"
 author: Xheldon
 tags:
     - 日常

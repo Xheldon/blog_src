@@ -3,7 +3,7 @@ layout:     post
 title:      "回锅肉"
 subtitle:   "川菜中我最爱的一道菜"
 date:       2020-11-07 09:37:00
-header-img: "/img/in-post/hui-guo-rou/head.png"
+header-img: "https://static.xheldon.cn/img/in-post/hui-guo-rou/head.png"
 # header-img-credit: ""
 # header-img-credit-href: ""
 # header-style: ""

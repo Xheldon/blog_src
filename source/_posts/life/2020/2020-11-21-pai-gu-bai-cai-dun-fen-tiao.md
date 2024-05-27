@@ -3,7 +3,7 @@ layout:     post
 title:      "排骨白菜炖粉条"
 subtitle:   "东北菜，炖就完了~"
 date:       2020-11-21 13:00:23
-header-img: "/img/in-post/pai-gu-bai-cai-dun-fen-tiao/IMG_2621.png"
+header-img: "https://static.xheldon.cn/img/in-post/pai-gu-bai-cai-dun-fen-tiao/IMG_2621.png"
 categories: life
 header-mask: 0.4
 catalog: true
