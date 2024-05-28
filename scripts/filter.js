@@ -3,7 +3,7 @@
  */
 hexo.extend.filter.register('post_permalink', function(data) {
     // 在这里修改 post.name 的值
-    console.log('before:', data);
+    // console.log('before:', data);
     const arr = data.split('/').filter(Boolean);
     const categories = arr[0];
     const name = arr[1];

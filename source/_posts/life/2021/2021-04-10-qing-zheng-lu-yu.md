@@ -3,7 +3,7 @@ layout:     post
 title:      "清蒸鲈鱼"
 subtitle:   "又好吃做起来又简单"
 date:       2021-04-10 09:24:00
-header-img: "https://static.xheldon.cn/img/in-post/qing-zheng-lu-yu/head.png"
+header-img: "img/in-post/qing-zheng-lu-yu/head.png"
 categories: life
 # 如果头图太白的话，使用此设置进行调暗
 header-mask: 0.4

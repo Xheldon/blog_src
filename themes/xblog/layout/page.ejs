@@ -4,7 +4,16 @@ layout: layout
 <!-- Page Header -->
 <!-- 与 Liquid 不同的是，Fornt Matter 仅对 post 文件生效，ejs 模板不能自定义 Front Matter 传入 -->
 
-<%- include('_partial/intro-header-post') %>
+<%- include('_partial/intro-header-page', {
+    type: 'page', 
+    short: page.short,
+    headerMask: page.headerMask || 0.4,
+    description: page.description || 'The Answer to Life, the Universe and Everything is...',
+    headerImg: page.headerImg || '',
+    headerBgCss: page.headerBgCss || '',
+    headerStyle: page.headerStyle || 'full',
+    title: page.title || 'Xheldon Blog'
+})%>
 <%- include('_partial/loading') %>
 
 <!-- Main Content -->
@@ -37,7 +46,7 @@ layout: layout
                     <%- page.content || body %>
                     <% if (!page.nogittalk) { %>
                         <div class="text-danger">- EOF -</div>
-                        <div style="font-size: 12px; color: #ccc!important;">1本文最先发布在: <a style="color: #ccc;" href="<%= config.url + page.url %>" title="<%= page.title %>"><%= page.title %> - Xheldon Blog</a></div>
+                        <div style="font-size: 12px; color: #ccc!important;">本文最先发布在: <a style="color: #ccc;" href="<%= config.url + page.url %>" title="<%= page.title %>"><%= page.title %> - Xheldon Blog</a></div>
                         <hr style="visibility: hidden;">
                         <div class="giscus"></div>
                         <hr>
@@ -65,7 +74,7 @@ layout: layout
                     ">
                         {{ content }}
                 <div class="text-danger">- EOF -</div>
-                <div style="font-size: 12px; color: #ccc!important;">2本文最先发布在: <a style="color: #ccc;" href="<%= config.url + page.url %>" title="<%= page.title %>"><%= page.title %> - Xheldon Blog</a></div>
+                <div style="font-size: 12px; color: #ccc!important;">本文最先发布在: <a style="color: #ccc;" href="<%= config.url + page.url %>" title="<%= page.title %>"><%= page.title %> - Xheldon Blog</a></div>
                 <% if (!page.nogittalk) { %>
                     <hr style="visibility: hidden;">
                     <div class="giscus"></div>

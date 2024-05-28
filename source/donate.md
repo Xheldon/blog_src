@@ -2,11 +2,10 @@
 layout: single-page
 title: 请打钱
 description: "时间就是金钱，所以，请打钱"
-hide-in-nav: true
-header-img: "/img/donate-bg.png"
+headerImg: "https://static.xheldon.cn/img/donate-bg.png"
 multilingual: true
 permalink: /donate/
-header-mask: 0.4
+headerMask: 0.4
 ---
 
 ## 为什么我需要钱？
@@ -32,10 +31,10 @@ header-mask: 0.4
 }
 </style>
 <div class="donate">
-    <img src="{{ site.static_url }}/img/others/alipay.png" alt="支付宝赞赏"/>
+    <img src="/img/others/alipay.png" alt="支付宝赞赏"/>
 </div>
 
 微信: 
 <div class="donate">
-    <img src="{{ site.static_url }}/img/others/wechatpay.png" alt="微信赞赏"/>
+    <img src="/img/others/wechatpay.png" alt="微信赞赏"/>
 </div>

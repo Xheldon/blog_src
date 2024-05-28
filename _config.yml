@@ -62,6 +62,10 @@ friends: [
     {
         title: "Slate 中文",
         href: "https://slate.xheldon.com"
+    },
+    {
+        title: "Notion Flow",
+        href: "https://notion-flow.xheldon.com"
     }
 ]
 

@@ -1,7 +1,8 @@
+<!-- 因为一些原因，page 类型传入参数是驼峰命名，post 类型是短斜杠命名 -->
 <style type="text/css">
     header.intro-header{
         position: relative;
-        background-image: url("<%= config.static_url %><% if (headerImg) { %><%= headerImg.replace('https://static.xheldon.cn/', '') %><% } else { %><%= config['header-img'] %><% } %>");
+        background-image: url("<%= headerImg || config['header-img'] %>");
         <% if (headerBgCss) { %>
         background: <%= headerBgCss %>;
         <% } %>

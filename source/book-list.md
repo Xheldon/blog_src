@@ -3,10 +3,10 @@ layout: single-page
 title: 多读书，读好书
 description: "书籍是人类进步的阶梯"
 hide-in-nav: true
-header-img: "/img/book-list-bg.png"
+headerImg: "https://static.xheldon.cn/img/book-list-bg.png"
 multilingual: false
 permalink: /book-list/
-header-mask: 0.4
+headerMask: 0.4
 fullcontent: true
 ---
 

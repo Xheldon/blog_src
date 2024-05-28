@@ -98,14 +98,16 @@
 <!-- Custom Theme JavaScript -->
 <%- js('/js/xblog.min.js?202405251426') %>
 
+
+<!-- Simple Jekyll Search 复制逻辑 -->
+<script src='/js/simple-jekyll-search.min.js'></script>
+
 <!-- Vercel web analysis -->
 <% if (!config['is-cn']) {%>
 <script defer src="/_vercel/insights/script.js"></script>
 <% } %>
 
-<!-- Service Worker -->
-<% if (config['service-worker']) { %> <%- js('/js/snackbar.js') %> <%-
-js('/js/sw-registration.js') %> <% } %>
+<!-- Service Worker 不要了，不然总弹那个资源更新的按钮，很烦 -->
 
 <!-- async load function -->
 <script>
@@ -236,3 +238,60 @@ js('/js/sw-registration.js') %> <% } %>
 <!-- TODO: 多语种没有迁移过来 -->
 
 <!-- Simple Jekyll Search 也没有迁移过来，看逻辑是构建一个 search.json 然后前端查询 -->
+
+<script>
+  // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+  function htmlDecode(input) {
+      var e = document.createElement('textarea');
+      e.innerHTML = input;
+      // handle case of empty input
+      return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+  }
+
+  SimpleJekyllSearch({
+      searchInput: document.getElementById('search-input'),
+      resultsContainer: document.getElementById('search-results'),
+      json: '/search.json',
+      searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+      noResultsText: 'No results',
+      limit: 50,
+      fuzzy: false,
+      // a hack to get escaped subtitle unescaped. for some reason, 
+      // post.subtitle w/o escape filter nuke entire search.
+      templateMiddleware: function (prop, value, template) {
+          if (prop === 'subtitle' || prop === 'title') {
+              if (value.indexOf("code")) {
+                  return htmlDecode(value);
+              } else {
+                  return value;
+              }
+          }
+      }
+  });
+
+  $(document).ready(function () {
+      var $searchPage = $('.search-page');
+      var $searchOpen = $('.search-icon');
+      var $searchClose = $('.search-icon-close');
+      var $searchInput = $('#search-input');
+      var $body = $('body');
+
+      $searchOpen.on('click', function (e) {
+          e.preventDefault();
+          $searchPage.toggleClass('search-active');
+          var prevClasses = $body.attr('class') || '';
+          setTimeout(function () {
+              $body.addClass('no-scroll');
+          }, 400)
+
+          if ($searchPage.hasClass('search-active')) {
+              $searchClose.on('click', function (e) {
+                  e.preventDefault();
+                  $searchPage.removeClass('search-active');
+                  $body.attr('class', prevClasses);  // from closure 
+              });
+              $searchInput.focus();
+          }
+      });
+  });
+</script>

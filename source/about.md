@@ -2,11 +2,10 @@
 layout: single-page
 title: 基本无害
 description: "当我跨过沉沦的一切，向着永恒开战的时候，你是我的军旗"
-hide-in-nav: true
-header-img: "/img/about-new-bg.png"
+headerImg: "https://static.xheldon.cn/img/about-new-bg.png"
 multilingual: true
 permalink: /about/
-header-mask: 0.4
+headerMask: 0.4
 anchorjs: true
 ---
 
