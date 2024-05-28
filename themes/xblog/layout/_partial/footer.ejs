@@ -135,6 +135,15 @@
 <!-- jquery.tagcloud.js -->
 <% if (page.layout === 'archive') {%>
 <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    console.log('loca:', window.location.href);
+      const urlParams = new URLSearchParams(window.location.search);
+      const tag = urlParams.get('tag');
+      if (tag) {
+          // 在这里处理你的查询参数
+          console.log('Tag:', tag);
+      }
+  });
   // only load tagcloud.js in archives.html
   if ($('#tag_cloud').length !== 0) {
     async('/js/jquery.tagcloud.js', function () {

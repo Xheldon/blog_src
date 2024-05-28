@@ -1,0 +1,796 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Xheldon Blog</title>
+        <description>The Answer to Life, the Universe and Everything is...</description>
+        <link>https://www.xheldon.com</link>
+        <atom:link href="https://www.xheldon.com/feed.xml" rel="self" type="application/rss+xml" />
+        <pubDate>Tue, 28 May 2024 18:05:26 +0800</pubDate>
+        <lastBuildDate>Tue, 28 May 2024 18:05:26 +0800</lastBuildDate>
+        <generator>Hexo v7.2.0</generator>
+        
+        <item>
+            <title>「译」ProseMirror 中的协同编辑实现</title>
+            <description>&lt;p&gt;本博文描述了被使用在 &lt;a href=&#34;https://prosemirror.xheldon.com&#34;&gt;ProseMirror&lt;/a&gt; 中的协同编辑技术。而对于 ProseMirror 的介绍，你可以&lt;a href=&#34;https://marijnhaverbeke.nl/blog/prosemirror.html&#34;&gt;查看这里&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;协同编辑的问题&#34;&gt;协同编辑的问题&lt;/h2&gt;
+&lt;p&gt;一个实时协同编辑系统表示可能有多人在同时对相同的文档进行编辑。该系统保证文档保持同步–某个用户的对文档的更改会被发送给其他用户，并将这些更改显示在他们的文档中。&lt;/p&gt;
+&lt;p&gt;由于通过任何类型的网络中传输这些更改都是需要时间的，因此此类系统的复杂性在于它们处理并发更新的方式。一个解决方案是允许用户锁定当前文档（或者文档的一部分）从而阻止其他人在同一时刻对文档的更改。但是这个机制会让强迫用户考虑关于锁的问题，并且当他们没有锁的时候（即当其他用户在编辑的时候）必须一直等待。我们不想这么做。&lt;/p&gt;
+&lt;p&gt;如果我们允许并发的更新，我们就会遇到这样一个情况：用户 A 和用户 B 同时更改了文档，并且他们并没有意识到对方对文档的更改，于是他们就必须以协商的方式来解决最终如何更新文档。A 和 B 的行为可能并不相互影响–比如他们同时编辑文档的不同部分–或者他们的行为相互影响–当他们尝试去更改同一个单词的时候。&lt;/p&gt;
+&lt;h2 id=&#34;Operational-Transformation（OT，操作转换）&#34;&gt;Operational Transformation（OT，操作转换）&lt;/h2&gt;
+&lt;p&gt;有关上述问题的研究很多。而且我必须承认，虽然我阅读了很多论文，但是我对这项研究一点也不了解，并且如果你发现误解了某些事情或者某些内容少了一些有趣的参考文献，那么我非常开心你能给我发一封邮件告诉我。&lt;/p&gt;
+&lt;p&gt;大量的关于这个问题的研究事实上是关于分布式系统的，一组节点相互交换消息，而没有一个中心控制节点。解决此问题的经典方法称为 「&lt;a href=&#34;https://en.wikipedia.org/wiki/Operational_transformation&#34;&gt;Operational Transformation&lt;/a&gt;」，即一种分布式算法。它定义了一种描述更改的方法，该方法有两个属性：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;你可以相对于其他的更改来转换更改。因此，如果用户 A 插入了一个字母「O」在相对父级偏移量为 1 的位置，同时用户 B 也插入了一个字母「T」在偏移量为 10 的位置，那么用户 A 可以相对于自己的更改来转换 B 的更改，即插入「T」在 11 的位置，因为在 B 的更改偏移量的位置之前，一个额外的字符被插入了。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不管并发的更改应用到文档的顺序如何，大家都是最终拥有一个相同的文档。这允许 A 相对于自己的更改来转换 B 的更改，并且 B 也可以类似的转换 A 的更改，以让两个用户不会得到不同的文档。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;一个 Operational Transformation（OT）系统将本地更改立即应用于本地文档，然后将更改广播给其他用户。这些用户将会在获取到广播的更改进行转换和应用。为了准确的知道远程的更改应该通过哪些本地更改进行转换，该系统还应该在广播更改的时候附带发送一些文档状态的表示。&lt;/p&gt;
+&lt;p&gt;这个过程听起来相当简单。但是它却是实现的噩梦。一旦你支持了多种琐碎的更改（比如「插入」和「删除」），保证以任何顺序执行更改后产生相同文档变得异常困难。&lt;/p&gt;
+&lt;p&gt;Joseph Gentle，一位曾经在 Google Wave 工作过的工程师，&lt;a href=&#34;http://sharejs.org/#body&#34;&gt;说过&lt;/a&gt;…&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;不幸的是，实现一个 OT 非常恶心。有成千上百万中算法需要做权衡取舍，而且这些算法大多数都只存在于学术论文中。要正确实现这些算法其实非常困难而且耗时。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;中心化&#34;&gt;中心化&lt;/h2&gt;
+&lt;p&gt;使 OT 机制复杂的设计决策很大程度上源于对其如何对更改进行分发的需求。分布式系统无论在实践上还是在策略上，都有一些很棒的特性，并且在开发中往往很有意思。&lt;/p&gt;
+&lt;p&gt;不过，你可以通过引入一个「处理更改的中心」来减少很大的复杂性。老实说，我对 Google 将 OT 用在 Google Docs（一种中心化的系统）中表示非常不解。&lt;/p&gt;
+&lt;p&gt;ProseMirror 的算法是集中式的，因为它只有一个更改处理中心（所有的用户都连接到该中心）来决定应用更改的顺序。这使得实现协同编辑系统变得相对容易并且容易理解。&lt;/p&gt;
+&lt;p&gt;实际上我并不认为这个「中心化」的特性就是以分布式的方式运行 OT 算法的一个非常大的障碍（即 OT 的分布式算法的难点和障碍不在中心化–译者注）。你还可以用像 &lt;a href=&#34;https://en.wikipedia.org/wiki/Raft_(computer_science)&#34;&gt;Raft&lt;/a&gt; 这样的共识算法来选择仲裁器，而不是靠一个中心化的服务来做主。（但是请注意，我实际上并没有尝试过该方式）&lt;/p&gt;
+&lt;h2 id=&#34;ProseMirror-的协同算法&#34;&gt;ProseMirror 的协同算法&lt;/h2&gt;
+&lt;p&gt;与 OT 一样，ProseMirror 使用基于更改的词汇表（意即它也用 delete、insert 这类表示「更改」意思的词–译者注）并相互转换更改。不过与 OT 不同的是，它不试着去保证以不同顺序应用更改将产生相同的文档。&lt;/p&gt;
+&lt;p&gt;通过使用一个中心化的服务，甚至可以很容易地让所有客户端以相同的顺序应用更改。你可以使用一种类似于代码版本控制系统中使用的机制。当客户端有一个更改后，他们试着将更改 &lt;em&gt;push&lt;/em&gt; 到服务端。如果服务端认为这个更改是基于当前最新的版本的，那么更改就会被接受。如果不是，那么客户端必须首先 &lt;em&gt;pull&lt;/em&gt; 其他客户端的更改，然后在重试推送到服务器之前将自己的更改 &lt;em&gt;rebase&lt;/em&gt;。&lt;/p&gt;
+&lt;p&gt;不像 git，文档的历史记录在这个模型中是线性的，并且文档的给定版本可以用简单的使用一个整数来表示。&lt;/p&gt;
+&lt;p&gt;与 git 还不同的是，所有的客户端都在不断的拉取（或者，推送并监听）对文档的新更改，并在网络允许的范围内尽可能快的跟踪服务器的状态。&lt;/p&gt;
+&lt;p&gt;唯一困难的部分是 rebasing 其他人的更改到自己的更改。这与 OT 所做的转换非常相似。但是这是通过客户端 &lt;em&gt;自己&lt;/em&gt; 的更改而不是远服务端更改来完成的。&lt;/p&gt;
+&lt;h2 id=&#34;位置映射&#34;&gt;位置映射&lt;/h2&gt;
+&lt;p&gt;不过，OT 会相对于 &lt;em&gt;别人的更改&lt;/em&gt; 来转换更改，而 ProseMirror 则使用一种称为 &lt;em&gt;position map&lt;/em&gt;（位置映射）的派生数据结构对其进行转换。无论何时你对文档应用了一个更改，你就会得到一个新的文档和上述的一个映射，该映射可以用于将旧文档中的位置转换到新文档中相应的位置。映射的最显著的使用场景是，可以用来调整光标的位置，以让其停留在相同的「概念性」位置（conceptual 不知道怎么意译–译者注）–如果一个字符被在光标之前插入，那么光标应该向前（向右）随着周围的文本移动一个位置。&lt;/p&gt;
+&lt;p&gt;转换更改完全基于位置映射完成。这其实挺好的，这意味着我们不需要写特定更改类型的转换代码。每个更改有一到三个位置信息与它相关，分别表示为 &lt;code&gt;from&lt;/code&gt;，&lt;code&gt;to&lt;/code&gt; 以及 &lt;code&gt;at&lt;/code&gt;。当转换一个相对于给定的其他更改的更改时，这些位置将会通过其他更改的位置映射进行映射。&lt;/p&gt;
+&lt;p&gt;例如，如果一个字符被插入到位置 5，那么相对于该插入进行转换时，「删除从 10 到 14 的位置」的更改将会变成「删除从 11 到 15的位置」。&lt;/p&gt;
+&lt;p&gt;每个更改的位置只有在最初应用的文档版本是相同的时候才有意义。一个位置映射定义了更改前后两个文档版本中位置之间的映射关系。为了能够应用更改到不同的版本，必须通过其自身版本和目标版本之间的更改来一步步的映射它。&lt;/p&gt;
+&lt;p&gt;（为了简单起见，示例将会使用整数作为位置的表示。ProseMirror 中的实际位置由段落中的整数偏移量加上该段落在文档树中的路径组成）&lt;/p&gt;
+&lt;h2 id=&#34;Rebasing-Positions&#34;&gt;Rebasing Positions&lt;/h2&gt;
+&lt;p&gt;当一个端有多个未推送到远端的本地更改时，那么有意思的就来了（朱一旦口吻）。如果此时有其他人的更改进入，那么所有的本地未提交的更改需要基于这些更改进行转换。假设我们有本地修改 &lt;em&gt;L1&lt;/em&gt; 和 &lt;em&gt;L2&lt;/em&gt;，并将它们 rebasing 到远程修改 &lt;em&gt;R1&lt;/em&gt; 和 &lt;em&gt;R2&lt;/em&gt;，其中 &lt;em&gt;L1&lt;/em&gt; 和 &lt;em&gt;R1&lt;/em&gt; 更改自相同的文档版本。&lt;/p&gt;
+&lt;p&gt;首先，我们应用 R1 和 R2 到我们原始版本的文档中（客户端必须跟踪它们当前正在显示的文档版本–包括未推送的更改–和尚未包含这些更改的原始版本）。这个操作将创建两个映射 &lt;em&gt;mR1&lt;/em&gt; 和 &lt;em&gt;mR2&lt;/em&gt;。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;译者注：下面这段较难理解，需要读者画图可能更直观。简单来说就是，L2 是基于 L1 对文档的修改进行位置映射（位置调整）后对文档的修改，想正确 rebasing L2，必须先将 L1 及 L1 之前（即 R1 和 R2）的对文档的修改对被影响的位置都映射（调整）一遍，这样 L2 才能获得正确的位置映射，然后在正确的位置开始修改文档。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;我们可以简单的向前映射 &lt;em&gt;L1&lt;/em&gt; 到 &lt;em&gt;L1*&lt;/em&gt;，&lt;em&gt;L1*&lt;/em&gt; 是 &lt;em&gt;L1&lt;/em&gt; 通过 &lt;em&gt;mR1&lt;/em&gt; 和 &lt;em&gt;mR2&lt;/em&gt; 映射的版本。但是 &lt;em&gt;L2&lt;/em&gt; 是基于 &lt;em&gt;L1&lt;/em&gt; 在初始文档版本修改之后的文档进行修改的，因此我们对于 &lt;em&gt;L2&lt;/em&gt; （注：即此处对于 &lt;em&gt;L1&lt;/em&gt; 用前面所说的简单映射即可，但是对于 &lt;em&gt;L2&lt;/em&gt; 的处理需要接下来的步骤–译者注）必须首先将 &lt;em&gt;L2&lt;/em&gt; 通过 &lt;em&gt;mL1&lt;/em&gt; （它是应用 &lt;em&gt;L1&lt;/em&gt; 创建的映射） &lt;em&gt;向后映射&lt;/em&gt;（即回滚历史，&lt;em&gt;mL1&lt;/em&gt; 的逆操作–译者注）。此时文档与 &lt;em&gt;R1&lt;/em&gt; 开始时的文档相同，于是我们可以通过 &lt;em&gt;mR1&lt;/em&gt; 和 &lt;em&gt;mR2&lt;/em&gt; 来映射 &lt;em&gt;L2&lt;/em&gt; ，最后再通过 &lt;em&gt;mL1*&lt;/em&gt; --前面简单应用 &lt;em&gt;L1*&lt;/em&gt; 产生的映射–来进行映射。现在我们有了 &lt;em&gt;L2*&lt;/em&gt;，可以将其应用于应用过 &lt;em&gt;L1*&lt;/em&gt; 后的文档，瞧，我们已经将两个更改 rebasing 到另外两个更改了。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;译者注：下面这段中，「在位置 5 插入两个字符」相当于上面的 L1，「在两个字符间（位置 6 ）再插入」相当于上面的 L2。因此 rebasing L2 的时候需要对 L2 先通过 mL1 回滚 L2 的插入位置到最开始的文档，但是此时文档并没有 L2 可映射的位置，因为此时位置还不存在。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;映射删除操作和和向后映射（历史回滚–译者注）插入操作会丢失信息。如果你在位置 5 的地方插入两个字符，然后另一个人在位置 6（介于之前插入的字符之间），向后映射（历史回滚，如前所述的 L2–译者注）然后再通过最开始的插入操作向前映射将会使你（在插入这两个字符后光标）位于插入的这两个字符之前或者之后的位置，因为在插入这两个字符之间的位置不能被还没有它们的文档所表示（如何表示一个即将插入但是还未插入的字符的准确位置？–译者注）。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;译者注：下面这段是本文的核心，即通过在 map 的时候提供额外的相反的 map 信息，来在当需要向后映射（历史回滚）的时候遇到需要映射到不存在位置的话先恢复该位置内容（使用该映射的镜像）然后进行映射，待其之前的映射完成之后，直接跳过这个映射（因为已经在恢复内容的时候映射完毕了），注意必须保证映射的镜像与映射的内容保持相同的大小（废话，不然位置肯定会算错）。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;为了修复这个问题，ProseMirror 协同系统使用映射管道（mapping pipelines），它们不仅是一系列的映射，同时还保存了有关哪些映射是彼此的镜像这种信息。当一个位置在经过这些管道遇到一个删除了该位置周围内容的映射的时候，系统会向前（即向在之前未遇到该位置的时之前的映射–译者注）扫描管道，以查找该映射的镜像。如果找到了这样的映射我们将向前映射跳（就是正常的位置调整–译者注）到它这个位置，并使用该位置在已删除内容中的相对偏移量来恢复该映射插入的内容中的位置。删除操作的映射镜像必须和插入操作的映射镜像保持相同的内容大小。&lt;/p&gt;
+&lt;h2 id=&#34;映射的方向&#34;&gt;映射的方向&lt;/h2&gt;
+&lt;p&gt;无论何时插入内容，都可以将这个明确的插入点映射到两个不同的位置（这两个点都是有意义的）：插入内容之前，或者之后。有时候前者是合适的，有时候后者是合适的。ProseMirror 的位置映射系统允许开发者选择他喜欢的方向。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;译者注：下面这段话讲的是，假设文档为 &lt;code&gt;abc&lt;/code&gt; ，在 a 之后，b 之前的位置插入字母 x，那么更改的 &lt;code&gt;from&lt;/code&gt; 和 &lt;code&gt;to&lt;/code&gt; 都为 1；插入内容之后，&lt;code&gt;from&lt;/code&gt; 向前（向左）映射仍为 1 不变，&lt;code&gt;to&lt;/code&gt; 向后（向右）映射也变成了 2。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这也是为什么和一个更改相关的位置含有几个不同的位置信息的原因。如果一个更改具有 &lt;code&gt;from&lt;/code&gt; 和 &lt;code&gt;to&lt;/code&gt; 的位置信息，比如删除或者设置文档某个内容的样式，若在该位置之前或者之后都有内容，那么这些内容不应该被包含到这个更改之内（这些内容只需要在更改发生后映射位置即可–译者注）。因此，&lt;code&gt;from&lt;/code&gt; 位置应该向前（向左）映射，而 &lt;code&gt;to&lt;/code&gt; 位置应该向后（向右）映射）。&lt;/p&gt;
+&lt;p&gt;当一个更改通过一个完全包含它的映射进行映射的时候，例如在位置 5 插入一个字符，然后该位置通过删除 2 到 10 创建的更改进行映射，那么在位置 5 插入字符这整个操作将会被简单的丢弃，因为它的上下文不复存在了。&lt;/p&gt;
+&lt;h2 id=&#34;更改类型&#34;&gt;更改类型&lt;/h2&gt;
+&lt;p&gt;ProseMirror 中一个原子的改动被叫做 &lt;em&gt;step&lt;/em&gt;（步骤）。一些从用户角度看是单个更改的更改实际上会被分解为几个步骤。例如，如果你选择文本然后按下 enter 键，编辑器将会生成 &lt;em&gt;delete&lt;/em&gt; 步骤以删除选择文本然后接着一个 &lt;em&gt;split&lt;/em&gt; 步骤以分割当前段落。&lt;/p&gt;
+&lt;p&gt;下面是存在于 ProseMirror 中的步骤类型：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;addStyle&lt;/code&gt; 和 &lt;code&gt;removeStyle&lt;/code&gt; 增加行内样式到文档中或移除行内的样式。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;split&lt;/code&gt; 将一个节点一分为二。例如，它可以被用来当用户按下 enter 键的时候分割段落。它只需要一个单独的 &lt;code&gt;at&lt;/code&gt; 位置信息。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;join&lt;/code&gt; 将挨着的两个节点连接起来。该步骤仅对包含相同类型内容的节点有效。它需要 &lt;code&gt;from&lt;/code&gt; 和 &lt;code&gt;to&lt;/code&gt; 的位置信息分别用来指向将要被连接的两个节点的尾部和起始位置（这是为了确保正确将预期的节点连接在一起。若与此同时这两个节点被插入了内容，那么这个连接步骤会被直接忽略）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ancestor&lt;/code&gt; 被用来修改节点的类型以及增加或者删除它的祖先。可以用来包裹一个 list，或者将段落转换成标题。它需要 &lt;code&gt;from&lt;/code&gt; 和 &lt;code&gt;to&lt;/code&gt; 的位置指向节点的起始和结束位置。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;replace&lt;/code&gt; 用零个或者多个节点替换给定文档的一部分，并可以选择在剪切的边缘位置缝合兼容的节点。它的 &lt;code&gt;from&lt;/code&gt; 和 &lt;code&gt;to&lt;/code&gt; 位置定义了应被删除的范围，它的 &lt;code&gt;at&lt;/code&gt; 位置给定了新节点应该插入的位置。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;上面所述的类型中，最后一个是最复杂的，我最初的冲动是将其拆分成移除和插入两种步骤类型。但是因为替换步骤创建的位置映射需要将步骤视为原子类型（位置必须从 &lt;em&gt;所有&lt;/em&gt; 的替换内容中推出去），于是我通过将其视为单个步骤而取得了更好的结果。&lt;/p&gt;
+&lt;h2 id=&#34;操作的意图&#34;&gt;操作的意图&lt;/h2&gt;
+&lt;p&gt;一个实时协同编辑系统必要的属性是它们必须尝试保留更改的 &lt;em&gt;意图&lt;/em&gt;。因为更改的「合并」是自动发生的，没有经过用户的交互，这就造成当你对文档的更改通过 rebasing 被重新修改变成了不是你想要的结果的时候会非常恼人。&lt;/p&gt;
+&lt;p&gt;我尝试定义这些修改步骤以及它们 rebasing 的方式，以让它们 rebasing 的时候不那么奇怪。大多数的时候更改不会相互覆盖，因此也不需要交互。但是当更改有重叠部分的时候，我们必须确保它们合并后的结果是正常的。&lt;/p&gt;
+&lt;p&gt;有些时候修改必须被简单的丢弃掉。当你在一个段落中输入，但是另一个用户在你的更改被服务端采纳之前删除了这个段落，那么你输入的有意义的上下文就没了，插入到该段落的位置将创建一个毫无意义的文档片段。&lt;/p&gt;
+&lt;p&gt;如果你尝试将两个 list 拼接在一起，但是其他人在两个 list 之间插入了一个段落，那么你想进行的操作就不可能被执行（你不能将两个不挨着的节点拼接在一起），因此你的操作会被丢弃。&lt;/p&gt;
+&lt;p&gt;在其他场景中，更改即使被修改过也仍然是有意义的。如果你将位置 5 到 10 的字符加粗，同时另一个用户在位置 7 插入了一个字符，那么最终你得到的结果是位置 5 到 11 都被加粗。&lt;/p&gt;
+&lt;p&gt;最后，一些更改可以重叠而不会相互影响。比如你将一个单词设置为超链接，同时另一个用户将其加粗，那么最终你们二者对这个单词的更改都会被应用到原始文档上去。&lt;/p&gt;
+&lt;h2 id=&#34;离线&#34;&gt;离线&lt;/h2&gt;
+&lt;p&gt;对实时协同编辑来说，静默的修改更改或者丢掉一些更改并没有什么问题，在这种情况下反馈或多或少是即时的-—你看到你正在编辑的段落消失了，于是你就知道有人把它删除了，于是你的更改也没了。&lt;/p&gt;
+&lt;p&gt;而对于离线编辑来说（即你一直在编辑但是并没有连接到中心服务器）或者说对于一个工作流的分支来说，当你做了大量的编辑工作，&lt;em&gt;之后&lt;/em&gt; 将其合并到其他人在此期间编辑过的文档中的时候（无论其他人如何编辑，删除，插入大量的内容，然后再删除最开始的内容等—译者注），我在此描述的这个模型是没用的（OT 也是）。因为这种场景下，（我描述的模型和 OT 都同样-—译者注）可能会默默的删除很多的编辑工作（如果编辑的上下文已经被删除的话），或者当两个用户以不同的方式编辑同一个句子的时候创建一个奇怪的文本组合。&lt;/p&gt;
+&lt;p&gt;在这种场景下，一个基于 diff 的实现可能更合适。你可能不能做自动合并—-你需要识别出冲突，然后将他们交给用户解决。比如，git 让用户做的那样。&lt;/p&gt;
+&lt;h2 id=&#34;撤销历史&#34;&gt;撤销历史&lt;/h2&gt;
+&lt;p&gt;在协同编辑系统中，撤销历史应该如何实现？该问题的广泛接受的答案是，它绝 &lt;em&gt;不应该&lt;/em&gt; 使用一个单一的、共享的历史。如果你撤销编辑，那么撤销的应该是 &lt;em&gt;你&lt;/em&gt; 做的最后一个编辑操作，而不是撤销文档最后的编辑操作。&lt;/p&gt;
+&lt;p&gt;这意味着简单的回滚到先前状态来实现文档历史的方法行不通。通过撤销你的更改的状态（如果此时其他人也进行了更改）是一种之前未见过的新的状态（即不是文档历史中的任一以中状态–译者注）。&lt;/p&gt;
+&lt;p&gt;为了能够实现这一点，我必须定义一种能够被反转的更改（多个步骤），该反转会产生一个新的步骤，该步骤代表了可以抵消原始步骤的更改。&lt;/p&gt;
+&lt;p&gt;ProseMirror 的撤销历史记录累积了相反的步骤，并且还跟踪了他们与当前文档版本之间的所有的位置映射。为了能反向映射到当前文档版本，这是必须的。&lt;/p&gt;
+&lt;p&gt;不过不利的一面是，如果用户进行了更改然后空闲了下来，在此期间其他人对文档进行了更改，那么将此用户的更改变成当前版本的文档的位置映射将无限制的堆积起来。为了解决这个问题，历史记录会定期进行 &lt;em&gt;压缩&lt;/em&gt;，将反转的更改向前映射，以使他们再次从当前文档开始编辑。这会丢弃中间过程的位置映射。&lt;/p&gt;
+</description>
+            <pubDate>Sun, 02 Aug 2020 16:05:56 +0800</pubDate>
+            <link>http://www.xheldon.com/tech/Collaborative-Editing-in-ProseMirror.html</link>
+            <guid isPermaLink="true">http://www.xheldon.com/tech/Collaborative-Editing-in-ProseMirror.html</guid>
+            
+                <category>技术</category>
+            
+                <category>翻译</category>
+            
+                <category>ProseMirror</category>
+            
+                <category>协同</category>
+            
+            
+                <category>tech</category>
+            
+        </item>
+        
+        <item>
+            <title>Slate 和 ProseMirror 简单对比</title>
+            <description>&lt;p&gt;本人之前使用 PM 不到两年，开发过大型模块如智能表格等；使用 Slate 至今，经历过从 0.47 到 0.5+ 的大版本升级，算是有点发言权，鉴于圈内一些人总问我二者之间的差异，干脆写个博客简单来说说。&lt;/p&gt;
+&lt;h2 id=&#34;Slate-优点：&#34;&gt;Slate 优点：&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;上手快，开箱即用，概念易懂，代码容易理解，尤其是对熟悉 React 的同学来说，其视图层完全基于 React，基本上一周就能上手理解。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;定制性强，可以根据自身的业务场景，魔改底层核心模块如 slate、slate-react 来扩展各种插件和架构，底层修改起来相对 PM 来说较为简单。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;可以很好的适配协同的场景，如 sharedb，基于 json 的几乎就是为 Slate 准备的。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;Slate-缺点：&#34;&gt;Slate 缺点：&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;作者修复 Bug 速度很慢，并不全职开发，基本靠社区维护，有些 API 明显不合理（如 .include，被坑过），或者有些 API 抛出异常，但是有些 API 会返回 null，明显没设计好，但是作者让你给他提 PR，而不是自己修复。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;API 不稳定，目前仍未发布正式版，还在 0.x 版本，将来架构变动可能会比较巨大。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;官方版本基本不可用，尤其针对 CJK 语言用户的输入法事件等来说，必须下载下来之后自己魔改一下才行。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;性能优化较为困难，因为视图层完全基于 React，所以优化这部分的代码几乎只能从优化 React 出发，React 只是通用型框架，在速度上并没有任何优势。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;代码没写好的话，很容易导致编辑器崩溃而导致编辑器不可用，除了修改框架代码，也没什么好的容错机制。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;数据流动不清晰，容易导致 bug 的产生，如你可以直接 editor.children 赋值，覆盖掉已有的编辑器内容，而不会有任何报错。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;光标问题、Mark 问题难以 hack，代码属于是入门级水平（个人理解）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;文档垃圾，有些文档和实际 API 表现不一致。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;跟 React 强绑定。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;移动端目前支持的不算太好，需要魔改。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;ProseMirror-优点：&#34;&gt;ProseMirror 优点：&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;作者全职维护，非常热心，积极回答社区问题。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;正式版发布三年多，API 一直很稳定。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;有大公司背书，Google 也是用作者的另一个 CodeMirror 项目（Chrome Devtools 的 Element Tab 用的就是），可信度高。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;数据流动清晰（虽然不好理解）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;没有 Slate 那么容易崩溃，报错也不会导致整个编辑器框架不可用，稳定性较高。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;作者是自由工作者，靠捐款维持生活，名正言顺的接受付费解 Bug，按小时计费，每小时 200欧（邮件问过，没记错的话）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;文档树模型我觉得很好用，Schema 限制严格以及基于文本/Token偏移的定位系统是精髓，不过也是难以协同的地方。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不跟任意的视图框架依赖，可以用 React、View、Angular 开发视图框架，不过一般只有定制组件才需要，像 paragraph、heading、list 等，无需自定义 View 层，只需要使用 API 描述 DOM 结构即可。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;移动端支持较好。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;ProseMirror-缺点：&#34;&gt;ProseMirror 缺点：&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;一些概念较难理解，一些代码也难以理解（作者技术个人感觉深不可测）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;模块分散非开箱即用，需要一定的上手成本才能跑起来。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;基于 PM 的协同方案，实现起来相较于 Slate 来说比较困难，作者17年开了个 issue，说要写一个协同的 demo，现在还没写。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;上手难度较大，往往需要两周甚至一个月的时间才能开始开发基础功能。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;因为是自己实现的视图层（开发者也可以使用 API 来实现渲染自定义组件如 React 组件），所以如果框架本身的视图层出问题，较难定位和修复。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;几乎不可能魔改源码，成本很高，只能靠作者来修复。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;可以看下这个答主的对比，说的基本没什么大问题：&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#39;link-bookmark&#39; href=&#39;https://www.zhihu.com/question/404836496/answer/1323431059&#39; target=&#39;_blank&#39;&gt;&lt;span data-bookmark-img=&#39;https://static.zhihu.com/heifetz/assets/apple-touch-icon-60.362a8eac.png&#39; data-bookmark-title=&#39;主&#39;&gt;&lt;img src=&#39;https://static.zhihu.com/heifetz/assets/apple-touch-icon-60.362a8eac.png&#39;/&gt;&lt;/span&gt;&lt;span&gt;&lt;span&gt; 主流的开源「富文本编辑器」都有什么缺陷？ - 知乎&lt;/span&gt;&lt;span&gt; 先占个坑……如何不借助 contentEditable 实现富文本编辑器？联动一下之前我在类似问题的回答我主要调研…&lt;/span&gt;&lt;span&gt; https://www.zhihu.com/question/404836496/answer/1323431059&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;美团的学城用的是 PM：&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#39;link-bookmark&#39; href=&#39;https://www.zhihu.com/question/404836496/answer/1326453810&#39; target=&#39;_blank&#39;&gt;&lt;span data-bookmark-img=&#39;https://static.zhihu.com/heifetz/assets/apple-touch-icon-60.362a8eac.png&#39; data-bookmark-title=&#39;主&#39;&gt;&lt;img src=&#39;https://static.zhihu.com/heifetz/assets/apple-touch-icon-60.362a8eac.png&#39;/&gt;&lt;/span&gt;&lt;span&gt;&lt;span&gt; 主流的开源「富文本编辑器」都有什么缺陷？ - 知乎&lt;/span&gt;&lt;span&gt; 美团的知识管理系统-学城，其富文本编辑器是基于prosemirror来实现的，我在其中开发了内部团队接入版本及…&lt;/span&gt;&lt;span&gt; https://www.zhihu.com/question/404836496/answer/1326453810&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
+&lt;p&gt;Slate 适合大公司，因为他上手快（大公司依赖投入产出比，不然项目拿不到资源，做了 2 月还是个 Demo 你怎么给领导交代？），因此可以很快出成果，但是打磨完美又需要很大的人力来魔改底层，所以适合大公司，前期快速上手，后期加人魔改。另外扩展性非常强，魔改后几乎可以满足任何要求（比如我们就搞了各种模块和功能，如划线评论、分级标题折叠、嵌入第三方模块等）。&lt;/p&gt;
+&lt;p&gt;Prosemirror 适合中小型公司，各平台支持的算不错，如果有 bug 也可以放心交给作者来修复，如果实在修不好就付费让作者修。虽然上手成本高，但是让中小型公司的主力研发摸索个两周应该也可以出 demo 了。&lt;/p&gt;
+</description>
+            <pubDate>Fri, 06 Jan 2023 12:14:58 +0800</pubDate>
+            <link>http://www.xheldon.com/tech/prosemirror-comparison-with-slatejs.html</link>
+            <guid isPermaLink="true">http://www.xheldon.com/tech/prosemirror-comparison-with-slatejs.html</guid>
+            
+                <category>技术</category>
+            
+                <category>ProseMirror</category>
+            
+                <category>编辑器</category>
+            
+                <category>SlateJS</category>
+            
+                <category>对比</category>
+            
+                <category>选型</category>
+            
+                <category>框架</category>
+            
+            
+                <category>tech</category>
+            
+        </item>
+        
+        <item>
+            <title>Nginx 中的正向和反向代理</title>
+            <description>&lt;h2 id=&#34;本文由来&#34;&gt;本文由来&lt;/h2&gt;
+&lt;p&gt;因为文件夹/文件名字不能带冒号，导致我误会 Chrome 不能用其 Override 功能对那些带有端口号的 URL 进行 override，因此我打算将内网远端测试环境带端口的 URL 修改为本地的 80 默认端口，以让 Chrome 能够 override。后来发现 Chrome 其实是可以 override 带端口号的 URL 的，将其 decode 一下为 &lt;code&gt;%3a&lt;/code&gt; 即可。&lt;/p&gt;
+&lt;p&gt;发现我自己的愚蠢后，由于不甘心花了一个小时用 Nginx 进行正向代理来解决端口这个问题的方式居然是多此一举的，遂将其中过程记录下来，也不枉我花了的这些个时间，以让后来者能够少走写坑，遂成此文。&lt;/p&gt;
+&lt;p&gt;其中的一些概念同学们上大学的时候可能都了解，这里只写给小白看的。&lt;/p&gt;
+&lt;h2 id=&#34;名词解释&#34;&gt;名词解释&lt;/h2&gt;
+&lt;h3 id=&#34;正向代理&#34;&gt;正向代理&lt;/h3&gt;
+&lt;p&gt;正向代理一般是对客户端而言的，比如你的梯子就是正向代理，本地的请求经过代理服务器配置的规则，将请求发往远端服务器。当然你也可以在服务端请求其他服务器资源的时候配置正向代理，这个正向代理就是对服务器而言的。&lt;/p&gt;
+&lt;p&gt;正向代理应用最广泛的就是 VPN 了。&lt;/p&gt;
+&lt;h3 id=&#34;反向代理&#34;&gt;反向代理&lt;/h3&gt;
+&lt;p&gt;顾名思义，就是跟上面正向代理相反的代理。其只是对服务端而言的一种概念。即，客户端的请求到达服务端后，先经过服务端配置的反向代理，进行分发，然后再将请求流量导到不同的服务器。&lt;/p&gt;
+&lt;p&gt;nginx 反向代理在服务端应用的非常广泛，比如，负载均衡，可能的策略是假设有5台服务器，随机每次来源的数量进行 cout 计数后对 5 取余，余数为 1 的将流量导向第一台服务器，余数为 2 的导向第二台，以此类推；比如，路径重写，即如果请求的路径是 xxx/yyy，可以将其重写为 zzz，然后将流量导流到服务器中，等等。&lt;/p&gt;
+&lt;h2 id=&#34;我的需求&#34;&gt;我的需求&lt;/h2&gt;
+&lt;p&gt;我需要访问 &lt;code&gt;http://baidu.com:8888&lt;/code&gt; ，但是我想通过访问 &lt;code&gt;http://baidu.com:80&lt;/code&gt; 也即，&lt;code&gt;http://baidu.com&lt;/code&gt; 的方式来访问 &lt;code&gt;http://baidu.com:8888&lt;/code&gt; 所以工作原理跟梯子是一样的，即为正向代理。&lt;/p&gt;
+&lt;h3 id=&#34;难点&#34;&gt;难点&lt;/h3&gt;
+&lt;p&gt;整体没啥难的，无非就是 server.listen 80 端口，然后路径匹配，将请求通过 &lt;code&gt;proxy_pass&lt;/code&gt; 发到正确的路径如 8888 端口上，唯一有点麻烦的就是一个点，ws 请求也需要走代理，所以需要在 http 开始的地方写下这个：&lt;/p&gt;
+&lt;figure class=&#34;highlight shell&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;map $http_upgrade $connection_upgrade &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    default upgrade;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &amp;#x27;&amp;#x27;      close;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;然后在 server.location 块里面加上：&lt;/p&gt;
+&lt;figure class=&#34;highlight shell&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;proxy_http_version 1.1;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;proxy_set_header Upgrade $http_upgrade;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;proxy_set_header Connection $connection_upgrade;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;即可。&lt;/p&gt;
+&lt;p&gt;当然还涉及到 &lt;code&gt;proxy_set_header&lt;/code&gt; 、&lt;code&gt;proxy_pass&lt;/code&gt; 等，不在本次讨论范围，有兴趣的可以看官方文档：&lt;a href=&#34;http://nginx.org/en/docs/http/websocket.html&#34;&gt;http://nginx.org/en/docs/http/websocket.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;哦对了，差点忘了，nginx 服务器启动是在本地的 127.0.0.1，所以你想通过访问 &lt;code&gt;http://baidu.com&lt;/code&gt; 来访问 &lt;code&gt;http://baidu.com:8888&lt;/code&gt; 还需要修改下本地的 hosts 文件，将 127.0.0.1 指向 &lt;a href=&#34;http://baidu.com&#34;&gt;baidu.com&lt;/a&gt; 即可：&lt;/p&gt;
+&lt;figure class=&#34;highlight shell&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;127.0.0.1  www.baidu.com&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;有同学会问，为啥不直接用 hosts 指定端口呢？比如这样：&lt;/p&gt;
+&lt;figure class=&#34;highlight shell&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;127.0.0.1. www.baidu.com:8888&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;答案也显而易见，因为 hosts 文件不支持端口呗~&lt;/p&gt;
+&lt;h2 id=&#34;后话&#34;&gt;后话&lt;/h2&gt;
+&lt;p&gt;因为一直做前端，工具类方向，没怎么接触过服务端，目前还没搞懂怎么给 nginx 装额外的模块，快速搜了下，貌似是需要跟 nginx 一起编译才行，不能像安装软件一样安装插件。需要安装插件是因为 nginx 默认不代理 https 请求，有这个需要的话要安装额外的模块。&lt;/p&gt;
+&lt;p&gt;感觉 nginx 的用处非常大，有空要好好研究一下！&lt;/p&gt;
+</description>
+            <pubDate>Tue, 06 Jul 2021 08:05:56 +0800</pubDate>
+            <link>http://www.xheldon.com/tech/nginx-forward-and-reverse-proxy.html</link>
+            <guid isPermaLink="true">http://www.xheldon.com/tech/nginx-forward-and-reverse-proxy.html</guid>
+            
+                <category>技术</category>
+            
+                <category>服务器</category>
+            
+                <category>Nginx</category>
+            
+                <category>代理</category>
+            
+            
+                <category>tech</category>
+            
+        </item>
+        
+        <item>
+            <title>「译」ProseMirror 的由来</title>
+            <description>&lt;p&gt;有的时候我晚上躺在床上，狂热地寻找新的途径，以让自己承担更多只有微薄收入的责任。然后我就想到了，我应该开始另一个开源项目！&lt;/p&gt;
+&lt;p&gt;好吧，上述情况并不是真的发生了，但结果是一样的：我不断地构建复杂的、高难度的代码，然后放弃它。实际上，这个流程机制通常是，我首先会想到了一些技术概念，然后调查后发现它还没有被做过，最后我为了满足一些好奇心和自我价值的实现，决定要看看我是否 &lt;em&gt;能够&lt;/em&gt; 做到。&lt;/p&gt;
+&lt;p&gt;上述机制产生了这个最新的「祸害」（虽然我并不是要放弃它）：&lt;a href=&#34;https://prosemirror.xheldon.com&#34;&gt;ProseMirror&lt;/a&gt;，一个基于浏览器的富文本编辑器。我通过&lt;a href=&#34;https://www.indiegogo.com/projects/prosemirror/#/&#34;&gt;众筹&lt;/a&gt;的方式把它开源，并且&lt;a href=&#34;https://marijnhaverbeke.nl/blog/sustainable-maintenance.html&#34;&gt;考虑&lt;/a&gt;了一下如何让发布后的维护工作持续下去。&lt;/p&gt;
+&lt;h2 id=&#34;一个编辑器？&#34;&gt;一个编辑器？&lt;/h2&gt;
+&lt;p&gt;我不是刚说过要实现那些「还没有人做过」的事情吗？现在不是至少有上百个基于浏览器的富文本编辑器吗？&lt;/p&gt;
+&lt;p&gt;是的，是的，是的。但是，现有的项目中没有一个采取我认为是理想的方法。它们中的许多都牢牢地扎根于旧的模式，即依靠 contentEditable 元素，然后试图理清所产生的混乱。这让我们对用户和浏览器对我们的文档所做的事情几乎没有控制。&lt;/p&gt;
+&lt;p&gt;我们需要控制什么呢？首先，一个富文本编辑器应该能够让我们能更容易将文档保持在一个合理的状态。如果文档只被你的代码修改，你可以定义这些修改，使它们保留你想保留的不变性，而且你可以确保在不同的浏览器上发生同样的事情。&lt;/p&gt;
+&lt;p&gt;但更重要的是，它允许你以一种更抽象的方式来表示这些修改，而不仅仅是状态的变更：「这里发生了一些变化，因此有了一个新的文档」。而抽象的方式来表示修改在协同编辑时是非常有帮助的----有效地合并来自多个用户的冲突的修改，这有助于准确地表示修改的 &lt;em&gt;意图&lt;/em&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;基本实现方案&#34;&gt;基本实现方案&lt;/h2&gt;
+&lt;p&gt;ProseMirror 确实创建了一个 contentEditable 元素，它在其中显示其文档。这让我们可以自由操作所有与焦点和光标运动有关的逻辑，并使其更容易支持屏幕阅读器和双向文本。&lt;/p&gt;
+&lt;p&gt;对文档所做的任何实际修改都是通过处理合适的浏览器事件来捕获的，并转换为我们自己对这些修改的表述。这对于相对现代一点的浏览器而言，大多数类型的修改抽象描述起来都很容易。我们可以处理按键事件来捕获输入的文本以及诸如退格和回车之类的东西。我们可以处理剪贴板事件，使复制、剪切和粘贴正常运行。拖放也是通过事件来实现的。甚至 IME 输入也可以触发相对可用的&lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/API/CompositionEvent&#34;&gt;组合事件&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;不幸的是，在一些情况下，浏览器不会触发描述用户意图的事件，而你得到的只是一个事后的 &lt;code&gt;输入&lt;/code&gt; 事件的结果。例如，当从拼写检查菜单中选择更正时，以及使用组合键输入特殊字符时（例如，在Linux上使用 「Multi + e + =」来输入「€」，都会发生这种情况。幸运的是，到目前为止，我遇到的所有这种情况都只涉及简单的、字符级的输入。我们可以检查 DOM，将其与我们对文档的表述进行比较，并从中得出预期的修改。&lt;/p&gt;
+&lt;p&gt;当进行修改时，编辑器对文档的表示就会改变，然后显示（屏幕上的 DOM 元素）就会更新以反映新的文档。通过为文档使用一个持久化的数据结构----使修改创建一个新的文档对象，而不改变旧的对象----我们可以使用一个非常快速的文档差异算法，只进行实际需要的 DOM 更新。这有点类似于 &lt;a href=&#34;https://reactjs.org&#34;&gt;React&lt;/a&gt; 和它的各种衍生产品所做的，只是 ProseMirror 是用它自己的文档表示，而不是用一个通用的类 DOM 的数据结构。&lt;/p&gt;
+&lt;h2 id=&#34;编辑器文档&#34;&gt;编辑器文档&lt;/h2&gt;
+&lt;p&gt;这个文档表示法当然不会是 HTML。不过它同样也是文档的「语义化」表示：是一个树形的数据结构，以段落、标题、列表、强调、链接等方式描述文本的结构。它可以被渲染成 DOM 树，也可以被呈现为 Markdown 文本，以及其他任何恰好能够表达它所编码的概念的格式。&lt;/p&gt;
+&lt;p&gt;这个表示法的外层，即处理关于段落、标题、列表等的部分，在结构上特别像 DOM—它由带有子节点的节点组成。段落节点（和其他块级元素，如标题）的内容被表示为内联元素的平面序列，每一个都有一组与之相关的样式。这比全盘使用像 DOM 那样的树状结构要好。它使我们更容易追踪到不变的部分，比如不允许文本被使用强调标签包裹两次，并允许我们将段落中的位置表示为简单的字符偏移，这比在树中的位置更容易推理。&lt;/p&gt;
+&lt;p&gt;在段落之外，我们不得不使用树状结构。因此，文档中的一个位置由一个路径表示，它是一个整数序列，表示树中每一级的子索引，以及这个路径末端的节点的偏移量。这就是光标位置的表示方法，也是记录发生修改的位置的方法。&lt;/p&gt;
+&lt;p&gt;ProseMirror 目前的文档模型反映了 Markdown 的模型，完美支持可以用该格式表达的东西。在将来的时候，你将能够扩展和定制你想在某个编辑器实例中使用的文档模型。&lt;/p&gt;
+&lt;h2 id=&#34;用户界面&#34;&gt;用户界面&lt;/h2&gt;
+&lt;p&gt;目前市面上的编辑器有两种风格的用户界面，一种是顶部的经典工具条，另一种是在你的选区上方显示工具提示，以设置行内样式，以及一个在当前选择的段落右侧有一个菜单按钮，用于块级操作。我比较喜欢后者，因为当你不使用它的时候，它不会消失不见（不会丝毫影响你的文档），但我估计很多人更喜欢熟悉的工具栏。&lt;/p&gt;
+&lt;p&gt;以上这些用户界面都是作为编辑器核心之外的模块实现的，其他的用户界面风格也可以在相同的 API 之上实现。&lt;/p&gt;
+&lt;p&gt;键的绑定也是可配置的，遵循 &lt;a href=&#34;https://codemirror.net/doc/manual.html#keymaps&#34;&gt;CodeMirror 的模式&lt;/a&gt;。键被绑定的功能可以作为被叫做「命令」的方式使用，也可以通过 &lt;code&gt;execCommand&lt;/code&gt; 方法从脚本中运行。&lt;/p&gt;
+&lt;p&gt;最后，有一个叫做 &lt;code&gt;inputrules&lt;/code&gt; 的模块，可以用来指定当输入匹配给定模式的文本时应该发生什么。它可以用于像「智能引号」这样的事情，也可以在你输入「1.」并按下空格时创建一个列表。&lt;/p&gt;
+&lt;h2 id=&#34;协同编辑&#34;&gt;协同编辑&lt;/h2&gt;
+&lt;p&gt;我之前提到过协同。这个项目所做的大量工作就是为了使它支持实时协同编辑。我写了另一篇关于技术细节的&lt;a href=&#34;https://marijnhaverbeke.nl/blog/collaborative-editing.html&#34;&gt;博文&lt;/a&gt;（已被翻译成[中文](/tech/Collaborative-Editing-in-ProseMirror.html)），其中概念大致是这样的：&lt;/p&gt;
+&lt;p&gt;当对文档进行修改时，它会创建一个新的文档以及一个位置映射，将旧文档中的位置映射到新文档中的位置。比如，为了响应修改而移动光标的时候。&lt;/p&gt;
+&lt;p&gt;能够映射位置，就有可能通过映射应该应用的位置，在其他修改的基础上「&lt;a href=&#34;https://git-scm.com/docs/git-rebase&#34;&gt;rebase&lt;/a&gt;」修改。还有其他更多的东西，我因此重写了好几次才把这个系统写好，但我很有信心，我最终得到了一些运行符合预期的代码。&lt;/p&gt;
+&lt;p&gt;在一个协作的场景中，当一个客户进行修改时，他们会在本地进行缓冲，然后发送到服务器上。如果另一个客户端在我们的修改到达之前提交了它的修改，服务器会回应说「不，先应用我们的这些修改」，然后另一个客户端就会接受这些修改，在它们的基础上重新建立自己的修改，然后再试一次。当修改通过时，它们就会被广播给所有其他客户端，确保每个人都保持同步。&lt;/p&gt;
+&lt;h2 id=&#34;目标用户&#34;&gt;目标用户&lt;/h2&gt;
+&lt;p&gt;谁适合使用 ProseMirror？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;一方面，那些使用 Markdown 或一些类似格式输入的网站可能希望为他们的技术性不强的用户提供一个更容易学习的界面，然后只需将结果转换为 Markdown。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;另一方面，那些一直提供传统的富文本输入，但又想控制输出内容的网站可能想转到 ProseMirror，因为让编辑体验直接反映和执行你的约束，比清理混乱的HTML并希望得到最好的结果要好得多。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;最后，那些希望支持协同编辑同时想让用户在谷歌文档上做的事情转移到在自己的产品上进行文档编辑的公司。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;听起来很有趣？看看这个开源项目的&lt;a href=&#34;https://www.indiegogo.com/projects/prosemirror/#/&#34;&gt;众筹活动&lt;/a&gt;是如何进行的。&lt;/p&gt;
+</description>
+            <pubDate>Fri, 05 Nov 2021 10:53:56 +0800</pubDate>
+            <link>http://www.xheldon.com/tech/ProseMirror.html</link>
+            <guid isPermaLink="true">http://www.xheldon.com/tech/ProseMirror.html</guid>
+            
+                <category>技术</category>
+            
+                <category>翻译</category>
+            
+                <category>ProseMirror</category>
+            
+            
+                <category>tech</category>
+            
+        </item>
+        
+        <item>
+            <title>「译」ProseMirror 1.0 发布</title>
+            <description>&lt;blockquote&gt;
+&lt;p&gt;文中所有 &lt;code&gt;https://prosemirror.xheldon.com&lt;/code&gt; 的链接均可换成 &lt;code&gt;https://prosemirror.net&lt;/code&gt; 的链接以查看原文中的原始引用。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;两年前，我启动了 &lt;a href=&#34;https://prosemirror.xheldon.com&#34;&gt;ProseMirror&lt;/a&gt; 项目，因为我想尝试[一种更好](/tech/ProseMirror.html)的所见即所得式的编辑方法。今天，我发布了&lt;a href=&#34;https://github.com/prosemirror/&#34;&gt;该库&lt;/a&gt;的 &lt;a href=&#34;https://discuss.prosemirror.net/t/release-1-0-0/998&#34;&gt;1.0 版本&lt;/a&gt;。项目的架构和它的内部实现在其生命周期中发生了相当大的变化，但我觉得最初的目标已经实现了。&lt;/p&gt;
+&lt;p&gt;ProseMirror 是一个 Web UI 库，尽管它所解决的一些挑战是针对 Web 平台的优势和（特别是）弱点的，但不要把它看成是另一个 TinyMCE 的替代品。相反，它是一种更通用的富文本编辑方式，而恰好是在浏览器上用 JavaScript 实现的（意即你可以根据该库的逻辑翻译成其他语言版本的富文本编辑器，如 OC 版本等—译者注）。&lt;/p&gt;
+&lt;h2 id=&#34;基于-Scheme-约束的编辑&#34;&gt;基于 Scheme 约束的编辑&lt;/h2&gt;
+&lt;p&gt;ProseMirror 中最重要的是，其与实际的文档内容无关，这使得在这个库的基础上建立应用程序成为可能，而在过去，这需要一个完全自定义的编辑器实现。&lt;/p&gt;
+&lt;p&gt;我所说的与文档内容无关是指 ProseMirror 的 &lt;a href=&#34;https://prosemirror.xheldon.com/docs/guide/#schema&#34;&gt;Scheme 约束&lt;/a&gt;功能。核心编辑器对文档的具体内容不做任何要求，而是看一段可配置的数据（scheme）来确定允许什么样的内容以及它组成什么样的结构。ProseMirror 将&lt;a href=&#34;https://prosemirror.xheldon.com/examples/schema/&#34;&gt;精确地&lt;/a&gt;与您所需要的&lt;a href=&#34;https://prosemirror.xheldon.com/examples/dino/&#34;&gt;自定义&lt;/a&gt;语义文档格式一起工作，同时仍然给您提供用户习惯的所见即所得的编辑风格。&lt;/p&gt;
+&lt;p&gt;例如，一个科学写作应用可以使用一个包括章节、脚注和参考文献的 scheme—两个这样的应用，&lt;a href=&#34;https://sciflow.net/en/home&#34;&gt;SciFlow&lt;/a&gt; 和 &lt;a href=&#34;https://www.fiduswriter.org/&#34;&gt;Fidus Writer&lt;/a&gt; 已经建立在 ProseMirror 之上。或者一个新闻机构可以建立一个反映其内容模型的 scheme，为记者提供一个可以写作的编辑器。例如，&lt;a href=&#34;https://www.nytimes.com/&#34;&gt;《纽约时报》&lt;/a&gt;正在其 CMS 中使用 ProseMirror。或者，如果你的公司有一些不同的内容模型的编辑器，使用 ProseMirror 与不同的 scheme 可以使你的编辑器代码更容易统一。&lt;a href=&#34;https://www.atlassian.com/&#34;&gt;Atlassian&lt;/a&gt; 正在他们的产品中推广 ProseMirror，从 wiki 到 bug 追踪器到源码托管。&lt;/p&gt;
+&lt;h2 id=&#34;协作&#34;&gt;协作&lt;/h2&gt;
+&lt;p&gt;对[协作编辑](/tech/Collaborative-Editing-in-ProseMirror.html)的支持从一开始就是 ProseMirror 的一个重点。该系统的几个方面，如文档更新的表现方式，或撤销历史模块的工作方式，都受到了协作编辑需求的强烈影响。我已经确信，这不是一个你可以在现有编辑器上扩展出来的功能。&lt;/p&gt;
+&lt;p&gt;幸运的是，这些限制并没有把设计逼到一个不舒服的角落，而是帮助推动它向一个普遍有益的方向发展。其他几个棘手的功能，如变化跟踪和回滚过去的变化的能力，都是由于协作编辑相关的&lt;a href=&#34;https://prosemirror.xheldon.com/docs/guide/#transform.steps&#34;&gt;设计决定&lt;/a&gt;而得以实现的。&lt;/p&gt;
+&lt;h2 id=&#34;事务性的状态更新&#34;&gt;事务性的状态更新&lt;/h2&gt;
+&lt;p&gt;试图将协作编辑的要求与一个功能性的&lt;a href=&#34;http://redux.js.org/docs/basics/DataFlow.html&#34;&gt;单向数据流&lt;/a&gt;架构结合起来，导致了我们的设计，其中编辑器，而不是单方面更新其状态，而是发出事务。一个事务可以用来计算一个新的状态，用它来更新编辑器。&lt;/p&gt;
+&lt;p&gt;这使得如果你想的话，几乎可以在你的应用程序的数据流循环中无缝集成编辑器。此外，将更新作为第一类值使得保持外部状态与编辑器同步变得更加容易，这使得新的、强大的扩展类型成为可能。&lt;/p&gt;
+&lt;h2 id=&#34;总结&#34;&gt;总结&lt;/h2&gt;
+&lt;p&gt;经过多年的疯狂实验和不断变化，从 1.0 版本开始，我们的目标是稳定。核心模块将尽可能长时间地停留在 1.x 上，这意味着新版本不需要你改变你的代码。有一个 &lt;a href=&#34;https://github.com/prosemirror/rfcs/&#34;&gt;RFC 进度&lt;/a&gt;，我们会用它来获取社区对新功能的反馈。&lt;/p&gt;
+&lt;p&gt;如果你正在寻找一个简单的插件式富文本编辑器组件，ProseMirror 可能不是你需要的东西。(我们确实希望这样的组件能够用 ProseMirror 构建)。这个库是为要求高的、高度集成的用例而优化的，以简单为代价。但是，如果你的应用程序正在挑战所见即所得编辑器的极限，那么可以考虑&lt;a href=&#34;https://prosemirror.xheldon.com&#34;&gt;使用一下&lt;/a&gt;。&lt;/p&gt;
+</description>
+            <pubDate>Fri, 12 Nov 2021 12:10:23 +0800</pubDate>
+            <link>http://www.xheldon.com/tech/ProseMirror-1.0-release.html</link>
+            <guid isPermaLink="true">http://www.xheldon.com/tech/ProseMirror-1.0-release.html</guid>
+            
+                <category>技术</category>
+            
+                <category>翻译</category>
+            
+                <category>ProseMirror</category>
+            
+            
+                <category>tech</category>
+            
+        </item>
+        
+        <item>
+            <title>本文通过 Craft Extension 发送</title>
+            <description>&lt;blockquote&gt;
+&lt;p&gt;本文所述的一些流程方案已经废弃，新的流程逻辑在这里：&lt;a href=&#34;https://www.xheldon.com/tech/my-blog-ci-in-2022.html&#34;&gt;https://www.xheldon.com/tech/my-blog-ci-in-2022.html&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;花了两天时间，简单搞定了在 Craft 写内容，然后通过自己写的插件将内容同步到 Github 仓库，然后 Github 仓库自动 build 出 Github Pages 的过程。&lt;/p&gt;
+&lt;p&gt;仓库地址： &lt;a href=&#34;https://github.com/craft-extension/craft-github-extension&#34;&gt;https://github.com/craft-extension/craft-github-extension&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;博客更新流程变化&#34;&gt;博客更新流程变化&lt;/h2&gt;
+&lt;h3 id=&#34;之前的流程&#34;&gt;之前的流程&lt;/h3&gt;
+&lt;p&gt;VSCode 写完 → 提交到 x_blog_src 仓库 → 触发 Gihutb Action → build 后提交到 x_blog 仓库 → 成功&lt;/p&gt;
+&lt;p&gt;但是这个过程会有一些痛点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;你可能不会一口气写完一篇文章，而是断断续续的写，但是你在公司电脑写了点后，需要先提交到 Github，然后再在家里的电脑接着写，这样的话一提交就会触发 Github Action。我的解决方案是，通过提交的 commit message 信息来判断，如果带有特定前缀的则 build，如果不带则忽略该次提交，但是总归是不太优雅。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;还有一种方案是先在 _draft 目录写，可以随便提交，写完后将文章挪到 _post 下即可，但是，就像刚才说的，依然不优雅。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;还有一种方式是，Jekyll 的 config 设置不显示未来的文章，也即，你可以在未完成文章的时候，在 meta 中写一个 2099 这种的日期，然后随便提交，Jekyll 不会 build 未来日期的文章，但是依然会触发 Github Action，然后更新文件，依然不优雅。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;有些时候，我贪图 Craft 的美色（颜值好看）和活好（随时随地编辑和多端同步），因此会现在 Craft 中写文章，然后写完后导出成 Markdown，然后手动将图片上传到图片仓库 x_blog-static，然后修改 Markdown 的图片引用链接，然后再将 Markdown 提交到 Github 仓库，过程非常长。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;现在的流程&#34;&gt;现在的流程&lt;/h3&gt;
+&lt;p&gt;Craft 写完 → 提交到 x_blog_src 仓库→ 触发 Gihutb Action → build 后提交到 x_blog 仓库 → 成功&lt;/p&gt;
+&lt;p&gt;与之前的不同就是，从一开始在 VSCode 写，换成了直接在 Craft 中写，就如之前的方案第四点一样，既享用了 Craft 的美色，但是又少了期间同步到 Github 的麻烦事。除了图片（下面有专门说图片的事情）外，单独同步文档是非常完美的方案。因此我以后可能会比较频繁的更新博客了（之前写的慢有很大一部分原因就是，过程太复杂了），能将注意力更多的放到内容上，棒！&lt;/p&gt;
+&lt;h2 id=&#34;说明&#34;&gt;说明&lt;/h2&gt;
+&lt;p&gt;使用上有以下设定：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;本插件目前仅供个人使用，因此有些配置是个性化写死的，比如只支持将文件往 &lt;code&gt;_posts&lt;/code&gt; 目录下传，如果用户比较多的话，会考虑花更多时间做的更通用写，目前只有自己用，就不那么讲究了。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;需要 &lt;a href=&#34;https://github.com/settings/tokens/new&#34;&gt;Github Personal Token&lt;/a&gt;，来通过 Github 的 Rest API 将 Markdown 内容同步到 指定的 Github 仓库。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Github API 在将内容发送到仓库的时候，会对比源仓库和现有仓库的内容 sha 值，如果完全相同，则被更新的文件不会显示 commit 信息，而查看 commit 信息的时候，显示的是 0 files changes。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;文章第一个 block 一定是一个两列的 table 来作为 Jekyll 的 meta 信息，目前 meta 信息是除了 path 之外的全部内容。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;文章 title 即为博客文章 title，不用写在  meta 中。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;截止 2021 年 12 月 9 日，实测使用 Craft 提供的 API &lt;code&gt;craftBlockToMarkdown&lt;/code&gt; 输出的 Markdown ，未能输出文档里面的 Blockquote 样式（Craft Block 中叫 Decoration 中的 Focus ，&lt;a href=&#34;https://forum.developer.craft.do/t/wrong-render-of-markdown-with-decoration-focus-and-image-question/235/6&#34;&gt;官方称是 bug&lt;/a&gt;，会在随后的版本修复。如果想生成自定义的 Markdown 需要自己遍历 Block），其他未做测试。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;目前插件中的配置项不那么人性化，等后续优化。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Craft 中的 Markdown 排版是比较好看的，比如你可以在 list 下面嵌入一个 paragraph 或者 image，以保证与 list 的内容对其，但是普通 Markdown 不支持这么做，因此排版上，输出的样式会比较难看。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;meta 如果含有多行信息，如 tags 这种的，则可以用 &lt;code&gt;-:&lt;/code&gt; 分割，如 &lt;code&gt;-:测试-:服务器&lt;/code&gt; 。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Craft 的 Markdown 的 API 建议使用 &lt;code&gt;common&lt;/code&gt; 格式（默认，目前本插件不可配置），如果使用 &lt;code&gt;bear&lt;/code&gt; 格式，则其内的图片前面不会有 &lt;code&gt;!&lt;/code&gt; 导致 Github 将其识别成链接，而不是图片。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;有些 Craft 的功能如「深度 Markdown 链接」，并不是标准 Markdown 的语法，因此我这里没有测试支不支持。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;官方说明是，storageApi 在 Web 端是不加密的，存储的时候要提醒用户注意，见 &lt;a href=&#34;https://documentation.developer.craft.do/extensions/craft-api/storageapi&#34;&gt;这里&lt;/a&gt;。Mac 则无此问题。&lt;s&gt;分析发现 Web 中的 storageApi 存在了 SessionStorage 中&lt;/s&gt;，后来再看，改成位于 IndexedDB 中了（毕竟是开发者预览版，改的真快…），一个叫 &lt;code&gt;plugindata-storage&lt;/code&gt; 的 DB 中。而 Mac 端，因为我切换了用户工作空间，Storage 也没了，&lt;a href=&#34;https://forum.developer.craft.do/t/wrong-render-of-markdown-with-decoration-focus-and-image-question/235&#34;&gt;反馈了下&lt;/a&gt;，官方目前还未回复 :-(。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Mac 的 storageApi 存在竞态问题，因此如果你一开始刚加载的时候就使用 storageApi 读取数据的话，是读取不上的，因此我在插件中处理的逻辑是，如果是 Mac 则延迟 3s 初始化插件内容，Web 则无此限制。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;更多配置支持中…&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;关于图片的问题&#34;&gt;关于图片的问题&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;无论是 Web 还是端，上传到 Craft 的图片，在 Web 端显示的时候，检查元素查看，一定是 &lt;code&gt;.jpg&lt;/code&gt; 格式的，但是使用 Craft 的 Markdown API 生成后，&lt;s&gt;变成了 &lt;s&gt;&lt;s&gt;&lt;code&gt;.png&lt;/code&gt;&lt;/s&gt;&lt;/s&gt; 格式的&lt;/s&gt;，此处有误解，图片的后缀名还是跟上传时候的格式有关系，Craft 不会给你转换格式。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;虽然文档中检查元素时显示的图片地址域名是 &lt;code&gt;res.craft.do&lt;/code&gt; 且在 Github 仓库中查看源文件时，显示的也是这个地址，但是，在 Github 中预览图片，也即直接点击仓库 md 文件打开的时候，却是 &lt;code&gt;https://camo.githubusercontent.com &lt;/code&gt;  这个地址，本来还以为 Github 会好心的把你的 md 图片转存到它的服务器上，其实只是 Github 为了安全起见，在渲染第三方图片的时候，给你临时转存了一下而已。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果不依赖服务端，你在 Craft 中上传的图片，在通过 Craft API 获取的时候，是无法通过前端的 &lt;code&gt;fetch&lt;/code&gt; 等方法获取的，会提示你 CORS 错误，因此你如果想在文章上传到 Github 的时候，将文章里面的图片摘出来上传到自己的图床/COS/Github 仓库，纯前端是做不到的，你需要使用服务端拉取该图片后转存。 同时，Craft  imageBlock 图片地址位于 AWS 的 S3，国内服务器如腾讯云拉取可能会超时或者比较慢，但是国外的服务器往国内推的时候好像速度还 OK，所以建议使用 AWS 的服务转存图片（更新：目前我用了 Vercel，具体看 &lt;a href=&#34;https://www.xheldon.com/tech/my-blog-ci-in-2022.html&#34;&gt;这篇文章&lt;/a&gt;）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;此处放一个图片，测试下速度：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/5e3fe16f-07e2-4cbd-ace8-ad4d882ac82d/F2F19143-AA3B-4849-9979-31FB8DC06FF0_2/3.jpeg.jpeg&#34; alt=&#34;Image&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;更多&#34;&gt;更多&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;计划写一个模板的插件，地址在：&lt;a href=&#34;https://github.com/craft-extension/craft-template-extension&#34;&gt;https://github.com/craft-extension/craft-template-extension&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;所有插件均基于这个工具开发：&lt;a href=&#34;https://github.com/craft-extension/craft-dev-toolkit&#34;&gt;https://github.com/craft-extension/craft-dev-toolkit&lt;/a&gt; 在官方示例的基础上增加了一些配置如 UI 使用 antd 等，后续如果有用户我会考虑增加更多配置，如支持脚手架生成插件开发环境等。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;更多插件敬请期待…&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;2022-01-24-更新&#34;&gt;2022.01.24 更新&lt;/h2&gt;
+&lt;p&gt;关于图片的问题，有个想法是不将图片在 Github 备份了（毕竟在 Craft 中的图片就相当于备份了），直接传到腾讯云 COS。但是，因为腾讯云 COS 需要发送请求，而其使用的请求方法是 request 库，且对其做了一层封装，以添加相应的签名等信息。查看了下 COS 的源码，发现其可以对请求工具进行配置，于是我目前有两种途径实现目的：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;重写 COS 用到的 request 库的方法。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;重写 COS 中的请求代码。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;自己按照文档中告诉的示例，构造签名以进行请求。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;显而易见，最终使用了第三种办法，因为简单。&lt;/p&gt;
+&lt;h2 id=&#34;2022-02-28-更新&#34;&gt;2022.02.28 更新&lt;/h2&gt;
+&lt;p&gt;01.24 的方案废弃，成本太高。最终方案是不将图片传到 Github 了，直接通过 Vercel 的服务转存在腾讯云，至此解决了图片的问题，可以愉快的使用 Craft 写文章了。&lt;/p&gt;
+</description>
+            <pubDate>Thu, 09 Dec 2021 00:28:30 +0800</pubDate>
+            <link>http://www.xheldon.com/tech/use-craft-extension-to-write-blog.html</link>
+            <guid isPermaLink="true">http://www.xheldon.com/tech/use-craft-extension-to-write-blog.html</guid>
+            
+                <category>集成</category>
+            
+                <category>插件</category>
+            
+                <category>Craft</category>
+            
+            
+                <category>tech</category>
+            
+        </item>
+        
+        <item>
+            <title>使用 Sharp 转换 HEIC/HEIF 图片遇到的问题</title>
+            <description>&lt;p&gt;苹果相机在 iOS 11 之后，将相机默认的格式设置为了 HEIC，据说可以在不缩减照片质量的前提下，大幅缩减照片体积，你可以在 &lt;code&gt;设置-相机-格式&lt;/code&gt;  来查看，「高效」表示的就是 HEIC 格式，「兼容性最佳」表示的是原始的 JEPG 格式。关于 HEIC 格式更多介绍可以看 &lt;a href=&#34;https://www.adobe.com/hk_zh/creativecloud/file-types/image/raster/heic-file.html&#34;&gt;这里&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;由此带来的问题是，目前所有的 Web 浏览器都不支持显示 HEIC 格式的图片，因此如何转换该格式的图片就成为了一个问题。&lt;/p&gt;
+&lt;p&gt;我经常将苹果相册中的图片直接从相册中拖拽或复制粘贴到 Craft 中，因此如果直接将该格式的图片上传到个人博客的话，是无法显示出来的，因此必须转换成通用格式如 PNG 或者 JPEG，这里我选择使用 Sharp 库进行转换，将其转换成了 Webp（因为 HEIC 转 PNG 太大了）。&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#39;link-bookmark&#39; href=&#39;https://github.com/lovell/sharp&#39; target=&#39;_blank&#39;&gt;&lt;span data-bookmark-img=&#39;https://repository-images.githubusercontent.com/12226786/cf816100-9a08-11ea-8fc1-7af9d4bcbf9e&#39; data-bookmark-title=&#39;G&#39;&gt;&lt;img src=&#39;https://repository-images.githubusercontent.com/12226786/cf816100-9a08-11ea-8fc1-7af9d4bcbf9e&#39;/&gt;&lt;/span&gt;&lt;span&gt;&lt;span&gt; GitHub - lovell/sharp: High performance Node.js image processing, the fastest module to resize JPEG, PNG, WebP, AVIF and TIFF images. Uses the libvips library.&lt;/span&gt;&lt;span&gt; High performance Node.js image processing, the fastest module to resize JPEG, PNG, WebP, AVIF and TIFF images. Uses the libvips library. - GitHub - lovell/sharp: High performance Node.js image proc...&lt;/span&gt;&lt;span&gt; https://github.com/lovell/sharp&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;如果仅仅转换普通的格式如 JPEG 到 PNG，那么是没有什么问题的，但是如果是转换 HEIC 到其他格式，那麻烦就来了，因为这个过程 Sharp 依赖一个平台原生的工具库，叫 &lt;code&gt;libvips&lt;/code&gt; ：&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#39;link-bookmark&#39; href=&#39;https://github.com/libvips/libvips&#39; target=&#39;_blank&#39;&gt;&lt;span data-bookmark-img=&#39;https://opengraph.githubassets.com/5394d24c340a30dc1be077d37b0ca91234b63a95da32e047fb04ad05dd2ae075/libvips/libvips&#39; data-bookmark-title=&#39;G&#39;&gt;&lt;img src=&#39;https://opengraph.githubassets.com/5394d24c340a30dc1be077d37b0ca91234b63a95da32e047fb04ad05dd2ae075/libvips/libvips&#39;/&gt;&lt;/span&gt;&lt;span&gt;&lt;span&gt; GitHub - libvips/libvips: A fast image processing library with low memory needs.&lt;/span&gt;&lt;span&gt; A fast image processing library with low memory needs. - GitHub - libvips/libvips: A fast image processing library with low memory needs.&lt;/span&gt;&lt;span&gt; https://github.com/libvips/libvips&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;来处理 HEIC 格式的文件，因此如果你本地没有全局安装这个工具，那么处理 HEIC 格式的图片的时候就会遇到下面的错误：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;(node:11469) UnhandledPromiseRejectionWarning: Error: &lt;span class=&#34;built_in&#34;&gt;source&lt;/span&gt;: bad seek to 807962&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;heif: Unsupported feature: Unsupported codec (4.3000)&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;(Use `node --trace-warnings ...` to show &lt;span class=&#34;built_in&#34;&gt;where&lt;/span&gt; the warning was created)&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;(node:11469) UnhandledPromiseRejectionWarning: Unhandled promise rejection. This error originated either by throwing inside of an async &lt;span class=&#34;keyword&#34;&gt;function&lt;/span&gt; without a catch block, or by rejecting a promise &lt;span class=&#34;built_in&#34;&gt;which&lt;/span&gt; was not handled with .catch(). To terminate the node process on unhandled promise rejection, use the CLI flag `--unhandled-rejections=strict` (see https://nodejs.org/api/cli.html&lt;span class=&#34;comment&#34;&gt;#cli_unhandled_rejections_mode). (rejection id: 1)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;说是无法处理 HEIC 格式的文件。&lt;/p&gt;
+&lt;p&gt;遇到问题第一时间当然是去官方仓库的 issue 查找相关解决办法，果然有人遇到类似的问题：&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#39;link-bookmark&#39; href=&#39;https://github.com/lovell/sharp/issues/2924&#39; target=&#39;_blank&#39;&gt;&lt;span data-bookmark-img=&#39;https://opengraph.githubassets.com/022362ae50e0768004484655f96c2c5963ddea524e5b6031321cd081658b204a/lovell/sharp/issues/2924&#39; data-bookmark-title=&#39;H&#39;&gt;&lt;img src=&#39;https://opengraph.githubassets.com/022362ae50e0768004484655f96c2c5963ddea524e5b6031321cd081658b204a/lovell/sharp/issues/2924&#39;/&gt;&lt;/span&gt;&lt;span&gt;&lt;span&gt; heif: unsupported feature · Issue #2924 · lovell/sharp&lt;/span&gt;&lt;span&gt; Are you using the latest version? Is the version currently in use as reported by npm ls sharp the same as the latest version as reported by npm view sharp dist-tags.latest? 2.9.1 What are the steps...&lt;/span&gt;&lt;span&gt; https://github.com/lovell/sharp/issues/2924&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;于是按照他的说法，我使用 &lt;code&gt;homebrew&lt;/code&gt; 安装了 &lt;code&gt;libvips&lt;/code&gt; :&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#39;link-bookmark&#39; href=&#39;https://www.libvips.org/install.html&#39; target=&#39;_blank&#39;&gt;&lt;span data-bookmark-img=&#39;https://www.libvips.org/install.html/favicon.ico&#39; data-bookmark-title=&#39;L&#39;&gt;&lt;img src=&#39;https://www.libvips.org/install.html/favicon.ico&#39;/&gt;&lt;/span&gt;&lt;span&gt;&lt;span&gt; libvips&lt;/span&gt;&lt;span&gt; &#34;A fast image processing library with low memory needs.&#34;&lt;/span&gt;&lt;span&gt; https://www.libvips.org/install.html&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这个过程需要挺久，会一直有 log 出现，耐心等待完成无报错即可。&lt;/p&gt;
+&lt;p&gt;然后满怀信心的再次安装 Sharp &lt;code&gt;npm install sharp&lt;/code&gt; 期待能看到这条信息：&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;sharp: Detected globally-installed libvips v8.13.3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;出现这条信息表明 Sharp 的安装脚本检测到本地安装了 libvips，但是当我再次安装 Sharp 的时候，它依然用的是已经下好的缓存:&lt;/p&gt;
+&lt;figure class=&#34;highlight bash&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&amp;gt; sharp@0.31.3 install /Users/x/Code/test2/node_modules/sharp&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;gt; (node install/libvips &amp;amp;&amp;amp; node install/dll-copy &amp;amp;&amp;amp; prebuild-install) || (node install/can-compile &amp;amp;&amp;amp; node-gyp rebuild &amp;amp;&amp;amp; node install/dll-copy)&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;sharp: Using cached /Users/x/.npm/_libvips/libvips-8.13.3-darwin-x64.tar.br&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;sharp: Integrity check passed &lt;span class=&#34;keyword&#34;&gt;for&lt;/span&gt; darwin-x64&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;npm notice created a lockfile as package-lock.json. You should commit this file.&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;npm WARN test2@1.0.0 No description&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;npm WARN test2@1.0.0 No repository field.&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;added 45 packages from 206 contributors and audited 45 packages &lt;span class=&#34;keyword&#34;&gt;in&lt;/span&gt; 4.5s&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10 packages are looking &lt;span class=&#34;keyword&#34;&gt;for&lt;/span&gt; funding&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  run `npm fund` &lt;span class=&#34;keyword&#34;&gt;for&lt;/span&gt; details&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;found 0 vulnerabilities&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;于是我删除了上面 log 中缓存的文件 &lt;code&gt;rm -rf /Users/x/.npm/_libvips/&lt;/code&gt; 目录，然后再次执行，依然 无法使用系统版本的 libvips：&lt;/p&gt;
+&lt;figure class=&#34;highlight shell&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;meta prompt_&#34;&gt;&amp;gt; &lt;/span&gt;&lt;span class=&#34;language-bash&#34;&gt;sharp@0.31.3 install /Users/x/Code/test2/node_modules/sharp&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;meta prompt_&#34;&gt;&amp;gt; &lt;/span&gt;&lt;span class=&#34;language-bash&#34;&gt;(node install/libvips &amp;amp;&amp;amp; node install/dll-copy &amp;amp;&amp;amp; prebuild-install) || (node install/can-compile &amp;amp;&amp;amp; node-gyp rebuild &amp;amp;&amp;amp; node install/dll-copy)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;sharp: Downloading https://github.com/lovell/sharp-libvips/releases/download/v8.13.3/libvips-8.13.3-darwin-x64.tar.br&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;sharp: Integrity check passed for darwin-x64&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;npm notice created a lockfile as package-lock.json. You should commit this file.&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;npm WARN test2@1.0.0 No description&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;npm WARN test2@1.0.0 No repository field.&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;added 45 packages from 206 contributors and audited 45 packages in 10.727s&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10 packages are looking for funding&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  run `npm fund` for details&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;found 0 vulnerabilities&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;于是我决定 debug 这个包。&lt;/p&gt;
+&lt;p&gt;首先从 log 开始，随便找一个看上去像是版本判断的 log，如 &lt;code&gt;Using cached&lt;/code&gt; 作为关键字，在 &lt;code&gt;node_modules/sharp&lt;/code&gt; 包中搜索相关关键字，在 &lt;code&gt;sharp/install/libvips.js&lt;/code&gt; 中发现如下代码：&lt;/p&gt;
+&lt;figure class=&#34;highlight javascript&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;libvips.&lt;span class=&#34;title function_&#34;&gt;log&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;`Using cached &lt;span class=&#34;subst&#34;&gt;$&amp;#123;tarPathCache&amp;#125;&lt;/span&gt;`&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;于是继续寻找，发现这个函数顶上有一个决定是使用系统内置的 libvips 还是它自己编译的不支持 HEIC 格式的二进制包的逻辑：&lt;/p&gt;
+&lt;figure class=&#34;highlight javascript&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;const&lt;/span&gt; useGlobalLibvips = libvips.&lt;span class=&#34;title function_&#34;&gt;useGlobalLibvips&lt;/span&gt;();&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;基本就是这里了，debug 了这个函数，发现在判断 &lt;code&gt;isRosetta&lt;/code&gt; 的时候，返回了 true。发现如果是返回 false，就会使用系统内置的 libvips，否则就使用它自己编译的 libvips：&lt;/p&gt;
+&lt;p caption=&#39;Image&#39;&gt;&lt;img src=&#39;https://static.xheldon.cn/img/in-post/2023/problem-use-sharp/ACF229E4-D77E-46AD-B1D2-98A4AA970669_2.webp&#39; alt=&#39;Image&#39; title=&#39;Image&#39;&gt;&lt;/p&gt;
+&lt;p&gt;这里出现了一个奇怪的情况是，在 debug 的时候，process.arch 输出的是 &lt;code&gt;x64&lt;/code&gt; ，且 log 这个代码输出的是 &lt;code&gt;sysctl.proc_translated: 1&lt;/code&gt; ：&lt;/p&gt;
+&lt;p caption=&#39;Image&#39;&gt;&lt;img src=&#39;https://static.xheldon.cn/img/in-post/2023/problem-use-sharp/A0492569-B12D-45B5-B05B-40B5DB1B7459_2.webp&#39; alt=&#39;Image&#39; title=&#39;Image&#39;&gt;&lt;/p&gt;
+&lt;p&gt;但是直接在控制台执行该代码，输出的是 &lt;code&gt;sysctl.proc_translated: 0&lt;/code&gt; ：&lt;/p&gt;
+&lt;p caption=&#39;Image&#39;&gt;&lt;img src=&#39;https://static.xheldon.cn/img/in-post/2023/problem-use-sharp/4616C1B5-102F-4A3C-AF71-CC0BA49530AB_2.webp&#39; alt=&#39;Image&#39; title=&#39;Image&#39;&gt;&lt;/p&gt;
+&lt;p&gt;这里我就得出结论，肯定是 node 的版本问题导致了它使用了自己编译的 libvips。于是我使用 nvm，将默认 node 版本切换到 arm64 版本后，再次执行 &lt;code&gt;npm i sharp&lt;/code&gt; ，问题解决。&lt;/p&gt;
+&lt;p&gt;下面是这个过程可能用到的代码：&lt;/p&gt;
+&lt;figure class=&#34;highlight javascript&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;// 列出 nvm 版本&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;nvm list&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;// 输出当前电脑的架构&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;arch &lt;span class=&#34;comment&#34;&gt;// 如果输出的是 arm64 表示就是 M1 芯片&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;// 使用最新的稳定版&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;nvm install stable &lt;span class=&#34;comment&#34;&gt;// 我的机器给我安装了 19.3.0 的 arm64 版本的 node&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;// 将该 node 作为默认&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;nvm alias &lt;span class=&#34;keyword&#34;&gt;default&lt;/span&gt; v19&lt;span class=&#34;number&#34;&gt;.3&lt;/span&gt;&lt;span class=&#34;number&#34;&gt;.0&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;// 在当前终端使用 19.3.0 版本的 node&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;nvm use &lt;span class=&#34;number&#34;&gt;19.3&lt;/span&gt;&lt;span class=&#34;number&#34;&gt;.0&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;随后给作者提了个 PR，来修改 isRosetta 的逻辑：&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#39;link-bookmark&#39; href=&#39;https://github.com/lovell/sharp/pull/3514&#39; target=&#39;_blank&#39;&gt;&lt;span data-bookmark-img=&#39;https://opengraph.githubassets.com/d8057fae9db42e14f5f79afe6224e9e4c3db958ec1bcda4b0e60a839094daa74/lovell/sharp/pull/3514&#39; data-bookmark-title=&#39;G&#39;&gt;&lt;img src=&#39;https://opengraph.githubassets.com/d8057fae9db42e14f5f79afe6224e9e4c3db958ec1bcda4b0e60a839094daa74/lovell/sharp/pull/3514&#39;/&gt;&lt;/span&gt;&lt;span&gt;&lt;span&gt; Get real architecture of M1 Mac regardless of Rosetta by Xheldon · Pull Request #3514 · lovell/sharp&lt;/span&gt;&lt;span&gt; Get real architecture of M1 Mac regardless of Rosetta or node version, see #3239&lt;/span&gt;&lt;span&gt; https://github.com/lovell/sharp/pull/3514&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;但是作者解释说这个函数这么做是有原因的，因此我建议他在安装 Sharp 的时候提醒用户并未使用全局安装的 libvips 包的原因，最终作者采纳并接受了我的意见：&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#39;link-bookmark&#39; href=&#39;https://github.com/lovell/sharp/commit/5be36c2deb735577fc76fa52242836d40df276bd&#39; target=&#39;_blank&#39;&gt;&lt;span data-bookmark-img=&#39;https://opengraph.githubassets.com/5e0efe7cbe5118b1d549459eefc68e1e3f6cac81430e4702e87cd1f5bb28616c/lovell/sharp/commit/5be36c2deb735577fc76fa52242836d40df276bd&#39; data-bookmark-title=&#39;I&#39;&gt;&lt;img src=&#39;https://opengraph.githubassets.com/5e0efe7cbe5118b1d549459eefc68e1e3f6cac81430e4702e87cd1f5bb28616c/lovell/sharp/commit/5be36c2deb735577fc76fa52242836d40df276bd&#39;/&gt;&lt;/span&gt;&lt;span&gt;&lt;span&gt; Install: log Rosetta detection, improve related docs · lovell/sharp@5be36c2&lt;/span&gt;&lt;span&gt; &#34;High performance Node.js image processing, the fastest module to resize JPEG, PNG, WebP, AVIF and TIFF images. Uses the libvips library. - Install: log Rosetta detection, improve related docs · lovell/sharp@5be36c2&#34;&lt;/span&gt;&lt;span&gt; https://github.com/lovell/sharp/commit/5be36c2deb735577fc76fa52242836d40df276bd&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+</description>
+            <pubDate>Thu, 05 Jan 2023 12:06:50 +0800</pubDate>
+            <link>http://www.xheldon.com/tech/problem-use-sharp.html</link>
+            <guid isPermaLink="true">http://www.xheldon.com/tech/problem-use-sharp.html</guid>
+            
+                <category>技术</category>
+            
+                <category>格式</category>
+            
+                <category>转换</category>
+            
+                <category>压缩</category>
+            
+                <category>开源</category>
+            
+            
+                <category>tech</category>
+            
+        </item>
+        
+        <item>
+            <title>【视频】使用 Notion Flow 简化你的博客发布流程</title>
+            <description>&lt;p&gt;本文分享使用 Notion Flow 来简化你的博客发布流程的视频，具体官网见:&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#39;link-bookmark&#39; href=&#39;https://notion-flow.xheldon.com&#39; target=&#39;_blank&#39;&gt;&lt;span data-bookmark-img=&#39;https://www.notion.so/image/https%3A%2F%2Fnotion-flow.xheldon.com%2Fimg%2Findex.png?table=block&amp;id=ce39a8c5-ade9-4a4e-bd58-6433c00fd360&amp;spaceId=1e3e7c05-fc11-4038-9f76-92db32b98824&amp;width=500&amp;userId=0bfcee52-05b1-4d38-bf9a-26223d36426c&amp;cache=v2&#39; data-bookmark-title=&#39;N&#39;&gt;&lt;img src=&#39;https://www.notion.so/image/https%3A%2F%2Fnotion-flow.xheldon.com%2Fimg%2Findex.png?table=block&amp;id=ce39a8c5-ade9-4a4e-bd58-6433c00fd360&amp;spaceId=1e3e7c05-fc11-4038-9f76-92db32b98824&amp;width=500&amp;userId=0bfcee52-05b1-4d38-bf9a-26223d36426c&amp;cache=v2&#39;/&gt;&lt;/span&gt;&lt;span&gt;&lt;span&gt; Notion Flow | Notion Flow&lt;/span&gt;&lt;span&gt; Send your Notion content to github with Markdown&lt;/span&gt;&lt;span&gt; https://notion-flow.xheldon.com&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Youtube：&lt;/p&gt;
+&lt;p class=&#39;embed-responsive embed-responsive-16by9&#39;&gt;&lt;iframe src=&#39;https://www.youtube.com/embed/aPitTcsruhM?rel=0&#39; title=&#39;YouTube video player&#39; frameborder=&#39;0&#39; allow=&#39;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#39; allowfullscreen&gt;&lt;/iframe&gt;&lt;/p&gt;
+&lt;p&gt;Bilibili：&lt;/p&gt;
+&lt;p class=&#39;embed-responsive embed-responsive-16by9&#39; style=&#39;border-bottom: 1px solid #ddd;&#39;&gt;&lt;iframe src=&#39;//player.bilibili.com/player.html?bvid=BV1Ar421h7tM&amp;high_quality=1&amp;as_wide=1&#39; scrolling=&#39;no&#39; border=&#39;0&#39; frameborder=&#39;no&#39; framespacing=&#39;0&#39; allowfullscreen&gt;&lt;/iframe&gt;&lt;/p&gt;
+</description>
+            <pubDate>Thu, 21 Mar 2024 08:00:00 +0800</pubDate>
+            <link>http://www.xheldon.com/tech/use-notion-flow.html</link>
+            <guid isPermaLink="true">http://www.xheldon.com/tech/use-notion-flow.html</guid>
+            
+                <category>技术</category>
+            
+                <category>折腾</category>
+            
+                <category>教程</category>
+            
+                <category>工作流</category>
+            
+                <category>插件</category>
+            
+                <category>视频</category>
+            
+                <category>Notion</category>
+            
+            
+                <category>tech</category>
+            
+        </item>
+        
+        <item>
+            <title>如何使用 Notion Flow 模块转换</title>
+            <description>&lt;p&gt;一周前，我构建了 Notion Flow 浏览器扩展：&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#39;link-bookmark&#39; href=&#39;https://twitter.com/_Xheldon/status/1770466495560294583&#39; target=&#39;_blank&#39;&gt;&lt;span data-bookmark-img=&#39;&#39; data-bookmark-title=&#39;X&#39;&gt;&lt;img src=&#39;&#39;/&gt;&lt;/span&gt;&lt;span&gt;&lt;span&gt; Xheldon on Twitter / X&lt;/span&gt;&lt;span&gt; Notion Flow 浏览器插件终于发布了，配置和介绍见视频：https://t.co/pw4yYwnt8h官网见：https://t.co/6326Q4gIWC插件用来将 Notion 内容以 Markdown 或者你自定义的任意格式发送到 Github，我用它来写使用了 Github Pages 的 Jekyll 博客，插件会在配置 OSS 后自动处理图片内容到 CDN，非常好用~。— Xheldon (@_Xheldon) March 20, 2024
+
+
+&lt;/span&gt;&lt;span&gt; https://twitter.com/_Xheldon/status/1770466495560294583&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;而刚刚更新的 0.4.1 版本：&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#39;link-bookmark&#39; href=&#39;https://notion-flow.xheldon.com/blog/2024/03/31/0.4.1&#39; target=&#39;_blank&#39;&gt;&lt;span data-bookmark-img=&#39;https%3A%2F%2Fnotion-flow.xheldon.com%2Fimg%2Findex.png&#39; data-bookmark-title=&#39;0&#39;&gt;&lt;img src=&#39;https%3A%2F%2Fnotion-flow.xheldon.com%2Fimg%2Findex.png&#39;/&gt;&lt;/span&gt;&lt;span&gt;&lt;span&gt; 0.4.1 | Notion Flow&lt;/span&gt;&lt;span&gt; Feature&lt;/span&gt;&lt;span&gt; https://notion-flow.xheldon.com/blog/2024/03/31/0.4.1&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;支持了兼容 AWS S3 API 的自建 OSS 服务，如 Cloudflare R2：&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#39;link-bookmark&#39; href=&#39;https://www.cloudflare.com/zh-cn/developer-platform/r2/&#39; target=&#39;_blank&#39;&gt;&lt;span data-bookmark-img=&#39;https%3A%2F%2Fcf-assets.www.cloudflare.com%2Fslt3lc6tev37%2F53qCYhQbir5WtIU0VDWESo%2F954a48bfb17f429acf469e5f14345d83%2Funnamed-3.png&#39; data-bookmark-title=&#39;C&#39;&gt;&lt;img src=&#39;https%3A%2F%2Fcf-assets.www.cloudflare.com%2Fslt3lc6tev37%2F53qCYhQbir5WtIU0VDWESo%2F954a48bfb17f429acf469e5f14345d83%2Funnamed-3.png&#39;/&gt;&lt;/span&gt;&lt;span&gt;&lt;span&gt; Cloudflare R2 | 零出口费用分布式对象存储 | Cloudflare | Cloudflare&lt;/span&gt;&lt;span&gt; Cloudflare R2 是兼容 S3、零出口费用的全球分布式对象存储。 自由移动数据，构建自己期望的多云架构。&lt;/span&gt;&lt;span&gt; https://www.cloudflare.com/zh-cn/developer-platform/r2/&lt;/span&gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本篇文章简单介绍一下我是如何使用这个浏览器扩展用于我的 Github Jekyll 博客的。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Jekyll 静态博客是基于 Ruby 构建的，支持插件。所以我自己写了几个插件（Jekyll 博客的插件位于 &lt;code&gt;_plugins&lt;/code&gt; 目录下，写好 ruby 文件后，丢到该目录下，重启服务即可）来处理 Liquid 模板语言，而内容就是来自 Notion Flow 转换的 Notion 内容。如处理 bookmark 的插件内容如下：&lt;/p&gt;
+
+
+&lt;figure class=&#34;highlight ruby&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;57&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;module&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;Jekyll&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;keyword&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;RenderBookMarkBlock&lt;/span&gt; &amp;lt; &lt;span class=&#34;title class_ inherited__&#34;&gt;Liquid::Block&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;keyword&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;title function_&#34;&gt;initialize&lt;/span&gt;(&lt;span class=&#34;params&#34;&gt;tag_name, attr, tokens&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &lt;span class=&#34;variable language_&#34;&gt;super&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &lt;span class=&#34;comment&#34;&gt;# 普通的链接没有 yid 和 bid&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            attrs = attr.scan(&lt;span class=&#34;regexp&#34;&gt;/url\=\&amp;quot;(.*)\&amp;quot;\stitle\=\&amp;quot;(.*)\&amp;quot;\simg\=\&amp;quot;(.*)\&amp;quot;\syid\=\&amp;quot;(.*)\&amp;quot;\sbid\=\&amp;quot;(.*)\&amp;quot;/&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &lt;span class=&#34;keyword&#34;&gt;if&lt;/span&gt; !attrs.empty?&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;		            &lt;span class=&#34;comment&#34;&gt;# 外部的 video 链接，youtube、bilibili（如本文上一篇博客就是）&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;variable&#34;&gt;@url&lt;/span&gt; = attrs[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;][&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;variable&#34;&gt;@title&lt;/span&gt; = attrs[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;][&lt;span class=&#34;number&#34;&gt;1&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;variable&#34;&gt;@img&lt;/span&gt; = attrs[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;][&lt;span class=&#34;number&#34;&gt;2&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;variable&#34;&gt;@yid&lt;/span&gt; = attrs[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;][&lt;span class=&#34;number&#34;&gt;3&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;variable&#34;&gt;@bid&lt;/span&gt; = attrs[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;][&lt;span class=&#34;number&#34;&gt;4&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;variable&#34;&gt;@firstChar&lt;/span&gt; = (&lt;span class=&#34;variable&#34;&gt;@title&lt;/span&gt;)[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;].upcase&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;variable&#34;&gt;@error&lt;/span&gt; = &lt;span class=&#34;string&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &lt;span class=&#34;keyword&#34;&gt;else&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;			          &lt;span class=&#34;comment&#34;&gt;# 正常和 notion 一样的 bookmark（如本文上面三个链接就是）&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                attrs = attr.scan(&lt;span class=&#34;regexp&#34;&gt;/url\=\&amp;quot;(.*)\&amp;quot;\stitle\=\&amp;quot;(.*)\&amp;quot;\simg\=\&amp;quot;(.*)\&amp;quot;/&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;variable&#34;&gt;@url&lt;/span&gt; = attrs[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;][&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;variable&#34;&gt;@title&lt;/span&gt; = attrs[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;][&lt;span class=&#34;number&#34;&gt;1&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;variable&#34;&gt;@img&lt;/span&gt; = attrs[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;][&lt;span class=&#34;number&#34;&gt;2&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;variable&#34;&gt;@firstChar&lt;/span&gt; = (&lt;span class=&#34;variable&#34;&gt;@title&lt;/span&gt;)[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;].upcase&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;variable&#34;&gt;@error&lt;/span&gt; = &lt;span class=&#34;string&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &lt;span class=&#34;keyword&#34;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;keyword&#34;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;keyword&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;title function_&#34;&gt;render&lt;/span&gt;(&lt;span class=&#34;params&#34;&gt;context&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &lt;span class=&#34;variable&#34;&gt;@desc&lt;/span&gt; = &lt;span class=&#34;variable language_&#34;&gt;super&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &lt;span class=&#34;keyword&#34;&gt;if&lt;/span&gt; !&lt;span class=&#34;variable&#34;&gt;@yid&lt;/span&gt;.&lt;span class=&#34;literal&#34;&gt;nil&lt;/span&gt;? &amp;amp;&amp;amp; !&lt;span class=&#34;variable&#34;&gt;@yid&lt;/span&gt;.empty?&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;string&#34;&gt;&amp;quot;&amp;lt;p class=&amp;#x27;embed-responsive embed-responsive-16by9&amp;#x27;&amp;gt;&amp;lt;iframe src=&amp;#x27;https://www.youtube.com/embed/&lt;span class=&#34;subst&#34;&gt;#&amp;#123;&lt;span class=&#34;variable&#34;&gt;@yid&lt;/span&gt;&amp;#125;&lt;/span&gt;?rel=0&amp;#x27; title=&amp;#x27;YouTube video player&amp;#x27; frameborder=&amp;#x27;0&amp;#x27; allow=&amp;#x27;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&amp;#x27; allowfullscreen&amp;gt;&amp;lt;/iframe&amp;gt;&amp;lt;/p&amp;gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &lt;span class=&#34;keyword&#34;&gt;elsif&lt;/span&gt; !&lt;span class=&#34;variable&#34;&gt;@bid&lt;/span&gt;.&lt;span class=&#34;literal&#34;&gt;nil&lt;/span&gt;? &amp;amp;&amp;amp; !&lt;span class=&#34;variable&#34;&gt;@bid&lt;/span&gt;.empty?&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;string&#34;&gt;&amp;quot;&amp;lt;p class=&amp;#x27;embed-responsive embed-responsive-16by9&amp;#x27; style=&amp;#x27;border-bottom: 1px solid #ddd;&amp;#x27;&amp;gt;&amp;lt;iframe src=&amp;#x27;//player.bilibili.com/player.html?bvid=&lt;span class=&#34;subst&#34;&gt;#&amp;#123;&lt;span class=&#34;variable&#34;&gt;@bid&lt;/span&gt;&amp;#125;&lt;/span&gt;&amp;amp;high_quality=1&amp;amp;as_wide=1&amp;#x27; scrolling=&amp;#x27;no&amp;#x27; border=&amp;#x27;0&amp;#x27; frameborder=&amp;#x27;no&amp;#x27; framespacing=&amp;#x27;0&amp;#x27; allowfullscreen&amp;gt;&amp;lt;/iframe&amp;gt;&amp;lt;/p&amp;gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &lt;span class=&#34;keyword&#34;&gt;else&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;string&#34;&gt;&amp;quot;&amp;lt;p&amp;gt;&amp;lt;a class=&amp;#x27;link-bookmark&amp;#x27; href=&amp;#x27;&lt;span class=&#34;subst&#34;&gt;#&amp;#123;&lt;span class=&#34;variable&#34;&gt;@url&lt;/span&gt;&amp;#125;&lt;/span&gt;&amp;#x27; target=&amp;#x27;_blank&amp;#x27;&amp;gt;&amp;lt;span data-bookmark-img=&amp;#x27;&lt;span class=&#34;subst&#34;&gt;#&amp;#123;&lt;span class=&#34;variable&#34;&gt;@img&lt;/span&gt;&amp;#125;&lt;/span&gt;&amp;#x27; data-bookmark-title=&amp;#x27;&lt;span class=&#34;subst&#34;&gt;#&amp;#123;&lt;span class=&#34;variable&#34;&gt;@firstChar&lt;/span&gt;&amp;#125;&lt;/span&gt;&amp;#x27;&amp;gt;&amp;lt;img src=&amp;#x27;&lt;span class=&#34;subst&#34;&gt;#&amp;#123;&lt;span class=&#34;variable&#34;&gt;@img&lt;/span&gt;&amp;#125;&lt;/span&gt;&amp;#x27;/&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;span&amp;gt;&amp;lt;span&amp;gt;&lt;span class=&#34;subst&#34;&gt;#&amp;#123;&lt;span class=&#34;variable&#34;&gt;@title&lt;/span&gt;&amp;#125;&lt;/span&gt;&amp;lt;/span&amp;gt;&amp;lt;span&amp;gt;&lt;span class=&#34;subst&#34;&gt;#&amp;#123;&lt;span class=&#34;variable&#34;&gt;@desc&lt;/span&gt;&amp;#125;&lt;/span&gt;&amp;lt;/span&amp;gt;&amp;lt;span&amp;gt;&lt;span class=&#34;subst&#34;&gt;#&amp;#123;&lt;span class=&#34;variable&#34;&gt;@url&lt;/span&gt;&amp;#125;&lt;/span&gt;&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &lt;span class=&#34;keyword&#34;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;keyword&#34;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;keyword&#34;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;# 上传的 video&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;module&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;Jekyll&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;keyword&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;title class_&#34;&gt;RenderVideoBlock&lt;/span&gt; &amp;lt; &lt;span class=&#34;title class_ inherited__&#34;&gt;Liquid::Block&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;keyword&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;title function_&#34;&gt;initialize&lt;/span&gt;(&lt;span class=&#34;params&#34;&gt;tag_name, attr, tokens&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &lt;span class=&#34;variable language_&#34;&gt;super&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            attrs = attr.scan(&lt;span class=&#34;regexp&#34;&gt;/caption\=\&amp;quot;(.*)\&amp;quot;\simg\=\&amp;quot;(.*)\&amp;quot;\ssuffix\=\&amp;quot;(.*)\&amp;quot;/&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &lt;span class=&#34;variable&#34;&gt;@caption&lt;/span&gt; = attrs[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;][&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &lt;span class=&#34;variable&#34;&gt;@img&lt;/span&gt; = attrs[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;][&lt;span class=&#34;number&#34;&gt;1&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &lt;span class=&#34;variable&#34;&gt;@suffix&lt;/span&gt; = attrs[&lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;][&lt;span class=&#34;number&#34;&gt;2&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;keyword&#34;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;keyword&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;title function_&#34;&gt;render&lt;/span&gt;(&lt;span class=&#34;params&#34;&gt;context&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            text = &lt;span class=&#34;variable language_&#34;&gt;super&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &lt;span class=&#34;string&#34;&gt;&amp;quot;&amp;lt;p caption=&amp;#x27;&lt;span class=&#34;subst&#34;&gt;#&amp;#123;&lt;span class=&#34;variable&#34;&gt;@caption&lt;/span&gt;&amp;#125;&lt;/span&gt;&amp;#x27;&amp;gt;&amp;lt;video controls muted&amp;gt;&amp;lt;source src=&amp;#x27;&lt;span class=&#34;subst&#34;&gt;#&amp;#123;&lt;span class=&#34;variable&#34;&gt;@img&lt;/span&gt;&amp;#125;&lt;/span&gt;&amp;#x27; type=&amp;#x27;video/&lt;span class=&#34;subst&#34;&gt;#&amp;#123;&lt;span class=&#34;variable&#34;&gt;@suffix&lt;/span&gt;&amp;#125;&lt;/span&gt;&amp;#x27; /&amp;gt;&amp;lt;/video&amp;gt;&amp;lt;/p&amp;gt;&amp;quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;keyword&#34;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;keyword&#34;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;keyword&#34;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;title class_&#34;&gt;Liquid&lt;/span&gt;&lt;span class=&#34;symbol&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;symbol&#34;&gt;:Template&lt;/span&gt;.register_tag(&lt;span class=&#34;string&#34;&gt;&amp;#x27;render_bookmark&amp;#x27;&lt;/span&gt;, &lt;span class=&#34;title class_&#34;&gt;Jekyll&lt;/span&gt;&lt;span class=&#34;symbol&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;symbol&#34;&gt;:RenderBookMarkBlock&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;title class_&#34;&gt;Liquid&lt;/span&gt;&lt;span class=&#34;symbol&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;symbol&#34;&gt;:Template&lt;/span&gt;.register_tag(&lt;span class=&#34;string&#34;&gt;&amp;#x27;render_video&amp;#x27;&lt;/span&gt;, &lt;span class=&#34;title class_&#34;&gt;Jekyll&lt;/span&gt;&lt;span class=&#34;symbol&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;symbol&#34;&gt;:RenderVideoBlock&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+
+&lt;p&gt;这段的逻辑是如果遇到 Notion 的 bookmark 模块链接是 Youtube、Bilibili，则转成嵌入视频的 HTML（iframe），否则转成类似于 Notion bookmark 的 HTML（需要配合 CSS 实现）。&lt;/p&gt;
+&lt;p&gt;所以我使用 Notion Flow 将 Notion 内容转换成 Markdown 格式的同时，自定义了 bookmark 等模块的转换规则，以让博客能够显示 Youtube、Bilibili 和与 Notion 一样的 bookmark 样式内容，如下：&lt;/p&gt;
+&lt;figure class=&#34;highlight javascript&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;attr&#34;&gt;video&lt;/span&gt;: &lt;span class=&#34;keyword&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;title function_&#34;&gt;video&lt;/span&gt;(&lt;span class=&#34;params&#34;&gt;block&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	&lt;span class=&#34;keyword&#34;&gt;if&lt;/span&gt; (block.&lt;span class=&#34;property&#34;&gt;type&lt;/span&gt; === &lt;span class=&#34;string&#34;&gt;&amp;#x27;file&amp;#x27;&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;			&lt;span class=&#34;comment&#34;&gt;// 用户自己上传的 video 文件，用默认 video 插件处理&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	    &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;`&amp;#123;% render_video caption=&amp;quot;&lt;span class=&#34;subst&#34;&gt;$&amp;#123;block.caption&amp;#125;&lt;/span&gt;&amp;quot; img=&amp;quot;&lt;span class=&#34;subst&#34;&gt;$&amp;#123;block.url&amp;#125;&lt;/span&gt;&amp;quot; suffix=&amp;quot;&lt;span class=&#34;subst&#34;&gt;$&amp;#123;block.suffix&amp;#125;&lt;/span&gt;&amp;quot; %&amp;#125;\n![&lt;span class=&#34;subst&#34;&gt;$&amp;#123;block.caption&amp;#125;&lt;/span&gt;](&lt;span class=&#34;subst&#34;&gt;$&amp;#123;block.url&amp;#125;&lt;/span&gt;)\n&amp;#123;% endrender_video %&amp;#125;\n`&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	&amp;#125; &lt;span class=&#34;keyword&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;keyword&#34;&gt;if&lt;/span&gt; (block.&lt;span class=&#34;property&#34;&gt;type&lt;/span&gt; === &lt;span class=&#34;string&#34;&gt;&amp;#x27;external&amp;#x27;&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;			&lt;span class=&#34;comment&#34;&gt;// 外部链接、youtube 和 bilibili 视频链接，用 bookmark 处理&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	    &lt;span class=&#34;keyword&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;`&amp;#123;% render_bookmark url=&amp;quot;&lt;span class=&#34;subst&#34;&gt;$&amp;#123;block.url&amp;#125;&lt;/span&gt;&amp;quot; title=&amp;quot;&lt;span class=&#34;subst&#34;&gt;$&amp;#123;block.caption || &lt;span class=&#34;string&#34;&gt;&amp;#x27;&amp;#x27;&lt;/span&gt;&amp;#125;&lt;/span&gt;&amp;quot; img=&amp;quot;&amp;quot; yid=&amp;quot;&lt;span class=&#34;subst&#34;&gt;$&amp;#123;block.yid&amp;#125;&lt;/span&gt;&amp;quot; bid=&amp;quot;&lt;span class=&#34;subst&#34;&gt;$&amp;#123;block.bid&amp;#125;&lt;/span&gt;&amp;quot; %&amp;#125;&amp;#123;% endrender_bookmark %&amp;#125;\n`&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;	&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;这里需要注意（我不太懂 ruby）， Liquid 模板的标签之间，必须有文本内容（你可以不用），否则，ruby 插件无法生成 HTML。即：&lt;/p&gt;
+
+&lt;figure class=&#34;highlight javascript&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&amp;#123;% render_video  %&amp;#125;这里必须有任意内容！&amp;#123;% endrender_video %&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;这样在 ruby 插件中，&lt;code&gt;super&lt;/code&gt; 变量拿到的就是「这里必须有任意内容！」这句话（你可以不使用该变量）。如果没有这段内容，则插件压根不会返回任何内容。&lt;/p&gt;
+</description>
+            <pubDate>Sun, 31 Mar 2024 08:00:00 +0800</pubDate>
+            <link>http://www.xheldon.com/tech/how-i-use-notion-flow.html</link>
+            <guid isPermaLink="true">http://www.xheldon.com/tech/how-i-use-notion-flow.html</guid>
+            
+                <category>技术</category>
+            
+                <category>教程</category>
+            
+                <category>技巧</category>
+            
+                <category>工作流</category>
+            
+                <category>Jekyll</category>
+            
+                <category>Notion</category>
+            
+            
+                <category>tech</category>
+            
+        </item>
+        
+        <item>
+            <title>我的博客自动化流程</title>
+            <description>&lt;p&gt;之前有同学问我博客是用的什么，我说就是 Github Pages 的 Jekyll，然后用 Build 后的 HTML 托管，但是这么说好像有点粗糙，而且这个过程有些各个服务集成的工作，因此这里我就详细说一下，同时将代码放出来。&lt;/p&gt;
+&lt;h2 id=&#34;总体流程&#34;&gt;总体流程&lt;/h2&gt;
+&lt;p&gt;Markdown 文件的总体的流程图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/04849A4D-455F-4549-9030-53EF2C142669/1CA9FF6C-9B0A-4EB3-9814-A7BEBF9375C7_2/j8AGJOA4y32BWX6DX9aGBJ487Hzxocg7lZqxl9HtynQz/1CA9FF6C-9B0A-4EB3-9814-A7BEBF9375C7_2.png&#34; alt=&#34;Image&#34;&gt;&lt;/p&gt;
+&lt;p&gt;博客中图片的总体流程图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/04849A4D-455F-4549-9030-53EF2C142669/C4EEEFBD-C8E6-4EEA-BA47-BAEC621423DF_2/byOhFeNx7c5ybdg07u2BObAjiYDQpsCRxvg1g3NWn20z/C4EEEFBD-C8E6-4EEA-BA47-BAEC621423DF_2.png&#34; alt=&#34;Image&#34;&gt;&lt;/p&gt;
+&lt;p&gt;关于图片处理的几点说明：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;本地开发的时候，图片的仓库是博客仓库的 submodule，本地写博客新增了图片后，需要先将图片 push 到图片仓库，触发仓库的 action 同步到腾讯云 COS，然后再 push 博客代码即可，否则图片引用链接会找不到。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;写博客的时候，引用图片的时候会写相对路径，然后 Jekyll 有三个配置文件，分别用在本地开发、.com 网站引用、.cn 网站引用，三个 yml 的唯一不同是对静态资源的引用不同：&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;本地配置文件：static_url: /static&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;.com 配置文件：static_url: &lt;a href=&#34;https://static.xheldon.com&#34;&gt;https://static.xheldon.com&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;.cn 配置文件：static_url: &lt;a href=&#34;https://static.xheldon.cn&#34;&gt;https://static.xheldon.cn&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;需要引用图片资源的时候，在 markdown 中的写法是：\!\[\]\({{ site.static_url}}/img/in-post/qing-zheng-lu-yu/IMG_3789.png)  即可（Jekyll 会先对 Markdown 文件处理，替换掉里面的 Liquid 变量之后，才会 build 成 HTML。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;起因&#34;&gt;起因&lt;/h2&gt;
+&lt;p&gt;因为之前想使用 Notion 作为数据源，来更新博客，于是这就需要有一台服务器，因此我买了一台腾讯云的轻量服务器作为拉取 Notion 数据的服务端，效果见这里:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.xheldon.com/subscribe/&#34;&gt;订阅&amp;amp;付费软件 - Xheldon Blog&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;其次，还有一个原因是，写博客肯定是需要放图片的，一开始我使用的是 jsDelivr 的 Github 仓库加速服务：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.jsdelivr.com/&#34;&gt;jsDelivr - A free, fast, and reliable CDN for Open Source&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;不过很囧的是，jsDelivr 的加速服务对每个仓库只有 50M 的限制，也即是你可以加速一些公共 js/css 等，但是图片显然是不适合的。&lt;/p&gt;
+&lt;p&gt;基于此，在我有一个服务器的时候，一切的答案就很明显了：再买个域名，然后开通 CDN 加速服务即可。&lt;/p&gt;
+&lt;p&gt;然后更更近一步的，既然都买了域名了，加上访问我博客的大多数都是大陆 ip，为什么不再搞一个国内版的博客呢？域名就叫 &lt;code&gt;https://xheldon.cn&lt;/code&gt; 好了。&lt;/p&gt;
+&lt;p&gt;于是说干就干，下面就是这个过程的总结。&lt;/p&gt;
+&lt;h2 id=&#34;服务器和域名&#34;&gt;服务器和域名&lt;/h2&gt;
+&lt;h3 id=&#34;购买&#34;&gt;购买&lt;/h3&gt;
+&lt;p&gt;服务器买的是腾讯云的轻量服务器，4 核 8 G的，4M 带宽，因为是打骨折（就是做活动 0.几折的价格）的时候买的，所以很便宜。&lt;/p&gt;
+&lt;p&gt;买了域名之后，在中国大陆当然是要备案，没有备案你的域名是不给你解析的，如果访问该域名会自动显示 ‘该域名未备案，已停止解析’ 等的字样。不过好在腾讯云提供免费备案的服务，而且现在流程也简单了很多，你只需要填写腾讯云的备案申请表即可，填写诸如家庭地址、联系方式、网站用途、申请理由等信息，如果写的不符工信部的要求，比如在申请理由一栏里面写 ‘审核个屁快给老子开通’ 之类的，直接提交到管局是肯定会被驳回的，如果填写的有问题，（腾讯管域名审核的政府机构叫‘管局’），会有工作人员联系你具体事项，帮你修改确认后提交。&lt;/p&gt;
+&lt;h3 id=&#34;配置&#34;&gt;配置&lt;/h3&gt;
+&lt;p&gt;配置有以下几步， 略去不表：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;申请免费的 https 证书，开启 https。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;设置 CDN 加速域名。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;购买 COS 作为图片的存储地方（新用户免费送）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;启一个 Express 的 node 服务，对外通过 Nginx 反向代理暴露 80 端口，服务器从 Gitee 拉取的静态 html 资源，以及响应一些接口请求，为什么不直接从 Github 拉而要很麻烦的从 这些接口请求有：&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;响应来自 Gitee 的 webhooks，通知服务器拉取 Gitee 最新的 HTML 文件。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;响应来自博客的 Notion 查询请求，服务端会请求 notion 的服务器，查询&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;其中有些地方需要说明一下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;轻量服务器我选的是 Node + Nginx 的 Docker 的镜像，你也可以选 Java 的或者自定义的，都行。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;轻量服务器默认安装的 Node 和 Nginx 都是以 lighthouse 用户权限装的，经常安装包的时候提示权限不足，于是我图省事儿，删了原装的 Nginx 和 Node，自己用 root 用户装了一遍。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;有时候我会需要从服务器 ftp 上传一些文件，如上面提到的，申请的ssl 证书之类的，需要配置 ftp 相关的东西，这个腾讯云有相关文档，搜一下就出来了，略。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;备案需要等个至少一周以上，我好像等了两周。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;仓库配置&#34;&gt;仓库配置&lt;/h2&gt;
+&lt;h3 id=&#34;配置-Github-Actions-build-静态文件&#34;&gt;配置 Github Actions build 静态文件&lt;/h3&gt;
+&lt;p&gt;因为我不想暴露我的博客的源码文件，再加上 Github Pages 支持的 Jekyll 插件有限，无法满足我的需求（如不仅在首页分页，分类页也想分页的话，Github Pages 支持的插件就做不到），因此我决定自己 Build 源码成 HTML。&lt;/p&gt;
+&lt;p&gt;又由于 Github Pages 免费版的限制，无法将私有仓库开启 Github Pages，因此我将另一个仓库设置为公开，而源码仓库设置为私有，代码提交到私有仓库后，经 Github Action build 后，Push 到那个公开仓库。&lt;/p&gt;
+&lt;p&gt;关于 GIthub Pages 和 Github Action 的使用，可以参见我之前写的这篇：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.xheldon.com/tech/the-using-of-github-pages.html&#34;&gt;免费使用私有仓库发布 GitHub Pages - Xheldon Blog&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;不过因为又搞了个国内的域名，所以配置文件也有一些修改，下面是新的配置文件：&lt;/p&gt;
+
+
+&lt;figure class=&#34;highlight handlebars&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;62&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;63&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;64&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;65&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;66&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;67&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;68&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;69&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;name: 博客打包任务&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;# 代码 push 到 master 分支的时候运行该 workflow&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;# TODO：不运行 commit 信息中包含特定关键词的 push&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;on:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;  push:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;    branches: [ master ]&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;jobs:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;  Build:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;    runs-on: ubuntu-latest&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;    steps:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;      - name: 检出分支&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;        uses: actions/checkout@v2&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;        with:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;          persist-credentials: fasle # false 是用 personal token，true 是使用 GitHub token&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;          fetch-depth: 0 # 保证能够 push 成功&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;      # 设置 ruby 环境    &lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;      - name: 设置 Ruby 环境&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;        uses: ruby/setup-ruby@v1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;        with:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;          bundler-cache: true&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;          ruby-version: 2.6&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;      # 安装依赖&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;      - name: bundle 安装依赖&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;        run: bundle install&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;      # 打包静态资源&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;      - name: 构建 xheldon.com 页面&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;        if: $&lt;/span&gt;&lt;span class=&#34;template-variable&#34;&gt;&amp;#123;&amp;#123; &lt;span class=&#34;name&#34;&gt;startsWith&lt;/span&gt;(&lt;span class=&#34;name&#34;&gt;github.event.head_commit.message&lt;/span&gt;, &lt;span class=&#34;string&#34;&gt;&amp;#x27;com&amp;#x27;&lt;/span&gt;) || startsWith(&lt;span class=&#34;name&#34;&gt;github.event.head_commit.message&lt;/span&gt;, &lt;span class=&#34;string&#34;&gt;&amp;#x27;all&amp;#x27;&lt;/span&gt;) &amp;#125;&amp;#125;&lt;/span&gt;&lt;span class=&#34;language-xml&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;        run: bundle exec jekyll build&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;      - name: xheldon.com 写入信息&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;        if: $&lt;/span&gt;&lt;span class=&#34;template-variable&#34;&gt;&amp;#123;&amp;#123; &lt;span class=&#34;name&#34;&gt;hashFiles&lt;/span&gt;(&lt;span class=&#34;name&#34;&gt;&amp;#x27;./_site&amp;#x27;&lt;/span&gt;) &amp;#125;&amp;#125;&lt;/span&gt;&lt;span class=&#34;language-xml&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;        working-directory: ./_site&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;        run: |&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;            echo &amp;quot;www.xheldon.com&amp;quot; &amp;gt; CNAME&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;            echo -e &amp;quot;# [Xheldon&amp;#x27;s blog](https://www.xheldon.com)&amp;quot; &amp;gt; README.md&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;    &lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;      - name: 推送到 x_blog 仓库&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;        if: $&lt;/span&gt;&lt;span class=&#34;template-variable&#34;&gt;&amp;#123;&amp;#123; &lt;span class=&#34;name&#34;&gt;hashFiles&lt;/span&gt;(&lt;span class=&#34;name&#34;&gt;&amp;#x27;./_site&amp;#x27;&lt;/span&gt;) &amp;#125;&amp;#125;&lt;/span&gt;&lt;span class=&#34;language-xml&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;        working-directory: ./_site&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;        run: |&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;          pwd&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;          git init&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;          git checkout -b master&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;          git add -A&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;          git -c user.name=&amp;#x27;github actions by $&lt;/span&gt;&lt;span class=&#34;template-variable&#34;&gt;&amp;#123;&amp;#123;&lt;span class=&#34;name&#34;&gt;github.actor&lt;/span&gt;&amp;#125;&amp;#125;&lt;/span&gt;&lt;span class=&#34;language-xml&#34;&gt;&amp;#x27; -c user.email=&amp;#x27;NO&amp;#x27; commit -m &amp;#x27;$&lt;/span&gt;&lt;span class=&#34;template-variable&#34;&gt;&amp;#123;&amp;#123;&lt;span class=&#34;name&#34;&gt;github.event.head_commit.message&lt;/span&gt;&amp;#125;&amp;#125;&lt;/span&gt;&lt;span class=&#34;language-xml&#34;&gt;&amp;#x27; &lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;          git push &amp;quot;https://$&lt;/span&gt;&lt;span class=&#34;template-variable&#34;&gt;&amp;#123;&amp;#123;&lt;span class=&#34;name&#34;&gt;github.actor&lt;/span&gt;&amp;#125;&amp;#125;&lt;/span&gt;&lt;span class=&#34;language-xml&#34;&gt;:$&lt;/span&gt;&lt;span class=&#34;template-variable&#34;&gt;&amp;#123;&amp;#123;&lt;span class=&#34;name&#34;&gt;secrets.X_BLOG_SITE&lt;/span&gt;&amp;#125;&amp;#125;&lt;/span&gt;&lt;span class=&#34;language-xml&#34;&gt;@github.com/Xheldon/x_blog.git&amp;quot; HEAD:master -f -q&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;      - name: 构建 xheldon.cn 页面&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;        if: $&lt;/span&gt;&lt;span class=&#34;template-variable&#34;&gt;&amp;#123;&amp;#123; &lt;span class=&#34;name&#34;&gt;startsWith&lt;/span&gt;(&lt;span class=&#34;name&#34;&gt;github.event.head_commit.message&lt;/span&gt;, &lt;span class=&#34;string&#34;&gt;&amp;#x27;cn&amp;#x27;&lt;/span&gt;) || startsWith(&lt;span class=&#34;name&#34;&gt;github.event.head_commit.message&lt;/span&gt;, &lt;span class=&#34;string&#34;&gt;&amp;#x27;all&amp;#x27;&lt;/span&gt;) &amp;#125;&amp;#125;&lt;/span&gt;&lt;span class=&#34;language-xml&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;        run: bundle exec jekyll build --config=_config.cn.yml -d _site_cn&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;      # gitee 和 github 的用户名一样&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;      - name: 推送到 x_blog_cn 仓库&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;        if: $&lt;/span&gt;&lt;span class=&#34;template-variable&#34;&gt;&amp;#123;&amp;#123; &lt;span class=&#34;name&#34;&gt;hashFiles&lt;/span&gt;(&lt;span class=&#34;name&#34;&gt;&amp;#x27;./_site_cn&amp;#x27;&lt;/span&gt;) &amp;#125;&amp;#125;&lt;/span&gt;&lt;span class=&#34;language-xml&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;        working-directory: ./_site_cn&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;        run: |&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;          pwd&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;          git init&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;          git checkout -b master&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;          git add -A&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;          git -c user.name=&amp;#x27;gitub actions by $&lt;/span&gt;&lt;span class=&#34;template-variable&#34;&gt;&amp;#123;&amp;#123;&lt;span class=&#34;name&#34;&gt;github.actor&lt;/span&gt;&amp;#125;&amp;#125;&lt;/span&gt;&lt;span class=&#34;language-xml&#34;&gt; push to gitee&amp;#x27; -c user.email=&amp;#x27;NO&amp;#x27; commit -m &amp;#x27;$&lt;/span&gt;&lt;span class=&#34;template-variable&#34;&gt;&amp;#123;&amp;#123;&lt;span class=&#34;name&#34;&gt;github.event.head_commit.message&lt;/span&gt;&amp;#125;&amp;#125;&lt;/span&gt;&lt;span class=&#34;language-xml&#34;&gt;&amp;#x27; &lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;          git push &amp;quot;https://$&lt;/span&gt;&lt;span class=&#34;template-variable&#34;&gt;&amp;#123;&amp;#123;&lt;span class=&#34;name&#34;&gt;github.actor&lt;/span&gt;&amp;#125;&amp;#125;&lt;/span&gt;&lt;span class=&#34;language-xml&#34;&gt;:$&lt;/span&gt;&lt;span class=&#34;template-variable&#34;&gt;&amp;#123;&amp;#123;&lt;span class=&#34;name&#34;&gt;secrets.X_BLOG_SITE_CN&lt;/span&gt;&amp;#125;&amp;#125;&lt;/span&gt;&lt;span class=&#34;language-xml&#34;&gt;@gitee.com/Xheldon/x_blog_cn.git&amp;quot;  HEAD:master -f -q&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;language-xml&#34;&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+
+&lt;h3 id=&#34;配置另一个仓库，打开-Github-Pages&#34;&gt;配置另一个仓库，打开 Github Pages&lt;/h3&gt;
+&lt;p&gt;这一步就不用多说了，打开个 Github 仓库的开关而已。&lt;/p&gt;
+&lt;h3 id=&#34;配置-Conding-Webhooks&#34;&gt;配置 Conding Webhooks&lt;/h3&gt;
+&lt;p&gt;在 Gitee 的仓库管理-Webhooks 中配置你的 WebHook 地址，我的是 &lt;a href=&#34;https://www.xheldon.cn/hooks_cn_push%E3%80%82&#34;&gt;https://www.xheldon.cn/hooks_cn_push。&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;配置服务器响应-Webhooks&#34;&gt;配置服务器响应 Webhooks&lt;/h3&gt;
+&lt;p&gt;服务端起的 Express 服务，直接放代码：&lt;/p&gt;
+
+
+&lt;figure class=&#34;highlight lua&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;53&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;app.post(&lt;span class=&#34;string&#34;&gt;&amp;#x27;/hooks_cn_push&amp;#x27;&lt;/span&gt;, async (req, res) =&amp;gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    // Note: 收到 x_blog_cn 的 webhooks, 执行 git pull, 将 x_blog_cn 拉取到 public 目录&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    // Note: 签名验证，暂时略&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    // Note: 拉取分支&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    const branch = req.body.repository.clone_url;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    const headers = req.headers;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    console.&lt;span class=&#34;built_in&#34;&gt;log&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;&amp;#x27;headers:&amp;#x27;&lt;/span&gt;, headers);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    // Note: 验证一下 header 的合法性&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;keyword&#34;&gt;if&lt;/span&gt; (&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        headers[&lt;span class=&#34;string&#34;&gt;&amp;#x27;x-gitee-event&amp;#x27;&lt;/span&gt;] === &lt;span class=&#34;string&#34;&gt;&amp;#x27;Push Hook&amp;#x27;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &amp;amp;&amp;amp; headers[&lt;span class=&#34;string&#34;&gt;&amp;#x27;x-gitee-token&amp;#x27;&lt;/span&gt;] === GITEE_WEBHOOKS_SECRET&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    ) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        exec(`sudo rm -rf ./_public &amp;amp;&amp;amp; sudo git clone $&amp;#123;branch&amp;#125; ./_public &amp;amp;&amp;amp; sudo rsync -chir &lt;span class=&#34;comment&#34;&gt;--delete ./_public/ ./public/ &amp;amp;&amp;amp; sudo rm -rf ./_public`, &amp;#123;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            cwd: &lt;span class=&#34;string&#34;&gt;&amp;#x27;./&amp;#x27;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &amp;#125;, (err, &lt;span class=&#34;built_in&#34;&gt;stdout&lt;/span&gt;, &lt;span class=&#34;built_in&#34;&gt;stderr&lt;/span&gt;) =&amp;gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &lt;span class=&#34;keyword&#34;&gt;if&lt;/span&gt; (err) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                console.&lt;span class=&#34;built_in&#34;&gt;log&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;&amp;#x27;err:&amp;#x27;&lt;/span&gt;, err, &lt;span class=&#34;built_in&#34;&gt;stderr&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                res.&lt;span class=&#34;built_in&#34;&gt;status&lt;/span&gt;(&lt;span class=&#34;number&#34;&gt;400&lt;/span&gt;).send(&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                    msg: &lt;span class=&#34;string&#34;&gt;&amp;#x27;服务器内部 git clone 仓库失败:&amp;#x27;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                    &lt;span class=&#34;built_in&#34;&gt;stderr&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                    &lt;span class=&#34;built_in&#34;&gt;stdout&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                    err,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &amp;#125;)&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &amp;#125; &lt;span class=&#34;keyword&#34;&gt;else&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                // Note: &lt;span class=&#34;built_in&#34;&gt;stdout&lt;/span&gt; 没有任何输出表示正常&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                console.&lt;span class=&#34;built_in&#34;&gt;log&lt;/span&gt;(&lt;span class=&#34;string&#34;&gt;&amp;#x27;out:&amp;#x27;&lt;/span&gt;, &lt;span class=&#34;built_in&#34;&gt;stdout&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &lt;span class=&#34;keyword&#34;&gt;if&lt;/span&gt; (!&lt;span class=&#34;built_in&#34;&gt;stdout&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                    res.json(&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                        msg: &lt;span class=&#34;string&#34;&gt;&amp;#x27;没问题&amp;#x27;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                        &lt;span class=&#34;built_in&#34;&gt;status&lt;/span&gt;: &lt;span class=&#34;number&#34;&gt;200&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                        &lt;span class=&#34;built_in&#34;&gt;stderr&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                        &lt;span class=&#34;built_in&#34;&gt;stdout&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                        err,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                    &amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &amp;#125; &lt;span class=&#34;keyword&#34;&gt;else&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                    res.json(&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                        msg: &lt;span class=&#34;string&#34;&gt;&amp;#x27;git clone 的时候返回了一些内容，请过目&amp;#x27;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                        &lt;span class=&#34;built_in&#34;&gt;status&lt;/span&gt;: &lt;span class=&#34;number&#34;&gt;200&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                        &lt;span class=&#34;built_in&#34;&gt;stderr&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                        &lt;span class=&#34;built_in&#34;&gt;stdout&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                        err,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                    &amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;                &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &amp;#125; &lt;span class=&#34;keyword&#34;&gt;else&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        res.json(&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            msg: &lt;span class=&#34;string&#34;&gt;&amp;#x27;恶意请求！&amp;#x27;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;            &lt;span class=&#34;built_in&#34;&gt;status&lt;/span&gt;: &lt;span class=&#34;number&#34;&gt;403&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&amp;#125;);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+
+&lt;h3 id=&#34;配置图片仓库的-Action&#34;&gt;配置图片仓库的 Action&lt;/h3&gt;
+&lt;p&gt;图片上传到图片仓库 &lt;code&gt;x_blog-static&lt;/code&gt; 之后，会触发 Github Action，然后增量更新到腾讯云 COS，直接放代码：&lt;/p&gt;
+
+
+&lt;figure class=&#34;highlight yaml&#34;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#34;gutter&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;41&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#34;code&#34;&gt;&lt;pre&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;attr&#34;&gt;name:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;腾讯云&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;cos&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;同步任务&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;# 代码 push 到本仓库的时候触发该 ci&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;# 分析提交的 commits（不只是 head commit），将全部的 added modify 归结到一起（去重）调用上传方法&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;comment&#34;&gt;#  将 delete 的，调用删除方法&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;attr&#34;&gt;on:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;attr&#34;&gt;push:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;branches:&lt;/span&gt; [&lt;span class=&#34;string&#34;&gt;master&lt;/span&gt;]&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;attr&#34;&gt;jobs:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;  &lt;span class=&#34;attr&#34;&gt;CheckOutAndUpload:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;runs-on:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;ubuntu-latest&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;    &lt;span class=&#34;attr&#34;&gt;steps:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;attr&#34;&gt;name:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;检出分支&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;attr&#34;&gt;uses:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;actions/checkout@v2&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;attr&#34;&gt;with:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          &lt;span class=&#34;attr&#34;&gt;persist-credentials:&lt;/span&gt; &lt;span class=&#34;literal&#34;&gt;false&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          &lt;span class=&#34;attr&#34;&gt;fetch-depth:&lt;/span&gt; &lt;span class=&#34;number&#34;&gt;0&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;attr&#34;&gt;name:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;设置&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;node&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;环境&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;attr&#34;&gt;uses:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;actions/setup-node@v2.4.1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;attr&#34;&gt;with:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          &lt;span class=&#34;attr&#34;&gt;node-version:&lt;/span&gt; &lt;span class=&#34;number&#34;&gt;14.&lt;/span&gt;&lt;span class=&#34;string&#34;&gt;x&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          &lt;span class=&#34;attr&#34;&gt;architecture:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;x64&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          &lt;span class=&#34;attr&#34;&gt;cache:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;npm&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;attr&#34;&gt;name:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;安装依赖&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;attr&#34;&gt;run:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;npm&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;i&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;      &lt;span class=&#34;bullet&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;attr&#34;&gt;name:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;运行上传脚本&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;attr&#34;&gt;uses:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;actions/github-script@v5&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;attr&#34;&gt;env:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          &lt;span class=&#34;attr&#34;&gt;COS_SECRET_ID:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;$&amp;#123;&amp;#123;secrets.COS_SECRET_ID&amp;#125;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          &lt;span class=&#34;attr&#34;&gt;COS_SECRET_KEY:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;$&amp;#123;&amp;#123;secrets.COS_SECRET_KEY&amp;#125;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          &lt;span class=&#34;attr&#34;&gt;COS_BUCKET:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;$&amp;#123;&amp;#123;secrets.COS_BUCKET&amp;#125;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          &lt;span class=&#34;attr&#34;&gt;COS_REGION:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;$&amp;#123;&amp;#123;secrets.COS_REGION&amp;#125;&amp;#125;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;        &lt;span class=&#34;attr&#34;&gt;with:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;          &lt;span class=&#34;attr&#34;&gt;script:&lt;/span&gt; &lt;span class=&#34;string&#34;&gt;|&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;string&#34;&gt;            const script = require(&amp;#x27;./upload.js&amp;#x27;)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;string&#34;&gt;            await script(&amp;#123;github, context, core&amp;#125;)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+
+&lt;p&gt;当然，有一些环境变量，如 COS 等的秘钥，可以参照上面放的那篇 Github Action 在自己在仓库中配置即可。&lt;/p&gt;
+&lt;p&gt;上面执行了一个 js 文件，会获取 commit 的情况，确定本次 commit 新增了什么、删除了什么、修改了什么、重命名了什么等，然后再一次性的批量上传，仓库是公共的，&lt;a href=&#34;https://github.com/Xheldon/x_blog-static&#34;&gt;在这里&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;未来计划&#34;&gt;未来计划&lt;/h2&gt;
+&lt;p&gt;正如 &lt;a href=&#34;https://www.xheldon.com/tech/use-craft-extension-to-write-blog.html&#34;&gt;这篇文章所&lt;/a&gt; 言，本篇文章也是在 Craft 通过插件同步到 Github 仓库的，优点很多里面已经说得很清楚了，就不解释了，目前唯一的问题是通过 Craft 插入的图片是个问题，虽然官方已经放出了无 CORS 限制的 fetch API（仅 Mac 可用），但是目前还没想好该怎么将上传到 Craft 的图片同步到腾讯云会比较优雅。&lt;/p&gt;
+&lt;p&gt;目前的计划是，废弃掉在 Github 保存图片的步骤，直接将 Craft 中的图片通过 extension 发送到腾讯云 COS。&lt;/p&gt;
+</description>
+            <pubDate>Wed, 22 Dec 2021 00:32:10 +0800</pubDate>
+            <link>http://www.xheldon.com/tech/my-blog-ci.html</link>
+            <guid isPermaLink="true">http://www.xheldon.com/tech/my-blog-ci.html</guid>
+            
+                <category>集成</category>
+            
+            
+                <category>tech</category>
+            
+        </item>
+        
+    </channel>
+    </rss>
