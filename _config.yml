@@ -92,13 +92,17 @@ external_link: true # Open external links in new tab
 filename_case: 0
 render_drafts: false
 post_asset_folder: true
-relative_link: false
+relative_link: true
 future: true
+
+syntax_highlighter: highlight.js
 highlight:
-  enable: true
+  auto_detect: false
   line_number: true
-  auto_detect: true
-  tab_replace:
+  line_threshold: 0
+  tab_replace: ' '
+  wrap: true
+  hljs: true
 
 # Category & Tag
 default_category: life
@@ -122,7 +126,13 @@ pagination_dir: page
 ## Themes: https://hexo.io/themes/
 theme: xblog
 markdown:
-  preset: 'default'
+  render:
+    html: true
+    xhtmlOut: false
+    langPrefix: 'language-'
+    breaks: true
+    linkify: true
+    typographer: true
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html

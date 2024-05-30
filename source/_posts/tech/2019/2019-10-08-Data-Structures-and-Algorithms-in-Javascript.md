@@ -179,7 +179,7 @@ let loseloseHashCode = function(key){
 
 ### 散列表的 JavaScript 实现
 
-1. [普通散列表实现({{site.res_static_url}}/example-code/2019/HashTable.js)
+1. [普通散列表实现]({{site.res_static_url}}/example-code/2019/HashTable.js)
 2. [分离链接]({{site.res_static_url}}/example-code/2019/HashCollisionSeparateChaining.js)
 3. [线性探查]({{site.res_static_url}}/example-code/2019/HashCollisionLinearProbing.js)
 

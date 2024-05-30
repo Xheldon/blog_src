@@ -2,6 +2,278 @@
   [
     
       {
+        "title"    : "如何使用 Notion Flow 模块转换",
+        "subtitle" : " 我有特别的 Notion Flow 使用技巧~",
+        "tags"     : "技术, 教程, 技巧, 工作流, Notion, Jekyll",
+        "url"      : "/tech/how-i-use-notion-flow.html",
+        "date"     : "Sun Mar 31 2024 08:00:00 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "【视频】使用 Notion Flow 简化你的博客发布流程",
+        "subtitle" : " 分享 Notion Flow 的配置视频",
+        "tags"     : "技术, 折腾, 教程, 工作流, 插件, Notion, 视频",
+        "url"      : "/tech/use-notion-flow.html",
+        "date"     : "Thu Mar 21 2024 08:00:00 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "让 VSCode 更好用的设置——前端开发角度",
+        "subtitle" : " 本文介绍我作为一名前端工程师，是如何优化 VSCode 设置，让它更好用的。",
+        "tags"     : "生活, 折腾, 教程, 技巧, JavaScript, 工作流, VSCode, 设置",
+        "url"      : "/life/make-vscode-great-forever.html",
+        "date"     : "Thu Dec 21 2023 08:00:00 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "使用 Apple TV 收看北京联通 IPTV",
+        "subtitle" : " 本文介绍了一种使用 Apple TV 观看北京联通 IPTV 的方案，以供需要者参考。",
+        "tags"     : "生活, 经验, Apple, 折腾, 苹果, 网络, 路由器, 教程",
+        "url"      : "/life/iptv-for-apple-tv-in-beijing.html",
+        "date"     : "Mon Oct 30 2023 08:00:00 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "TeslaMate 使用指南",
+        "subtitle" : " 介绍一下 TeslaMate 安装和使用过程中的一些问题。",
+        "tags"     : "生活, 经验, 使用体验, 折腾, 特斯拉, 车, TeslaMate",
+        "url"      : "/life/the-use-of-teslamate.html",
+        "date"     : "Wed Sep 06 2023 08:00:00 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "Arc：一个「好用」的浏览器",
+        "subtitle" : " 为什么我在短短使用 Arc 1 天后就决定将它作为默认浏览器？",
+        "tags"     : "生活, 折腾, 初体验, 浏览器",
+        "url"      : "/life/arc-a-easy-use-browser.html",
+        "date"     : "Tue May 09 2023 08:00:00 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "2023 北京买车流水账记录",
+        "subtitle" : " 记录一下从决定买车到开上路的历程。",
+        "tags"     : "生活, 大事, 特斯拉, 车",
+        "url"      : "/life/have-a-car-2023.html",
+        "date"     : "Thu May 04 2023 08:00:00 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "【泡脚时间】第二期：简单粗暴",
+        "subtitle" : " 每次会根据五个观点、主题、想法等展开，本系列不定期更新，纯个人观点，请勿上纲上线。",
+        "tags"     : "生活, 泡脚时间",
+        "url"      : "/life/time-to-talk-episode-2.html",
+        "date"     : "Sun Mar 05 2023 20:03:22 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "开箱：AirPods Pro 2代初体验",
+        "subtitle" : " AirPods Pro 2 代发布半年后的最晚开箱",
+        "tags"     : "生活, 苹果, 初体验, 开箱, 耳机",
+        "url"      : "/life/airpods-pro2.html",
+        "date"     : "Mon Feb 13 2023 22:32:05 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "Slate 和 ProseMirror 简单对比",
+        "subtitle" : " Slate 和 Prosemirror 各用过两年后的简单对比总结",
+        "tags"     : "技术, ProseMirror, 编辑器, SlateJS, 对比, 选型, 框架",
+        "url"      : "/tech/prosemirror-comparison-with-slatejs.html",
+        "date"     : "Fri Jan 06 2023 12:14:58 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "使用 Sharp 转换 HEIC/HEIF 图片遇到的问题",
+        "subtitle" : " 记录使用 Sharp 压缩 HEIC 格式图片时遇到的问题和解决的过程",
+        "tags"     : "技术, 格式, 转换, 压缩, 开源",
+        "url"      : "/tech/problem-use-sharp.html",
+        "date"     : "Thu Jan 05 2023 12:06:50 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "2023 年展望和 2022 年回顾",
+        "subtitle" : " 2022 大事记和 2023 展望",
+        "tags"     : "生活, 2022, 总结, 计划",
+        "url"      : "/life/my-2022.html",
+        "date"     : "Thu Jan 05 2023 10:08:35 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "为什么我要有一个香港手机号",
+        "subtitle" : " 简单介绍一下我要搞一个香港手机号的理由",
+        "tags"     : "生活, 折腾, 苹果, 手机卡, 服务",
+        "url"      : "/life/why-i-need-a-hk-sim-card.html",
+        "date"     : "Mon Jan 02 2023 23:25:48 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "【视频】基于 Craft 插件的博客发布工作流介绍",
+        "subtitle" : " 第一次尝试做视频…",
+        "tags"     : "技术, 工作流, Craft, 视频",
+        "url"      : "/tech/workflow-of-blog-publish-base-of-craft.html",
+        "date"     : "Fri Dec 30 2022 22:50:55 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "【游戏时间】战神系列之四",
+        "subtitle" : " 本文简单介绍了战神5的主线剧情和各个人物在神话故事中的背景角色及战神5的轻微剧透和战神6、7的剧情展望。",
+        "tags"     : "生活, 游戏, 战神, 希腊神话, 北欧神话, 奎托斯",
+        "url"      : "/life/god-of-war-4.html",
+        "date"     : "Sun Nov 20 2022 11:51:11 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "家庭网络折腾之路由器",
+        "subtitle" : " 家庭网络设备小白科普文",
+        "tags"     : "技术, 折腾, 网络, 路由器, 千兆",
+        "url"      : "/tech/home-network-router.html",
+        "date"     : "Tue Nov 15 2022 23:38:20 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "关于 Clash 使用的一点记录",
+        "subtitle" : " Clash For Windows For Mac 简单使用场景。",
+        "tags"     : "技术, 教程, 富强, Clash",
+        "url"      : "/tech/the-using-of-clash-for-windows.html",
+        "date"     : "Sat Oct 08 2022 18:52:22 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "2022 我的家庭网络拓扑结构",
+        "subtitle" : " 有限的预算下尽量满足自己的需求是折腾的乐趣之一。",
+        "tags"     : "技术, 折腾, 软路由, 网络, 拓扑, R4S, 旁路由",
+        "url"      : "/tech/my-home-network-2022.html",
+        "date"     : "Wed Sep 14 2022 23:56:02 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "「译」官方指南系列：JavaScript 调试指南（一）",
+        "subtitle" : " 官方指南系列之一",
+        "tags"     : "技术, 技巧, JavaScript, 调试",
+        "url"      : "/tech/javascript-debugger-reference-series01.html",
+        "date"     : "Tue Sep 13 2022 09:29:30 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "博客自动化流程及体验优化——第二弹",
+        "subtitle" : " 博客体验又更上一层楼啦！",
+        "tags"     : "技术, Craft, 插件, 优化, Jekyll, CI, AppleScript",
+        "url"      : "/tech/optimize-of-my-blog-2.html",
+        "date"     : "Mon Aug 15 2022 00:13:32 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "Chrome 常用调试方法及其他",
+        "subtitle" : " Chrome 的调试功能很强大，这里介绍一下我工作中最常用的几个功能。",
+        "tags"     : "技术, 技巧, Chrome, 调试",
+        "url"      : "/tech/the-use-of-chrome-devtools.html",
+        "date"     : "Sun Aug 07 2022 20:39:47 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "差生的学习问题",
+        "subtitle" : " 老爹的20多年的教学经验分享",
+        "tags"     : "生活",
+        "url"      : "/life/the-problem-of-poor-student.html",
+        "date"     : "Thu May 26 2022 19:10:28 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "AppleScript 初体验",
+        "subtitle" : " 简单体验了一下 AppleScript，介绍了下常用的用户交互方式，感觉很强大。",
+        "tags"     : "技术, 初体验, AppleScript",
+        "url"      : "/tech/applescript-simple-use.html",
+        "date"     : "Tue May 03 2022 13:38:32 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "我的家庭观影之路",
+        "subtitle" : " 为家人实现观影自由，也是一种幸福。",
+        "tags"     : "生活, Apple, 折腾, 软路由, 自由",
+        "url"      : "/life/the-way-to-watching-tv.html",
+        "date"     : "Sun Apr 24 2022 00:57:15 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "豆角焖面",
+        "subtitle" : " 简单又好吃，最重要的是锅容易刷🤣",
+        "tags"     : "生活, 美食, 主食",
+        "url"      : "/life/dou-jiao-men-mian.html",
+        "date"     : "Mon Apr 11 2022 23:07:19 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "Apple TV 使用体验及相关问题",
+        "subtitle" : " 「就是把钱扔水里听响也绝不给国内的某些厂商」——媳妇儿说",
+        "tags"     : "生活, Apple, 使用体验",
+        "url"      : "/life/apple-tv-using-and-problem.html",
+        "date"     : "Thu Mar 17 2022 10:16:48 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "【泡脚时间】第一期：为什么主流国产历史剧让人感觉非常假？",
+        "subtitle" : " 每次会根据五个观点、主题、想法等展开，本系列不定期更新，纯个人观点，请勿上纲上线。",
+        "tags"     : "生活, 泡脚时间",
+        "url"      : "/life/time-to-talk-episode-1.html",
+        "date"     : "Sun Feb 27 2022 23:10:35 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "2022年我的博客自动化流程",
+        "subtitle" : " 技术在进步，我也在折腾。",
+        "tags"     : "技术, 集成, Craft, 插件, CI",
+        "url"      : "/tech/my-blog-ci-in-2022.html",
+        "date"     : "Wed Feb 23 2022 15:55:30 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "The Craft Markdown and The Github Markdown",
+        "subtitle" : " This article is used to experiment with some issues with the Craft Markdown API, as I think some of its blocks are not converted correctly.",
+        "tags"     : "测试",
+        "url"      : "/tech/craft-markdown-api-test.html",
+        "date"     : "Wed Jan 19 2022 20:17:59 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "「译」Ace，CodeMirror 和 Monaco：Web 代码编辑器的对比",
+        "subtitle" : " 最近看到这篇外文，觉得不错，注意这里对比的是「代码编辑器」，与富文本编辑器还是有些许不同的。",
+        "tags"     : "翻译, 编辑器",
+        "url"      : "/tech/a-comparison-of-code-editor.html",
+        "date"     : "Sun Jan 16 2022 23:57:18 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "我的博客自动化流程",
+        "subtitle" : " ",
+        "tags"     : "集成",
+        "url"      : "/tech/my-blog-ci.html",
+        "date"     : "Wed Dec 22 2021 00:32:10 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "本文通过 Craft Extension 发送",
+        "subtitle" : " ",
+        "tags"     : "集成, Craft, 插件",
+        "url"      : "/tech/use-craft-extension-to-write-blog.html",
+        "date"     : "Thu Dec 09 2021 00:28:30 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "「译」ProseMirror 1.0 发布",
+        "subtitle" : " 原文作者写于 2017 年 10 月 13 日，回顾了 开发 ProseMirror 1.0 以来的经历，本文偏意译。",
+        "tags"     : "技术, ProseMirror, 翻译",
+        "url"      : "/tech/ProseMirror-1.0-release.html",
+        "date"     : "Fri Nov 12 2021 12:10:23 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "「译」ProseMirror 的由来",
+        "subtitle" : " 原文作者写于 2015 年 7 月 7 日，作者决定要写一个富文本框架的时候写的一片文章，两年后 ProseMirror 1.0 发布，本文偏意译。",
+        "tags"     : "技术, ProseMirror, 翻译",
+        "url"      : "/tech/ProseMirror.html",
+        "date"     : "Fri Nov 05 2021 10:53:56 GMT+0800"
+      } ,
+    
+      {
         "title"    : "新博客地址说明",
         "subtitle" : " ",
         "tags"     : "技术, 迁移",
@@ -10,27 +282,27 @@
       } ,
     
       {
-        "title"    : "赣江边上, 滕王阁前",
-        "subtitle" : "“阁中帝子今何在？槛外长江空自流”",
-        "tags"     : "随笔, 生活",
-        "url"      : "/life/in-the-ganjiang-river.html",
-        "date"     : "Fri Jun 05 2015 22:13:35 GMT+0800"
+        "title"    : "Nginx 中的正向和反向代理",
+        "subtitle" : " 一切都源于无知",
+        "tags"     : "技术, 服务器, Nginx, 代理",
+        "url"      : "/tech/nginx-forward-and-reverse-proxy.html",
+        "date"     : "Tue Jul 06 2021 08:05:56 GMT+0800"
       } ,
     
       {
-        "title"    : "我的数字生活",
-        "subtitle" : "“21 世纪最重要的是不要浪费时间在没有意义的事情上”",
-        "tags"     : "随笔, 生活, 日常",
-        "url"      : "/life/the-digital-life-of-mine.html",
-        "date"     : "Fri Feb 14 2020 18:53:50 GMT+0800"
+        "title"    : "2020 北京买房记录",
+        "subtitle" : " 记录了从2018年计划落户成都高新/天府新区后买房，一直到最终不得不 2021 在北京买房的坎坷经历和心路历程。",
+        "tags"     : "生活, 买房, 经验, 大事",
+        "url"      : "/life/buy-house-in-beijing.html",
+        "date"     : "Sun Apr 18 2021 13:58:09 GMT+0800"
       } ,
     
       {
-        "title"    : "回锅肉",
-        "subtitle" : "川菜中我最爱的一道菜",
-        "tags"     : "生活, 川菜, 美食",
-        "url"      : "/life/hui-guo-rou.html",
-        "date"     : "Sat Nov 07 2020 09:37:00 GMT+0800"
+        "title"    : "清蒸鲈鱼",
+        "subtitle" : "又好吃做起来又简单",
+        "tags"     : "生活, 美食, 家常菜",
+        "url"      : "/life/qing-zheng-lu-yu.html",
+        "date"     : "Sat Apr 10 2021 09:24:00 GMT+0800"
       } ,
     
       {
@@ -50,11 +322,43 @@
       } ,
     
       {
-        "title"    : "梦的解析之小赵",
-        "subtitle" : "“今天的这个梦，总体氛围是在恐惧与害怕中度过的”，小赵对我说。",
-        "tags"     : "随笔, 生活, 故事, 梦",
-        "url"      : "/life/the-analysis-of-dream.html",
-        "date"     : "Mon Sep 19 2016 22:34:23 GMT+0800"
+        "title"    : "回锅肉",
+        "subtitle" : "川菜中我最爱的一道菜",
+        "tags"     : "生活, 川菜, 美食",
+        "url"      : "/life/hui-guo-rou.html",
+        "date"     : "Sat Nov 07 2020 09:37:00 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "博客优化技巧",
+        "subtitle" : " ",
+        "tags"     : "技术, Web, 优化",
+        "url"      : "/tech/optimize-of-this-site.html",
+        "date"     : "Sat Oct 31 2020 22:44:30 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "免费使用私有仓库发布 GitHub Pages",
+        "subtitle" : " ",
+        "tags"     : "技术, GitHub, Git",
+        "url"      : "/tech/the-using-of-github-pages.html",
+        "date"     : "Sat Oct 31 2020 22:44:30 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "「译」ProseMirror 中的协同编辑实现",
+        "subtitle" : " 翻译中没有弄明白的我就不翻译了，直接贴相应原文，等我搞明白了再翻译，以免误人子弟贻笑大方。",
+        "tags"     : "技术, ProseMirror, 翻译, 协同",
+        "url"      : "/tech/Collaborative-Editing-in-ProseMirror.html",
+        "date"     : "Sun Aug 02 2020 16:05:56 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "我的数字生活",
+        "subtitle" : "“21 世纪最重要的是不要浪费时间在没有意义的事情上”",
+        "tags"     : "随笔, 生活, 日常",
+        "url"      : "/life/the-digital-life-of-mine.html",
+        "date"     : "Fri Feb 14 2020 18:53:50 GMT+0800"
       } ,
     
       {
@@ -63,214 +367,6 @@
         "tags"     : "生活, 日本, 旅行",
         "url"      : "/life/japan-travel.html",
         "date"     : "Mon Jan 06 2020 09:37:00 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "清蒸鲈鱼",
-        "subtitle" : "又好吃做起来又简单",
-        "tags"     : "生活, 美食, 家常菜",
-        "url"      : "/life/qing-zheng-lu-yu.html",
-        "date"     : "Sat Apr 10 2021 09:24:00 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "【泡脚时间】第一期：为什么主流国产历史剧让人感觉非常假？",
-        "subtitle" : " 每次会根据五个观点、主题、想法等展开，本系列不定期更新，纯个人观点，请勿上纲上线。",
-        "tags"     : "生活, 泡脚时间",
-        "url"      : "/life/time-to-talk-episode-1.html",
-        "date"     : "Sun Feb 27 2022 23:10:35 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "豆角焖面",
-        "subtitle" : " 简单又好吃，最重要的是锅容易刷🤣",
-        "tags"     : "生活, 美食, 主食",
-        "url"      : "/life/dou-jiao-men-mian.html",
-        "date"     : "Mon Apr 11 2022 23:07:19 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "差生的学习问题",
-        "subtitle" : " 老爹的20多年的教学经验分享",
-        "tags"     : "生活",
-        "url"      : "/life/the-problem-of-poor-student.html",
-        "date"     : "Thu May 26 2022 19:10:28 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "Apple TV 使用体验及相关问题",
-        "subtitle" : " 「就是把钱扔水里听响也绝不给国内的某些厂商」——媳妇儿说",
-        "tags"     : "生活, Apple, 使用体验",
-        "url"      : "/life/apple-tv-using-and-problem.html",
-        "date"     : "Thu Mar 17 2022 10:16:48 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "我的家庭观影之路",
-        "subtitle" : " 为家人实现观影自由，也是一种幸福。",
-        "tags"     : "生活, Apple, 折腾, 软路由, 自由",
-        "url"      : "/life/the-way-to-watching-tv.html",
-        "date"     : "Sun Apr 24 2022 00:57:15 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "为什么我要有一个香港手机号",
-        "subtitle" : " 简单介绍一下我要搞一个香港手机号的理由",
-        "tags"     : "生活, 折腾, 苹果, 手机卡, 服务",
-        "url"      : "/life/why-i-need-a-hk-sim-card.html",
-        "date"     : "Mon Jan 02 2023 23:25:48 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "开箱：AirPods Pro 2代初体验",
-        "subtitle" : " AirPods Pro 2 代发布半年后的最晚开箱",
-        "tags"     : "生活, 苹果, 初体验, 开箱, 耳机",
-        "url"      : "/life/airpods-pro2.html",
-        "date"     : "Mon Feb 13 2023 22:32:05 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "【泡脚时间】第二期：简单粗暴",
-        "subtitle" : " 每次会根据五个观点、主题、想法等展开，本系列不定期更新，纯个人观点，请勿上纲上线。",
-        "tags"     : "生活, 泡脚时间",
-        "url"      : "/life/time-to-talk-episode-2.html",
-        "date"     : "Sun Mar 05 2023 20:03:22 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "【游戏时间】战神系列之四",
-        "subtitle" : " 本文简单介绍了战神5的主线剧情和各个人物在神话故事中的背景角色及战神5的轻微剧透和战神6、7的剧情展望。",
-        "tags"     : "生活, 游戏, 战神, 希腊神话, 北欧神话, 奎托斯",
-        "url"      : "/life/god-of-war-4.html",
-        "date"     : "Sun Nov 20 2022 11:51:11 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "2020 北京买房记录",
-        "subtitle" : " 记录了从2018年计划落户成都高新/天府新区后买房，一直到最终不得不 2021 在北京买房的坎坷经历和心路历程。",
-        "tags"     : "生活, 买房, 经验, 大事",
-        "url"      : "/life/buy-house-in-beijing.html",
-        "date"     : "Sun Apr 18 2021 13:58:09 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "2023 年展望和 2022 年回顾",
-        "subtitle" : " 2022 大事记和 2023 展望",
-        "tags"     : "生活, 2022, 总结, 计划",
-        "url"      : "/life/my-2022.html",
-        "date"     : "Thu Jan 05 2023 10:08:35 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "TeslaMate 使用指南",
-        "subtitle" : " 介绍一下 TeslaMate 安装和使用过程中的一些问题。",
-        "tags"     : "生活, 使用体验, 折腾, 经验, 特斯拉, 车, TeslaMate",
-        "url"      : "/life/the-use-of-teslamate.html",
-        "date"     : "Wed Sep 06 2023 08:00:00 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "Arc：一个「好用」的浏览器",
-        "subtitle" : " 为什么我在短短使用 Arc 1 天后就决定将它作为默认浏览器？",
-        "tags"     : "生活, 折腾, 初体验, 浏览器",
-        "url"      : "/life/arc-a-easy-use-browser.html",
-        "date"     : "Tue May 09 2023 08:00:00 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "使用 Apple TV 收看北京联通 IPTV",
-        "subtitle" : " 本文介绍了一种使用 Apple TV 观看北京联通 IPTV 的方案，以供需要者参考。",
-        "tags"     : "生活, Apple, 折腾, 苹果, 经验, 网络, 路由器, 教程",
-        "url"      : "/life/iptv-for-apple-tv-in-beijing.html",
-        "date"     : "Mon Oct 30 2023 08:00:00 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "在 OS X 下使用 sz/rz 命令进行文件的下载/上传",
-        "subtitle" : "无需第三方软件即可实现文件上传下载",
-        "tags"     : "技术, 服务器",
-        "url"      : "/tech/how-to-use-rz-sz-on-mac.html",
-        "date"     : "Mon Jul 20 2015 08:12:45 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "关于收集用户隐私的看法",
-        "subtitle" : " ",
-        "tags"     : "技术, 用户隐私",
-        "url"      : "/tech/how-i-think-people-privacy.html",
-        "date"     : "Thu Oct 01 2015 19:55:23 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "关于代码优化/工作经验重要性的一次切身体会",
-        "subtitle" : " ",
-        "tags"     : "技术, 工作经验",
-        "url"      : "/tech/how-to-work.html",
-        "date"     : "Fri Oct 30 2015 23:04:22 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "让 VSCode 更好用的设置——前端开发角度",
-        "subtitle" : " 本文介绍我作为一名前端工程师，是如何优化 VSCode 设置，让它更好用的。",
-        "tags"     : "生活, 折腾, 教程, 技巧, JavaScript, 工作流, VSCode, 设置",
-        "url"      : "/life/make-vscode-great-forever.html",
-        "date"     : "Thu Dec 21 2023 08:00:00 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "新浪微博JS SDK API的使用",
-        "subtitle" : " ",
-        "tags"     : "技术, SDK",
-        "url"      : "/tech/weibo-jssdk.html",
-        "date"     : "Mon Dec 21 2015 21:23:45 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "是的, 三年后我又重新开始更新这个小小的博客了",
-        "subtitle" : " ",
-        "tags"     : "技术, 生活",
-        "url"      : "/tech/yes-im-back.html",
-        "date"     : "Fri Aug 30 2019 15:28:35 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "2018 寒冬面试经历",
-        "subtitle" : " ",
-        "tags"     : "技术, 面试",
-        "url"      : "/tech/interview-in-2018-winter.html",
-        "date"     : "Fri Sep 13 2019 08:44:00 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "正确理解 C 语言中的指针",
-        "subtitle" : " 本文是当初学习 C 语言时写过的一篇博客, 从老的 WordPress 博客中恢复过来的",
-        "tags"     : "技术, C",
-        "url"      : "/tech/understanding-the-pointer-in-c.html",
-        "date"     : "Tue Sep 17 2019 07:44:00 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "Linux 下的文件权限备忘",
-        "subtitle" : " 本文是当初在学习 Linux 基础的时候写的一篇博客, 从旧的 WordPress 博客迁移而来",
-        "tags"     : "技术, 服务器, Linux",
-        "url"      : "/tech/linux-file-permission.html",
-        "date"     : "Sat Sep 28 2019 14:40:40 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "2023 北京买车流水账记录",
-        "subtitle" : " 记录一下从决定买车到开上路的历程。",
-        "tags"     : "生活, 大事, 特斯拉, 车",
-        "url"      : "/life/have-a-car-2023.html",
-        "date"     : "Thu May 04 2023 08:00:00 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "JavaScript 中的数据结构和算法",
-        "subtitle" : " ",
-        "tags"     : "技术, JavaScript, 数据结构, 算法",
-        "url"      : "/tech/Data-Structures-and-Algorithms-in-Javascript.html",
-        "date"     : "Tue Oct 08 2019 00:17:33 GMT+0800"
       } ,
     
       {
@@ -290,75 +386,59 @@
       } ,
     
       {
-        "title"    : "「译」 Promise 反面模式",
+        "title"    : "JavaScript 中的数据结构和算法",
         "subtitle" : " ",
-        "tags"     : "技术, Promise, 翻译",
-        "url"      : "/tech/promise-antipattern.html",
-        "date"     : "Fri Mar 04 2016 22:43:12 GMT+0800"
+        "tags"     : "技术, JavaScript, 数据结构, 算法",
+        "url"      : "/tech/Data-Structures-and-Algorithms-in-Javascript.html",
+        "date"     : "Tue Oct 08 2019 00:17:33 GMT+0800"
       } ,
     
       {
-        "title"    : "git 常用命令总结",
-        "subtitle" : " ",
-        "tags"     : "技术, Git",
-        "url"      : "/tech/git-command.html",
-        "date"     : "Thu Apr 21 2016 13:34:23 GMT+0800"
+        "title"    : "Linux 下的文件权限备忘",
+        "subtitle" : " 本文是当初在学习 Linux 基础的时候写的一篇博客, 从旧的 WordPress 博客迁移而来",
+        "tags"     : "技术, 服务器, Linux",
+        "url"      : "/tech/linux-file-permission.html",
+        "date"     : "Sat Sep 28 2019 14:40:40 GMT+0800"
       } ,
     
       {
-        "title"    : "Vue + Webpack 组件式开发(练习环境)初体验",
+        "title"    : "正确理解 C 语言中的指针",
+        "subtitle" : " 本文是当初学习 C 语言时写过的一篇博客, 从老的 WordPress 博客中恢复过来的",
+        "tags"     : "技术, C",
+        "url"      : "/tech/understanding-the-pointer-in-c.html",
+        "date"     : "Tue Sep 17 2019 07:44:00 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "2018 寒冬面试经历",
         "subtitle" : " ",
-        "tags"     : "技术, Vue",
-        "url"      : "/tech/vue-simple-use.html",
-        "date"     : "Sat Apr 30 2016 05:12:12 GMT+0800"
+        "tags"     : "技术, 面试",
+        "url"      : "/tech/interview-in-2018-winter.html",
+        "date"     : "Fri Sep 13 2019 08:44:00 GMT+0800"
       } ,
     
       {
         "title"    : "「译」 ProseMirror 中文指南",
         "subtitle" : " 本文中涉及到的文档或者手册 API 说明，都可以在这个 https://prosemirror.xheldon.com/docs/ref/ 查看",
-        "tags"     : "技术, 翻译, ProseMirror",
+        "tags"     : "技术, ProseMirror, 翻译",
         "url"      : "/tech/prosemirror-guide-chinese.html",
         "date"     : "Sat Sep 07 2019 00:49:00 GMT+0800"
       } ,
     
       {
-        "title"    : "Webpack 异步按需加载",
+        "title"    : "是的, 三年后我又重新开始更新这个小小的博客了",
         "subtitle" : " ",
-        "tags"     : "技术, Webpack",
-        "url"      : "/tech/webpack-details-one.html",
-        "date"     : "Mon May 02 2016 23:23:12 GMT+0800"
+        "tags"     : "技术, 生活",
+        "url"      : "/tech/yes-im-back.html",
+        "date"     : "Fri Aug 30 2019 15:28:35 GMT+0800"
       } ,
     
       {
-        "title"    : "Vue 实现路由的三种方式",
-        "subtitle" : " ",
-        "tags"     : "技术, Vue, SPA, Router",
-        "url"      : "/tech/three-ways-to-make-a-vue-SPA-use-router.html",
-        "date"     : "Sun Jun 12 2016 12:43:45 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "关于本博客域名优化配置的几点说明",
-        "subtitle" : " ",
-        "tags"     : "技术, Git, GitHub",
-        "url"      : "/tech/github-pages-config.html",
-        "date"     : "Mon May 23 2016 22:13:15 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "一些牢骚",
-        "subtitle" : " ",
-        "tags"     : "技术, 牢骚",
-        "url"      : "/tech/some-complain.html",
-        "date"     : "Sun Jul 03 2016 19:23:45 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "环境配置/常用软件汇总",
-        "subtitle" : " ",
-        "tags"     : "技术, 常用软件",
-        "url"      : "/tech/softerware-i-use-usually.html",
-        "date"     : "Fri Jul 08 2016 20:33:34 GMT+0800"
+        "title"    : "梦的解析之小赵",
+        "subtitle" : "“今天的这个梦，总体氛围是在恐惧与害怕中度过的”，小赵对我说。",
+        "tags"     : "随笔, 生活, 故事, 梦",
+        "url"      : "/life/the-analysis-of-dream.html",
+        "date"     : "Mon Sep 19 2016 22:34:23 GMT+0800"
       } ,
     
       {
@@ -370,11 +450,11 @@
       } ,
     
       {
-        "title"    : "Vue 学习总结",
+        "title"    : "环境配置/常用软件汇总",
         "subtitle" : " ",
-        "tags"     : "技术, Vue",
-        "url"      : "/tech/vue-learning-summary.html",
-        "date"     : "Wed Jun 01 2016 21:22:21 GMT+0800"
+        "tags"     : "技术, 常用软件",
+        "url"      : "/tech/softerware-i-use-usually.html",
+        "date"     : "Fri Jul 08 2016 20:33:34 GMT+0800"
       } ,
     
       {
@@ -386,187 +466,107 @@
       } ,
     
       {
-        "title"    : "2022年我的博客自动化流程",
-        "subtitle" : " 技术在进步，我也在折腾。",
-        "tags"     : "技术, 集成, 插件, Craft, CI",
-        "url"      : "/tech/my-blog-ci-in-2022.html",
-        "date"     : "Wed Feb 23 2022 15:55:30 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "Chrome 常用调试方法及其他",
-        "subtitle" : " Chrome 的调试功能很强大，这里介绍一下我工作中最常用的几个功能。",
-        "tags"     : "技术, 技巧, Chrome, 调试",
-        "url"      : "/tech/the-use-of-chrome-devtools.html",
-        "date"     : "Sun Aug 07 2022 20:39:47 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "「译」Ace，CodeMirror 和 Monaco：Web 代码编辑器的对比",
-        "subtitle" : " 最近看到这篇外文，觉得不错，注意这里对比的是「代码编辑器」，与富文本编辑器还是有些许不同的。",
-        "tags"     : "翻译, 编辑器",
-        "url"      : "/tech/a-comparison-of-code-editor.html",
-        "date"     : "Sun Jan 16 2022 23:57:18 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "「译」官方指南系列：JavaScript 调试指南（一）",
-        "subtitle" : " 官方指南系列之一",
-        "tags"     : "技术, 技巧, JavaScript, 调试",
-        "url"      : "/tech/javascript-debugger-reference-series01.html",
-        "date"     : "Tue Sep 13 2022 09:29:30 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "AppleScript 初体验",
-        "subtitle" : " 简单体验了一下 AppleScript，介绍了下常用的用户交互方式，感觉很强大。",
-        "tags"     : "技术, 初体验, AppleScript",
-        "url"      : "/tech/applescript-simple-use.html",
-        "date"     : "Tue May 03 2022 13:38:32 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "The Craft Markdown and The Github Markdown",
-        "subtitle" : " This article is used to experiment with some issues with the Craft Markdown API, as I think some of its blocks are not converted correctly.",
-        "tags"     : "测试",
-        "url"      : "/tech/craft-markdown-api-test.html",
-        "date"     : "Wed Jan 19 2022 20:17:59 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "博客自动化流程及体验优化——第二弹",
-        "subtitle" : " 博客体验又更上一层楼啦！",
-        "tags"     : "技术, 插件, Craft, CI, AppleScript, 优化, Jekyll",
-        "url"      : "/tech/optimize-of-my-blog-2.html",
-        "date"     : "Mon Aug 15 2022 00:13:32 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "2022 我的家庭网络拓扑结构",
-        "subtitle" : " 有限的预算下尽量满足自己的需求是折腾的乐趣之一。",
-        "tags"     : "技术, 折腾, 软路由, 网络, 拓扑, R4S, 旁路由",
-        "url"      : "/tech/my-home-network-2022.html",
-        "date"     : "Wed Sep 14 2022 23:56:02 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "【视频】基于 Craft 插件的博客发布工作流介绍",
-        "subtitle" : " 第一次尝试做视频…",
-        "tags"     : "技术, 工作流, Craft, 视频",
-        "url"      : "/tech/workflow-of-blog-publish-base-of-craft.html",
-        "date"     : "Fri Dec 30 2022 22:50:55 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "关于 Clash 使用的一点记录",
-        "subtitle" : " Clash For Windows For Mac 简单使用场景。",
-        "tags"     : "技术, 教程, 富强, Clash",
-        "url"      : "/tech/the-using-of-clash-for-windows.html",
-        "date"     : "Sat Oct 08 2022 18:52:22 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "家庭网络折腾之路由器",
-        "subtitle" : " 家庭网络设备小白科普文",
-        "tags"     : "技术, 折腾, 网络, 路由器, 千兆",
-        "url"      : "/tech/home-network-router.html",
-        "date"     : "Tue Nov 15 2022 23:38:20 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "免费使用私有仓库发布 GitHub Pages",
+        "title"    : "一些牢骚",
         "subtitle" : " ",
-        "tags"     : "技术, Git, GitHub",
-        "url"      : "/tech/the-using-of-github-pages.html",
-        "date"     : "Sat Oct 31 2020 22:44:30 GMT+0800"
+        "tags"     : "技术, 牢骚",
+        "url"      : "/tech/some-complain.html",
+        "date"     : "Sun Jul 03 2016 19:23:45 GMT+0800"
       } ,
     
       {
-        "title"    : "博客优化技巧",
+        "title"    : "Vue 实现路由的三种方式",
         "subtitle" : " ",
-        "tags"     : "技术, 优化, Web",
-        "url"      : "/tech/optimize-of-this-site.html",
-        "date"     : "Sat Oct 31 2020 22:44:30 GMT+0800"
+        "tags"     : "技术, Vue, SPA, Router",
+        "url"      : "/tech/three-ways-to-make-a-vue-SPA-use-router.html",
+        "date"     : "Sun Jun 12 2016 12:43:45 GMT+0800"
       } ,
     
       {
-        "title"    : "「译」ProseMirror 中的协同编辑实现",
-        "subtitle" : " 翻译中没有弄明白的我就不翻译了，直接贴相应原文，等我搞明白了再翻译，以免误人子弟贻笑大方。",
-        "tags"     : "技术, 翻译, ProseMirror, 协同",
-        "url"      : "/tech/Collaborative-Editing-in-ProseMirror.html",
-        "date"     : "Sun Aug 02 2020 16:05:56 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "Slate 和 ProseMirror 简单对比",
-        "subtitle" : " Slate 和 Prosemirror 各用过两年后的简单对比总结",
-        "tags"     : "技术, ProseMirror, 编辑器, SlateJS, 对比, 选型, 框架",
-        "url"      : "/tech/prosemirror-comparison-with-slatejs.html",
-        "date"     : "Fri Jan 06 2023 12:14:58 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "Nginx 中的正向和反向代理",
-        "subtitle" : " 一切都源于无知",
-        "tags"     : "技术, 服务器, Nginx, 代理",
-        "url"      : "/tech/nginx-forward-and-reverse-proxy.html",
-        "date"     : "Tue Jul 06 2021 08:05:56 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "「译」ProseMirror 的由来",
-        "subtitle" : " 原文作者写于 2015 年 7 月 7 日，作者决定要写一个富文本框架的时候写的一片文章，两年后 ProseMirror 1.0 发布，本文偏意译。",
-        "tags"     : "技术, 翻译, ProseMirror",
-        "url"      : "/tech/ProseMirror.html",
-        "date"     : "Fri Nov 05 2021 10:53:56 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "「译」ProseMirror 1.0 发布",
-        "subtitle" : " 原文作者写于 2017 年 10 月 13 日，回顾了 开发 ProseMirror 1.0 以来的经历，本文偏意译。",
-        "tags"     : "技术, 翻译, ProseMirror",
-        "url"      : "/tech/ProseMirror-1.0-release.html",
-        "date"     : "Fri Nov 12 2021 12:10:23 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "本文通过 Craft Extension 发送",
+        "title"    : "Vue 学习总结",
         "subtitle" : " ",
-        "tags"     : "集成, 插件, Craft",
-        "url"      : "/tech/use-craft-extension-to-write-blog.html",
-        "date"     : "Thu Dec 09 2021 00:28:30 GMT+0800"
+        "tags"     : "技术, Vue",
+        "url"      : "/tech/vue-learning-summary.html",
+        "date"     : "Wed Jun 01 2016 21:22:21 GMT+0800"
       } ,
     
       {
-        "title"    : "使用 Sharp 转换 HEIC/HEIF 图片遇到的问题",
-        "subtitle" : " 记录使用 Sharp 压缩 HEIC 格式图片时遇到的问题和解决的过程",
-        "tags"     : "技术, 格式, 转换, 压缩, 开源",
-        "url"      : "/tech/problem-use-sharp.html",
-        "date"     : "Thu Jan 05 2023 12:06:50 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "【视频】使用 Notion Flow 简化你的博客发布流程",
-        "subtitle" : " 分享 Notion Flow 的配置视频",
-        "tags"     : "技术, 折腾, 教程, 工作流, 插件, 视频, Notion",
-        "url"      : "/tech/use-notion-flow.html",
-        "date"     : "Thu Mar 21 2024 08:00:00 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "如何使用 Notion Flow 模块转换",
-        "subtitle" : " 我有特别的 Notion Flow 使用技巧~",
-        "tags"     : "技术, 教程, 技巧, 工作流, Jekyll, Notion",
-        "url"      : "/tech/how-i-use-notion-flow.html",
-        "date"     : "Sun Mar 31 2024 08:00:00 GMT+0800"
-      } ,
-    
-      {
-        "title"    : "我的博客自动化流程",
+        "title"    : "关于本博客域名优化配置的几点说明",
         "subtitle" : " ",
-        "tags"     : "集成",
-        "url"      : "/tech/my-blog-ci.html",
-        "date"     : "Wed Dec 22 2021 00:32:10 GMT+0800"
+        "tags"     : "技术, GitHub, Git",
+        "url"      : "/tech/github-pages-config.html",
+        "date"     : "Mon May 23 2016 22:13:15 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "Webpack 异步按需加载",
+        "subtitle" : " ",
+        "tags"     : "技术, Webpack",
+        "url"      : "/tech/webpack-details-one.html",
+        "date"     : "Mon May 02 2016 23:23:12 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "Vue + Webpack 组件式开发(练习环境)初体验",
+        "subtitle" : " ",
+        "tags"     : "技术, Vue",
+        "url"      : "/tech/vue-simple-use.html",
+        "date"     : "Sat Apr 30 2016 05:12:12 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "git 常用命令总结",
+        "subtitle" : " ",
+        "tags"     : "技术, Git",
+        "url"      : "/tech/git-command.html",
+        "date"     : "Thu Apr 21 2016 13:34:23 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "「译」 Promise 反面模式",
+        "subtitle" : " ",
+        "tags"     : "技术, 翻译, Promise",
+        "url"      : "/tech/promise-antipattern.html",
+        "date"     : "Fri Mar 04 2016 22:43:12 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "新浪微博JS SDK API的使用",
+        "subtitle" : " ",
+        "tags"     : "技术, SDK",
+        "url"      : "/tech/weibo-jssdk.html",
+        "date"     : "Mon Dec 21 2015 21:23:45 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "关于代码优化/工作经验重要性的一次切身体会",
+        "subtitle" : " ",
+        "tags"     : "技术, 工作经验",
+        "url"      : "/tech/how-to-work.html",
+        "date"     : "Fri Oct 30 2015 23:04:22 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "关于收集用户隐私的看法",
+        "subtitle" : " ",
+        "tags"     : "技术, 用户隐私",
+        "url"      : "/tech/how-i-think-people-privacy.html",
+        "date"     : "Thu Oct 01 2015 19:55:23 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "在 OS X 下使用 sz/rz 命令进行文件的下载/上传",
+        "subtitle" : "无需第三方软件即可实现文件上传下载",
+        "tags"     : "技术, 服务器",
+        "url"      : "/tech/how-to-use-rz-sz-on-mac.html",
+        "date"     : "Mon Jul 20 2015 08:12:45 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "赣江边上, 滕王阁前",
+        "subtitle" : "“阁中帝子今何在？槛外长江空自流”",
+        "tags"     : "随笔, 生活",
+        "url"      : "/life/in-the-ganjiang-river.html",
+        "date"     : "Fri Jun 05 2015 22:13:35 GMT+0800"
       } 
     
   ]

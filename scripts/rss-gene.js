@@ -2,8 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const ejs = require('ejs');
 
+const rootDate = new Date();
+
 function getDate(_date) {
-    const date = _date ? new Date(_date) : new Date();
+    const date = _date ? new Date(_date) : rootDate;
 
     // 获取各个部分
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -38,7 +40,7 @@ hexo.extend.generator.register('xml', function(locals) {
         <pubDate><%= getDate() %></pubDate>
         <lastBuildDate><%= getDate() %></lastBuildDate>
         <generator>Hexo v<%= version %></generator>
-        <% for (post of posts.slice(-10)) { %>
+        <% for (post of posts.sort((a, b) => (new Date(b.date).getTime()) - (new Date(a.date).getTime())).slice(0, 10)) { %>
         <item>
             <title><%= post.title %></title>
             <description><%= bookmark_filter(post.content) %></description>

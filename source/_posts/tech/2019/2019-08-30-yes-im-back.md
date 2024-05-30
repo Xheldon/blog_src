@@ -9,7 +9,7 @@ tags:
     - 生活
 ---
 
-![头图]({{site.static_url}}/img/in-post/2019/kruger.png)
+![头图](<%= config.static_url %>/img/in-post/2019/kruger.png)
 
 ## 前言
 

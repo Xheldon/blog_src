@@ -18,12 +18,17 @@ hexo.extend.tag.register('render_caption', function(args) {
 hexo.extend.tag.register('render_bookmark', function(args, content) {
     const [url, title, img, yid, bid] = args.map(getValue);
     const firstChar = title ? title[0].toUpperCase() : '';
+    const strip_html = hexo.extend.helper.get('strip_html').bind(hexo);
+    const trim = hexo.extend.helper.get('trim').bind(hexo);
     if (yid) {
         return `<p class='embed-responsive embed-responsive-16by9'><iframe src='https://www.youtube.com/embed/${yid}?rel=0' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe></p>`
     } else if (bid) {
         return `<p class='embed-responsive embed-responsive-16by9' style='border-bottom: 1px solid #ddd;'><iframe src='//player.bilibili.com/player.html?bvid=${bid}&high_quality=1&as_wide=1' scrolling='no' border='0' frameborder='no' framespacing='0' allowfullscreen></iframe></p>`;
     }
-    return `<p><a class='link-bookmark' href='${url}' target='_blank'><span data-bookmark-img='${img}' data-bookmark-title='${firstChar}'><img src='${img}'/></span><span><span> ${title}</span><span> ${content}</span><span> ${url}</span></span></a></p>`;
+    // if (url.startsWith('https://www.cloudflare.com')) {
+    //     console.log('args.map:', args.map(getValue), content);
+    // }
+    return `<p><a class='link-bookmark' href='${url}' target='_blank'><span data-bookmark-img='${img}' data-bookmark-title='${firstChar}'><img src='${img}'/></span><span><span> ${title}</span><span> ${strip_html(trim(content))}</span><span> ${url}</span></span></a></p>`;
 }, {
     ends: true,
 });
