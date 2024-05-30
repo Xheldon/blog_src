@@ -287,7 +287,7 @@ OK, 聊完了配置文件, 再说说这个项目是怎么工作的.
 
 一图胜千言, 上图, 首先是代码界面:
 
-![项目结构]({{site.static_url}}/img/in-post/2016/vue-test.png "项目结构")
+![项目结构](https://static.xheldon.cn/img/in-post/2016/vue-test.png "项目结构")
 
 (若图片显示较小请在右键在新标签页单独查看)
 
@@ -318,7 +318,7 @@ plugins:[
 
 之后是效果页面:
 
-![页面效果图]({{site.static_url}}/img/in-post/2016/page-detail.png "页面效果图")
+![页面效果图](https://static.xheldon.cn/img/in-post/2016/page-detail.png "页面效果图")
 (若图片显示较小请在右键在新标签页单独查看)
 
 看图就明白什么意思啦.

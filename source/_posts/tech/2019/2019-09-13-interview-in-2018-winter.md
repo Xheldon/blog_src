@@ -19,7 +19,7 @@ tags:
 
 下面是我的面试安排, 跨过了 2018 年冬和 2019 年初的时间段:
 
-![面试安排]({{site.static_url}}/img/in-post/2019/interview-2018.png '面试安排')
+![面试安排](https://static.xheldon.cn/img/in-post/2019/interview-2018.png '面试安排')
 
 可以看到安排的非常满, 有时候一天面 6 场(含电话面试). 好了废话不多说, 下面按时间顺序开始正文.
 

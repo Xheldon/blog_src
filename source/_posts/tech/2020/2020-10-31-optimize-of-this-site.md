@@ -26,7 +26,7 @@ tags:
 
 我一拍大腿，~~直呼内行~~，免费的 cdn 加速，而且看起来不复杂，而且 jsdelivr 的卖点之一就是在中国拥有合法 ICP 执照的的国外公共 CDN 服务提供商，其在中国有数百个服务器。
 
-![赣江]({{site.static_url}}/img/in-post/2020/jsdelivr.png "jsdelivr china")
+![赣江](https://static.xheldon.cn/img/in-post/2020/jsdelivr.png "jsdelivr china")
 
 说搞就搞，于是有了下面几步操作：
 
@@ -44,7 +44,7 @@ tags:
 2. 添加资源仓库 `x_blog-static` 为博客仓库的子模块：`git submodule add https://github.com/Xheldon/x_blog-static.git ./static` ，并静态资源仓库（刚刚的 static 文件夹下的内容又）放到 `static` 文件夹下。
 2. 修改 `_config.yml` 文件，添加配置对象 `static_url: https://cdn.jsdelivr.net/gh/xheldon/x_blog-static` ，方便下一步修改静态资源的绝对路径。
 2. 增加本地开发配置文件 `_config.dev.yml` 文件，添加配置对象 `static_url: /static` ，方便下一步修改静态资源的绝对路径。
-3. 全局替换修改本地绝对路径引用的静态资源，如 img 的 src 是 `/static/img/in-post/logo.png` 或者 `/static/css/main.css` 等路径，替换为 {% raw %}`{{site.static_url}}/img/logo.png`{% endraw %}等，这里需要注意的是，Liquid 语法的标签 {% raw %}`{{}}`{% endraw %}即使是在 markdown 文件中，也是可以用的，很棒。
+3. 全局替换修改本地绝对路径引用的静态资源，如 img 的 src 是 `/static/img/in-post/logo.png` 或者 `/static/css/main.css` 等路径，替换为 {% raw %}`https://static.xheldon.cn/img/logo.png`{% endraw %}等，这里需要注意的是，Liquid 语法的标签 {% raw %}`{{}}`{% endraw %}即使是在 markdown 文件中，也是可以用的，很棒。
 4. 将一些常修改的文件如 `main.scss` 文件仍然放在本地比较好，原因下面有说到。
 5. 将修改 push 到远端即可。
  

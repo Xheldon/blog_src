@@ -64,4 +64,4 @@ OK, 废话不多说, 看下如何从 Evernote 迁移到 备忘录吧.
 
 最后附上一张图(图压缩了):
 
-![备忘录笔记本]({{site.static_url}}/img/in-post/2019/notes.png)
+![备忘录笔记本](https://static.xheldon.cn/img/in-post/2019/notes.png)

@@ -33,6 +33,6 @@ tags:
 
 ### 附图一张
 
-![赣江]({{site.static_url}}/img/in-post/in-the-ganjiang-river/ganjiang.png "赣江边上")
+![赣江](https://static.xheldon.cn/img/in-post/in-the-ganjiang-river/ganjiang.png "赣江边上")
 
 

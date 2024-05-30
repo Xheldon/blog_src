@@ -66,7 +66,7 @@ export default{
 [Vue warn]: The data property "a" is already declared as a prop. Use prop default value instead.
 ```
 
-![props VS data]({{site.static_url}}/img/in-post/2016/propsVSdata.png "props VS data")
+![props VS data](https://static.xheldon.cn/img/in-post/2016/propsVSdata.png "props VS data")
 
 而 `computed` 返回的函数名和 `data` 上的属性名可以重复, 并且不会有任何提示, 但是同名覆盖了之后, 因为在初始化的时候, 从控制台可以看到 `_data` 后于 `_computedWatcher` 来设置这个重复属性的 `getter` 和 `setter`(不知道是不是这个原因, 先放在这个地方以待我深入研究之后再修改这篇文章), 因此导致了被覆盖. 相关原理可以 [看这篇介绍](https://juejin.im/entry/577639de165abd00547b0924)
 
@@ -92,11 +92,11 @@ export default{
 }
 ```
 
-![computed VS data]({{site.static_url}}/img/in-post/2016/computedVSdata1.png "computed VS data")
+![computed VS data](https://static.xheldon.cn/img/in-post/2016/computedVSdata1.png "computed VS data")
 
 `Vue devtool` 正确显示了出来:
 
-![computed VS data]({{site.static_url}}/img/in-post/2016/computedVSdata3.png "computed VS data")
+![computed VS data](https://static.xheldon.cn/img/in-post/2016/computedVSdata3.png "computed VS data")
 
 如果 `computed` 上的方法名和 `data` 上的属性名不重复:
 
@@ -120,7 +120,7 @@ export default{
 }
 ```
 
-![computed VS data]({{site.static_url}}/img/in-post/2016/computedVSdata2.png "computed VS data")
+![computed VS data](https://static.xheldon.cn/img/in-post/2016/computedVSdata2.png "computed VS data")
 
 此外, `methods` 和 `computed` 方法的区别除了后者有缓存而前者没有外(即后者除非其所依赖的响应式数据发生变化, 否则不会重新计算), 如果两者均是为了返回插值的话,则 `methods` 上的方法使用是 `functionName()`,
 而 `computed` 上的方法引用是 `functionName`, 即前者需要执行函数, 后者不需要执行.
@@ -503,7 +503,7 @@ obj:{
 
 那么每次点击这个叉叉删除当前 `li` 的时候, `Vue` 都会就地复用当前的元素, 直接移动数据到正确的位置, 而不是 `remove` 删除的 `dom` 元素, 避免 `reflow`, 下面是使用 `chrome` 的 `devtool` 工具显示的当点击叉叉删除元素的时候, 页面 `render` 的情况:
 
-![没有key]({{site.static_url}}/img/in-post/2016/nokey.png "没有key")
+![没有key](https://static.xheldon.cn/img/in-post/2016/nokey.png "没有key")
 
 可以看到 `reflow` 的部分只有最下面那一点
 
@@ -515,7 +515,7 @@ obj:{
 
 再看点击叉叉之后浏览器的 `render` 的情况:
 
-![有key]({{site.static_url}}/img/in-post/2016/key.png "有key")
+![有key](https://static.xheldon.cn/img/in-post/2016/key.png "有key")
 
 有人可能会有疑惑, 为什么这个地方需要自己手动实现一个 `value` 上的 `value.key`, 而不是使用 `Vue` 给的 `(value, key)` 中的 `key` 呢?:
 
@@ -915,7 +915,7 @@ methods:{
 ```
 会发现动画效果并不如意:
 
-![animate]({{site.static_url}}/img/in-post/2016/animateBad.gif "animate")
+![animate](https://static.xheldon.cn/img/in-post/2016/animateBad.gif "animate")
 
 而如果把 `enter` 放到 `enter-active` 的后面:
 ```css
@@ -944,7 +944,7 @@ methods:{
 ```
 就完美了:
 
-![animate]({{site.static_url}}/img/in-post/2016/animateGood.gif "animate")
+![animate](https://static.xheldon.cn/img/in-post/2016/animateGood.gif "animate")
 
 在对比了这四个 `css` 类名的可能顺序之后, 发现只要 `v-enter` 放到 `v-enter-active` 的后面就能实现效果, 其他类名随意.
 
@@ -987,7 +987,7 @@ methods:{
 ```
 结果:
 
-![animate]({{site.static_url}}/img/in-post/2016/animateWithout.gif "animate")
+![animate](https://static.xheldon.cn/img/in-post/2016/animateWithout.gif "animate")
 
 可以看到, 只有 `opacity` 产生了动画, `transform` 没有动画!(同学们可以测试下是用 `animate.css` 的时候, 使用 `Animate.css` 中相同的属性来提前设置元素, 是否还有动画效果, 欢迎提 `issue`.)
 
@@ -1021,15 +1021,15 @@ methods:{
 
 坐标帝都, `ping` `cn.vuejs.org`:
 
-![ping]({{site.static_url}}/img/in-post/2016/ping1.png "ping")
+![ping](https://static.xheldon.cn/img/in-post/2016/ping1.png "ping")
 
 `ping` 我司`FQ` `VPS`:
 
-![ping]({{site.static_url}}/img/in-post/2016/ping2.png "ping")
+![ping](https://static.xheldon.cn/img/in-post/2016/ping2.png "ping")
 
 `dig` 一下:
 
-![dig]({{site.static_url}}/img/in-post/2016/dig1.png "dig")
+![dig](https://static.xheldon.cn/img/in-post/2016/dig1.png "dig")
 
 可以看到使用的是 `cloudflare` 的服务, 国际网站不好做呀, 呵呵.
 

@@ -153,11 +153,11 @@ module.exports = function(){
 
 `app.js` 页面:
 
-![webpack-async]({{site.static_url}}/img/in-post/2016/webpack-async-1.png "webpack-async")
+![webpack-async](https://static.xheldon.cn/img/in-post/2016/webpack-async-1.png "webpack-async")
 
 `app2.js` 页面
 
-![webpack-async]({{site.static_url}}/img/in-post/2016/webpack-async-2.png "webpack-async")
+![webpack-async](https://static.xheldon.cn/img/in-post/2016/webpack-async-2.png "webpack-async")
 
 可以看到, 因为 `if_be_remove.js` 在两个 `chunk` 中, 即 `1-love.js` 和 `3.hate.js` 被引用, 而同时又被这两个 `chunk` 的父级, 也即 `app.js` 和 `app2.js` 引用, 因此在这两个 `chunk` 中, 没有出现 `if_be_remove.js` 的代码.
 

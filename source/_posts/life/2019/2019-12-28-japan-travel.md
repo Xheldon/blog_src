@@ -48,17 +48,17 @@ tags:
 
 因为是 6 点的飞机，因此凌晨 3 点左右起床收拾准备好出门，到机场候机，飞往福州长乐。然后不用取行李，转机到大阪：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-1.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-1.png)
 
 去之前了解了日本的交通线路非常复杂，于是我们到大阪关西的时候，现场买了 icoca 卡，然后现场买了 haruka 轻轨去到了京都：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-2.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-2.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-3.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-3.png)
 
 到达京都站前坐公交：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-4.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-4.png)
 
 到大阪关西国际机场就是 6 点多了，还要坐轻轨到京都市区，然后到了市区不知道怎么坐车到河源町五条，中间还上错过一次车，做一次车就差不多 20 块人民币，我们两人就浪费了 40 块，在京都车站说英语问了几个人，还遇到在日本的中国人，最后也还没问个所以然，最后我们还是决定有公交车到站的时候问司机，然后在一车日本人嫌弃的目光中，指着手机上的河源町五条的地图说：here，go？ 司机也很熟悉我这种外国人了，说了 yes yes，然后最后我们终于成功抵达了位于河源町五条的酒店。
 
@@ -74,75 +74,75 @@ tags:
 
 早上 7 点多出门，准备车去清水寺，路过一条河，挺好看的，据说叫鸭川？确实挺多鸭子的：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-6.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-6.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-5.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-5.png)
 
 到了公交站，我们是走过去的，是个上坡路：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-7-1.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-7-1.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-7.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-7.png)
 
 到达后人挺多的，然后遇到一个听口音是个俄罗斯的小朋友在哭闹，孩子爷爷父母都在哄，哈哈
 
 拍了挺多照片，感觉还挺好看的，不过部分有在装修，有些地方没去：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-8.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-8.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-9.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-9.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-10.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-10.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-11.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-11.png)
 
 一路边看边逛，走到了二年坂、三年坂：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-12.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-12.png)
 
 路上有一些很有意思的小店：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-13.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-13.png)
 
 然后就到了吉卜力的店，吉卜力总店在东京，来日本之前淘宝买票没抢到，所以只能在这里买点手办了：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-14.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-14.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-15.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-15.png)
 
 逛完了二、三年坂，吃了个饭：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-15-1.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-15-1.png)
 
 评价这次饭，和媳妇儿一致觉得，饭香是香，但是没味儿。就是我和媳妇儿都喜欢吃那种油炸、爆炒、葱姜蒜、辣椒、醋之类的重口的食物，在这儿吃的拉面，有种寡淡的感觉，一个是没味儿，像没放盐似的，一个是没醋没辣椒，吃的很...憋屈，对就是很憋屈，一致评价：日本的食物不行。后来又吃了几家日本的饭馆，高端的、低端的都有，更加加深了这个印象。
 
 一路向北走，路上很多寺庙：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-16.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-16.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-17.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-17.png)
 
 后来就逛到了祇园：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-18.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-18.png)
 
 祇园离八坂神社很近，想着 31 号要来跨年，所以没去逛了，到时候再来。
 
 走这么多路发现离酒店也不是很远，于是决定走路回酒店，顺便感受一下普通日本人的生活气息，于是在小巷中肆无忌惮的走了起来：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-19.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-19.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-20.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-20.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-21.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-21.png)
 
 晚上的时候，想去大众点评排名第七的 京之烧肉处·弘 的烧肉店，需要预约，这周都没有位置了，所以我们就没吃到，就去吃了另一家烤肉...都差不多吧：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-22.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-22.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-22-1.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-22-1.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-22-2.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-22-2.png)
 
 吃完之后基本就结束了今天的行程。
 
@@ -150,25 +150,25 @@ tags:
 
 早上还是从酒店门口车站，坐地铁到伏见稻荷站：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-23.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-23.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-23-1.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-23-1.png)
 
 跟着人流就上来了，确实比较震撼，很多的千鸟居，挺好看的：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-24.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-24.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-25.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-25.png)
 
 逛完就比较累，然后就回来了，媳妇儿回来路上买了些药妆，给朋友带了点东西。路过了一家影像店，里面有国内拍的电视剧在日本上映的，文化输出哈哈：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-26.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-26.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-27.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-27.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-28.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-28.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-29.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-29.png)
 
 二楼是成人区，里面有一些 AV 电影，我和媳妇儿一边逛一边感慨：日本真是个神奇的国家...随即又对世界文化多元性产生了由衷的佩服，有些东西在一个地方是禁止，然而在另一个地方却被大力弘扬，如果一个人往返这两个地方之间，很难不产生：‘世上本无事，庸人自扰之’ 的感慨。然后又生出了类似于 ‘不管什么体制，能让人民生活的幸福就是好体制’ 的想法，内容少儿不宜（露胸不露下面，下面会打码）还是不放图了。
 
@@ -180,29 +180,29 @@ tags:
 
 本来计划是 29 号第一天就去八坂神社的，后来想着反正 31 号夜里也要去八坂神社跨年，于是就把这个行程放到 31 号了。因为跨年是在夜里，所以上午就继续左右横逛了
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-30.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-30.png)
 
 去了柯南里的佛光寺（是之前计划之外的）：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-31.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-31.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-32.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-32.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-33.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-33.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-34.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-34.png)
 
 晚上就来到了八坂神社，人挺多的，跟庙会似的（其实就是庙会啦），灯笼挺好看，还有一些穿着和服的男女，可能是见的少，感觉啥都挺好看：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-35.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-35.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-36.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-36.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-37.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-37.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-38.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-38.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-39.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-39.png)
 
 最后我们排队准备等凌晨拜一拜，但是因为第二天还要赶火车，而且夜里温度很低，我们等到十一点半左右被冻得不行，然后就提前溜回酒店了。
 
@@ -214,21 +214,21 @@ tags:
 
 从京都还是从来的那个车站，坐新干线到东京，京都这个车站也出现在柯南里面过，当时园子的原话是 ‘京都还真是日本人的故乡啊~’：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-40.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-40.png)
 
 然后就坐新干线来到了东京，嗯，挺热的，哈哈。
 
 到东京后又换乘了一趟车到了秋叶原附近的酒店，路上看到井盖都感到很稀奇：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-41.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-41.png)
 
 然后到酒店收拾了一下，马上出门去附近的秋叶原的友都八喜逛了逛，入手了 Switch，顺便跟超级玛丽合了影：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-42.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-42.png)
 
 买完后，将东西放回酒店（友都八喜离酒店非常近），就又出门，去六本木之秋，看夜景了~：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-43.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-43.png)
 
 然后就回酒店了。
 
@@ -238,11 +238,11 @@ tags:
 
 第一站，上野之森美术馆，有莫奈和梵高的真迹正在展出：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-44.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-44.png)
 
 然后又去了国立西洋美术馆，就在上野之森美术馆的北边，非常近。这个馆媳妇儿反正是看了很久，图片这个据她说叫宫鹅（是这么叫的吧？），意大利还是哪儿的画家画的，非常有名，我也不懂：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-45.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-45.png)
 
 逛完两个很累了，于是回到了秋叶原开始了扭蛋，扭了好几百人民币的蛋...感觉媳妇儿非常上瘾。
 
@@ -254,19 +254,19 @@ tags:
 
 去了一些中古店，看了大量的手办，媳妇儿受我的影响，想买个坂本的手办（《在下坂本，有何贵干》或者翻译为《我叫坂本我最屌》），找了半天逛了好几家店没找到，还用手机打开坂本的图片，然后给店员看，店员看完就哈哈大笑了比划了个叉说 No，意思就是没有：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-46.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-46.png)
 
 去了伊东屋文具店，很贵，买不起，逛了一圈去了无印良品买了个书包和小杯子等一些东西。
 
 然后去了任天堂的店，貌似日本有一个，美国有一个，奇怪的是美国那个还先开的，日本本土这个家任天堂的店还是刚开没多久...果然赚钱先赚爸爸的钱，牛逼：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-47.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-47.png)
 
 买了些任天堂的纪念品，比如手提袋、和一个 Switch 的游戏、霸王龙等。
 
 今天一天基本都是在买买买，有给朋友同事带的，也有自己买的，和扭的手办，加起来拍个照：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-48.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-48.png)
 
 今天就过去了。
 
@@ -275,7 +275,7 @@ tags:
 
 因为提前在网上自己交预付款定的藤子·F·不二雄的票，所以今天一天就是来逛纪念馆：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-49.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-49.png)
 
 它的位置比较远，还需要换乘，中途谷歌地图的误差非常大，导致我们差点没赶上车。我们是从秋叶原坐车，换乘后到了一个地方，那个地方有直达纪念馆的专车（是车身上印着大雄哆啦A梦等小伙伴的车！），然后我们到了地方后却没找到车...眼瞅着预定的票的时间就要到了，非常着急，然后突然出现了一位驼背的老奶奶，我的天，这位老奶奶简直跟哆啦A梦里面的大雄的奶奶一模一样！无论是外貌还是说话，然后她用日语说：哆啦A梦？我急忙说：YES！然后她就用日语给我指路（她也不会英语...），我也听不懂，但是看她的手势应该是直走上桥，然后她比划着有个哆啦A梦的图片箭头（我居然听懂了！！！）顺着箭头下桥就行了，然后我就听明白了。其实老奶奶用全程用日语说的，加上手势，日语部分我就只听懂了 ‘哆啦A梦’。然后我用日语说谢谢谢谢！（阿里嘎多！）一边挥手告别。我边走还边跟媳妇儿说，你有没有觉得她很像大雄的奶奶？然后我又回头看了老奶奶一眼，她已经被建筑物挡住看不到了。
 
@@ -283,35 +283,35 @@ tags:
 
 纪念馆专用巴士：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-50.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-50.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-51.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-51.png)
 
 车大概走了 20 分钟到站：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-52.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-52.png)
 
 检票排队过程中，墙上有些小哆啦的可爱造型：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-53.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-53.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-54.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-54.png)
 
 因为是藤子·F·不二雄纪念馆，所以都是在围绕他的生平在陈列，讲述他是如何进入漫画界，如何创作出哆啦A梦这个角色，以及如何与自己的妻儿生活的，感觉很棒。
 
 樵夫之泉，哈哈：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-55.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-55.png)
 
 认真看漫画的小哆啦：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-56.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-56.png)
 
 大雄家模型：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-57.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-57.png)
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-58.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-58.png)
 
 还扭了哆啦A梦的扭蛋，神奇的是，扭蛋总共有 5 种，我们扭了 5 次，只有一次是重复的，其他四次都是不一样的哆啦A梦造型，刚好旁边听口音是个台湾人，他抱怨说自己扭了两个一样的，于是我一看，刚好他的一样的是我没有的，我的一样的是他没有的，于是我上去说我们换一下吧！他说 OK。所以最终结果是我们扭了五次，集齐了全部的五种哆啦A梦！
 
@@ -319,7 +319,7 @@ tags:
 
 惊慌的哆啦A梦：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-59.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-59.png)
 
 跟之前一样，拍了很多媳妇儿和本人出境的照片，就不放了~
 
@@ -331,7 +331,7 @@ tags:
 
 然后第二天坐飞机先到首尔中转，吃了个饭。嗯不得不说棒子的口味就接近中国了许多，什么泡菜辣椒之类的就有了，哈哈：
 
-![]({{ site.static_url }}/img/in-post/japan-travel/j-60.png)
+![](https://static.xheldon.cn/img/in-post/japan-travel/j-60.png)
 
 ### 结束语
 

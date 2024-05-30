@@ -220,11 +220,11 @@ Prosemirror 定义了它自己的[数据结构](https://prosemirror.xheldon.com/
 ```js
 <p>This is <strong>strong text with <em>emphasis</em></strong></p>
 ```
-![dom structure]({{site.static_url}}/img/in-post/2019/dom-structure.png)
+![dom structure](https://static.xheldon.cn/img/in-post/2019/dom-structure.png)
 
 然而在 Prosemirror 中, 内联元素被表示成一个扁平的模型, 他们的节点标记被作为 metadata 信息附加到相应 node 上:
 
-![prosemirror-document-structure]({{site.static_url}}/img/in-post/2019/prosemirror-document-structure.png)
+![prosemirror-document-structure](https://static.xheldon.cn/img/in-post/2019/prosemirror-document-structure.png)
 
 这种数据结构显然更符合我们心中的这类文本该有的样子. 它允许我们使用字符的偏移量而不是一个树节点的路径来表示其所处段落中的位置, 并且使一些诸如 splitting 内容或者改变内容 style 的操作变得很容易, 而不是以一种笨拙的树的操作来修改内容.
 
@@ -261,7 +261,7 @@ DOM 树与 ProseMirror document 的另一个不同是他们对 nodes 对象的�
 
 一个 document 的数据结构看起来像下面这样:
 
-![prosemirror-data-structure]({{site.static_url}}/img/in-post/2019/prosemirror-data-structure.png)
+![prosemirror-data-structure](https://static.xheldon.cn/img/in-post/2019/prosemirror-data-structure.png)
 
 每个 node 都是一个 [Node](https://prosemirror.xheldon.com/docs/ref/#model.Node) 类的实例. 它们用 [type](https://prosemirror.xheldon.com/docs/ref/#model.NodeType) 属性进行归类, 通过 type 属性可以知道 node 的名字, 它可以使用的 attributes, 诸如此类的信息. Node types(和 mark types) 只会被每个 schema 创建一次, 它们知道自己是属于哪个 schema.
 
@@ -304,7 +304,7 @@ Prosemirror nodes 支持两种类型的 indexing——它们既可以被当成�
 ```
 Token 顺序和 position 则看起来像下面这样:
 
-![prosemirror-indexing]({{site.static_url}}/img/in-post/2019/prosemirror-indexing.png)
+![prosemirror-indexing](https://static.xheldon.cn/img/in-post/2019/prosemirror-indexing.png)
 
 每个 node 都有一个 [nodeSize](https://prosemirror.xheldon.com/docs/ref/#model.Node.nodeSize) 属性表示整个 node 的尺寸大小, 你还可以通过 .content.size 获得 node 的 content 的尺寸大小. 需要注意的是对于 document 的外层节点(即 DOM 中 contenteditable 属性所处的节点, 是整个 document 的根节点——译者注)来说, 开始和关闭 token 不被认为是 document 的一部分(因为你无法将光标放到 document 的外面), 因此 document 的尺寸是 doc.content.size, 而不是 doc.nodeSize(虽然 document 的开关标签不被认为是 document 的一部分, 但是仍然计数. 后者始终比前者大2——译者注).
 
@@ -715,7 +715,7 @@ Prosemirror 的 [editor view](https://prosemirror.xheldon.com/docs/ref/#view.Edi
 
 所以呢, editor view 展示了一个给定的 editor state, 同时当一些事件发生的时候, 它新建一个 transaction 然后广播之(广播这个新建的 transaction 供其他 plugin 或事件使用——译者注). 然后这个 transaction 正常情况下会被拿来创建一个新的 state, 然后这个新的 state 被 view 的 [updateState](https://prosemirror.xheldon.com/docs/ref/#view.EditorView.updateState) 方法使用:
 
-![prosemirror-data-flow]({{site.static_url}}/img/in-post/2019/prosemirror-data-flow.png)
+![prosemirror-data-flow](https://static.xheldon.cn/img/in-post/2019/prosemirror-data-flow.png)
 
 如图所示, Prosemirror 创建了一个简单的循环数据流, 它与典型的命令式的事件处理的实现方式(在 JavaScript 界) 是完全不同的, 后者往往会创建一个更复杂的数据流网络.
 

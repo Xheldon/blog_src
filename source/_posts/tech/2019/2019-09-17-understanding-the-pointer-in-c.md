@@ -86,6 +86,6 @@ void swap(int *a, int *b) {
 
 上个图加深理解:
 
-![交换值函数]({{site.static_url}}/img/in-post/2019/c-pointer-1.png "交换值函数")
+![交换值函数](https://static.xheldon.cn/img/in-post/2019/c-pointer-1.png "交换值函数")
 
-![交换值函数]({{site.static_url}}/img/in-post/2019/c-pointer-2.png "交换值函数")
+![交换值函数](https://static.xheldon.cn/img/in-post/2019/c-pointer-2.png "交换值函数")

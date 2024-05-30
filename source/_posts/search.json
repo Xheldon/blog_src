@@ -4,7 +4,7 @@
       {
         "title"    : "如何使用 Notion Flow 模块转换",
         "subtitle" : " 我有特别的 Notion Flow 使用技巧~",
-        "tags"     : "技术, 教程, 技巧, 工作流, Notion, Jekyll",
+        "tags"     : "技术, 教程, 技巧, 工作流, Jekyll, Notion",
         "url"      : "/tech/how-i-use-notion-flow.html",
         "date"     : "Sun Mar 31 2024 08:00:00 GMT+0800"
       } ,
@@ -12,7 +12,7 @@
       {
         "title"    : "【视频】使用 Notion Flow 简化你的博客发布流程",
         "subtitle" : " 分享 Notion Flow 的配置视频",
-        "tags"     : "技术, 折腾, 教程, 工作流, 插件, Notion, 视频",
+        "tags"     : "技术, 折腾, 教程, 工作流, 插件, 视频, Notion",
         "url"      : "/tech/use-notion-flow.html",
         "date"     : "Thu Mar 21 2024 08:00:00 GMT+0800"
       } ,
@@ -28,7 +28,7 @@
       {
         "title"    : "使用 Apple TV 收看北京联通 IPTV",
         "subtitle" : " 本文介绍了一种使用 Apple TV 观看北京联通 IPTV 的方案，以供需要者参考。",
-        "tags"     : "生活, 经验, Apple, 折腾, 苹果, 网络, 路由器, 教程",
+        "tags"     : "生活, Apple, 经验, 折腾, 苹果, 网络, 路由器, 教程",
         "url"      : "/life/iptv-for-apple-tv-in-beijing.html",
         "date"     : "Mon Oct 30 2023 08:00:00 GMT+0800"
       } ,
@@ -36,7 +36,7 @@
       {
         "title"    : "TeslaMate 使用指南",
         "subtitle" : " 介绍一下 TeslaMate 安装和使用过程中的一些问题。",
-        "tags"     : "生活, 经验, 使用体验, 折腾, 特斯拉, 车, TeslaMate",
+        "tags"     : "生活, 使用体验, 经验, 折腾, 特斯拉, 车, TeslaMate",
         "url"      : "/life/the-use-of-teslamate.html",
         "date"     : "Wed Sep 06 2023 08:00:00 GMT+0800"
       } ,
@@ -156,7 +156,7 @@
       {
         "title"    : "博客自动化流程及体验优化——第二弹",
         "subtitle" : " 博客体验又更上一层楼啦！",
-        "tags"     : "技术, Craft, 插件, 优化, Jekyll, CI, AppleScript",
+        "tags"     : "技术, 优化, 插件, Craft, CI, AppleScript, Jekyll",
         "url"      : "/tech/optimize-of-my-blog-2.html",
         "date"     : "Mon Aug 15 2022 00:13:32 GMT+0800"
       } ,
@@ -220,7 +220,7 @@
       {
         "title"    : "2022年我的博客自动化流程",
         "subtitle" : " 技术在进步，我也在折腾。",
-        "tags"     : "技术, 集成, Craft, 插件, CI",
+        "tags"     : "技术, 集成, 插件, Craft, CI",
         "url"      : "/tech/my-blog-ci-in-2022.html",
         "date"     : "Wed Feb 23 2022 15:55:30 GMT+0800"
       } ,
@@ -252,7 +252,7 @@
       {
         "title"    : "本文通过 Craft Extension 发送",
         "subtitle" : " ",
-        "tags"     : "集成, Craft, 插件",
+        "tags"     : "集成, 插件, Craft",
         "url"      : "/tech/use-craft-extension-to-write-blog.html",
         "date"     : "Thu Dec 09 2021 00:28:30 GMT+0800"
       } ,
@@ -330,18 +330,18 @@
       } ,
     
       {
-        "title"    : "博客优化技巧",
-        "subtitle" : " ",
-        "tags"     : "技术, Web, 优化",
-        "url"      : "/tech/optimize-of-this-site.html",
-        "date"     : "Sat Oct 31 2020 22:44:30 GMT+0800"
-      } ,
-    
-      {
         "title"    : "免费使用私有仓库发布 GitHub Pages",
         "subtitle" : " ",
         "tags"     : "技术, GitHub, Git",
         "url"      : "/tech/the-using-of-github-pages.html",
+        "date"     : "Sat Oct 31 2020 22:44:30 GMT+0800"
+      } ,
+    
+      {
+        "title"    : "博客优化技巧",
+        "subtitle" : " ",
+        "tags"     : "技术, Web, 优化",
+        "url"      : "/tech/optimize-of-this-site.html",
         "date"     : "Sat Oct 31 2020 22:44:30 GMT+0800"
       } ,
     
@@ -356,7 +356,7 @@
       {
         "title"    : "我的数字生活",
         "subtitle" : "“21 世纪最重要的是不要浪费时间在没有意义的事情上”",
-        "tags"     : "随笔, 生活, 日常",
+        "tags"     : "生活, 日常, 随笔",
         "url"      : "/life/the-digital-life-of-mine.html",
         "date"     : "Fri Feb 14 2020 18:53:50 GMT+0800"
       } ,
@@ -364,7 +364,7 @@
       {
         "title"    : "2020元旦日本行",
         "subtitle" : "“日本真的是一个神奇的国家” 媳妇儿说",
-        "tags"     : "生活, 日本, 旅行",
+        "tags"     : "日本, 生活, 旅行",
         "url"      : "/life/japan-travel.html",
         "date"     : "Mon Jan 06 2020 09:37:00 GMT+0800"
       } ,
@@ -436,7 +436,7 @@
       {
         "title"    : "梦的解析之小赵",
         "subtitle" : "“今天的这个梦，总体氛围是在恐惧与害怕中度过的”，小赵对我说。",
-        "tags"     : "随笔, 生活, 故事, 梦",
+        "tags"     : "生活, 随笔, 故事, 梦",
         "url"      : "/life/the-analysis-of-dream.html",
         "date"     : "Mon Sep 19 2016 22:34:23 GMT+0800"
       } ,
@@ -564,7 +564,7 @@
       {
         "title"    : "赣江边上, 滕王阁前",
         "subtitle" : "“阁中帝子今何在？槛外长江空自流”",
-        "tags"     : "随笔, 生活",
+        "tags"     : "生活, 随笔",
         "url"      : "/life/in-the-ganjiang-river.html",
         "date"     : "Fri Jun 05 2015 22:13:35 GMT+0800"
       } 

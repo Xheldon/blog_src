@@ -30,7 +30,7 @@ tags:
 
 我将一些小的 `css` 和 `js` 直接放到页面中, 如 `highlight.css` 和 `search.js`, 都通过 `style` 和 `script` 标签直接写到了页面中, 这样做的好处是很大的, 因为这两个文件小, 下载文件所需要的时间可以忽略不计, 如果使用外部引入的形式, 那么加载这两个文件的时间主要消耗在了 [`TTFB`](https://developers.google.com/web/tools/chrome-devtools/network-performance/reference#timing) (需FQ)上了:
 
-![TTFB]({{site.static_url}}/img/in-post/2016/TTFB.png "TTFB")
+![TTFB](https://static.xheldon.cn/img/in-post/2016/TTFB.png "TTFB")
 
 ## 设置
 

@@ -187,4 +187,4 @@ new Watcher(a, 'b', function (data, key) {
 
 ## 代码执行顺序示意图:
 
-![示意图]({{site.static_url}}/img/in-post/2016/vue-reactive.png "效果示意")
+![示意图](https://static.xheldon.cn/img/in-post/2016/vue-reactive.png "效果示意")

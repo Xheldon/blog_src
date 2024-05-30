@@ -1,0 +1,30 @@
+[
+	{
+		"title": "ProseMirror 中文文档",
+		"subtitle": "经过作者许可的 ProseMirror 中文文档",
+		"image": "prosemirror-cn.png",
+		"url": "https://prosemirror.xheldon.com",
+		"date": "2020年07月17日"
+	},
+	{
+		"title": "Slate 中文文档",
+		"subtitle": "Slate 0.57+ 中文文档",
+		"image": "slate.png",
+		"url": "https://slate.xheldon.com",
+		"date": "2020年11月06日"
+	},
+	{
+		"title": "开源社区贡献",
+		"subtitle": "很惭愧，做了一点微小的工作",
+		"image": "community.png",
+		"url": "/projects/community/",
+		"date": "2020年02月14日"
+	},
+	{
+		"title": "Alfred MDN 中文高级搜索",
+		"subtitle": "改进版的 Alfred MDN 中文搜索",
+		"image": "alfred-mdn-cn.png",
+		"url": "https://www.npmjs.com/package/alfred-mdn-cn",
+		"date": "2021年07月08日"
+	}
+]

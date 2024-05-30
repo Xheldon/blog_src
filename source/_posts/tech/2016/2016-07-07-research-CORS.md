@@ -78,7 +78,7 @@ button.addEventListener('click', xhrSend);
 
 因为服务端没有设置 `Access-Control-Allow-Origin`, 因此报错:
 
-![VPSServerError]({{site.static_url}}/img/in-post/2016/VPSServerError.png "VPSServerError")
+![VPSServerError](https://static.xheldon.cn/img/in-post/2016/VPSServerError.png "VPSServerError")
 
 接下来在 `b.com` 的服务端加上允许来自 `a.com` 的 `ajax`(需要精确到端口):
 
@@ -93,9 +93,9 @@ app.get('/', function(req, res, next){
 
 再次发起请求:
 
-![VPSServerError1]({{site.static_url}}/img/in-post/2016/VPSServerError1.png "VPSServerError1")
+![VPSServerError1](https://static.xheldon.cn/img/in-post/2016/VPSServerError1.png "VPSServerError1")
 
-![VPSServerError1.1]({{site.static_url}}/img/in-post/2016/VPSServerError1.1.png "VPSServerError1.1")
+![VPSServerError1.1](https://static.xheldon.cn/img/in-post/2016/VPSServerError1.1.png "VPSServerError1.1")
 
 控制台没有报错, 而且状态码为 `200` 说明 `b.com` 已经允许来自 `a.com:9090` 的请求.
 
@@ -111,11 +111,11 @@ document.cookie = 'name=xheldon';
 document.cookie = 'lover=xiaodan';
 ```
 
-![LocalServer1]({{site.static_url}}/img/in-post/2016/LocalServer1.png "LocalServer1")
+![LocalServer1](https://static.xheldon.cn/img/in-post/2016/LocalServer1.png "LocalServer1")
 
 在本地控制台的 `Application` 选项卡可以看到已经有了 `cookie`, 再看看后端输出:
 
-![LocalServer2]({{site.static_url}}/img/in-post/2016/LocalServer2.png "LocalServer2")
+![LocalServer2](https://static.xheldon.cn/img/in-post/2016/LocalServer2.png "LocalServer2")
 
 OK 没毛病, 访问 `www.a.com:9090` 的时候确实带上了 `cookie`, 意料之中.
 
@@ -123,7 +123,7 @@ OK 没毛病, 访问 `www.a.com:9090` 的时候确实带上了 `cookie`, 意料�
 
 这个时候 `a.com` 的页面是有 `cookie` 的, 因此我们再次点击按钮, 看 `ajax` 请求能否把 `cookie` 传递给 `b.com`:
 
-![VPSServerError1.2]({{site.static_url}}/img/in-post/2016/VPSServerError1.2.png "VPSServerError1.2")
+![VPSServerError1.2](https://static.xheldon.cn/img/in-post/2016/VPSServerError1.2.png "VPSServerError1.2")
 
 和没有加 `cookie` 一样, 并没有获取到来自 `a.com` 的 `cookie`, 这当然是因为安全限制, 也是意料之中.
 
@@ -143,7 +143,7 @@ function xhrSend(e){
 
 因为这次是在加了 `Access-Control-Allow-Origin` 之后的操作, 因此这次浏览器报了个不一样的错误:
 
-![VPSServerError2.1]({{site.static_url}}/img/in-post/2016/VPSServerError2.1.png "VPSServerError2.1")
+![VPSServerError2.1](https://static.xheldon.cn/img/in-post/2016/VPSServerError2.1.png "VPSServerError2.1")
 
 注意到还是因为 `Access-Control-Allow-Origin` 的错误, 但是这次是因为前端设置了一个自定义的 `header`, 因此是一个非简单请求, 对于非简单请求会先发一个预检请求(`prelight`), 请求类型是 `OPTIONS`, 可以查看 [这篇文章](http://harttle.com/2016/12/30/cors-preflight.html) 了解更多. 预检请求目的是嘘寒问暖 `b.com` 的服务器, 是否接受这个 `xiaodan` 的 `header`, 后端在返回的 `header` `Access-Control-Alow-Headers` 中, 没有这个叫做 `xiaodan` 的值, 因此报错.
 
@@ -162,7 +162,7 @@ app.get('/', function(req, res, next){
 
 再次发起请求看看:
 
-![VPSServerError2.1]({{site.static_url}}/img/in-post/2016/VPSServerError2.1.png "VPSServerError2.1")
+![VPSServerError2.1](https://static.xheldon.cn/img/in-post/2016/VPSServerError2.1.png "VPSServerError2.1")
 
 居然是一样的报错结果, 虽然响应了 `200`, 但是服务端没有返回相应的 `Access-Control-Allow-Headers`, 返回结果被浏览器拒绝了(注意不是被服务器拒绝, 服务器是返回了 `200` 的).
 
@@ -185,11 +185,11 @@ app.get('/', function(req, res, next){
 
 服务端:
 
-![VPSServerError2.2]({{site.static_url}}/img/in-post/2016/VPSServerError2.2.png "VPSServerError2.2")
+![VPSServerError2.2](https://static.xheldon.cn/img/in-post/2016/VPSServerError2.2.png "VPSServerError2.2")
 
 客户端:
 
-![VPSServerError2.3]({{site.static_url}}/img/in-post/2016/VPSServerError2.3.png "VPSServerError2.3")
+![VPSServerError2.3](https://static.xheldon.cn/img/in-post/2016/VPSServerError2.3.png "VPSServerError2.3")
 
 分析原因在于(待求证, 回头翻翻 `HTTP` 权威指南再说), 非简单请求的 `prelight` 请求, 不会发起实际请求, 而是先发送一个预检请求, 来测试服务器是否支持某个非简单 `header` 字段, 也就是说, 带有非简单头部的请求不会走到 `app.get('/')` 里面. 同时可以在 `b.com` 的服务器看到, 因为 `console.log(req.headers)` 是写在 `app.get('/')` 里面的, 刚刚的请求 `b.com` 服务器并没有输出任何东西, 因此也印证了这一点. `这一设计旨在确保服务器对 CORS 标准知情，以保护不支持 CORS 的旧服务器`.
 
@@ -208,7 +208,7 @@ function xhrSend(e){
 }
 ```
 
-![VPSServerError2.4]({{site.static_url}}/img/in-post/2016/VPSServerError2.4.png "VPSServerError2.4")
+![VPSServerError2.4](https://static.xheldon.cn/img/in-post/2016/VPSServerError2.4.png "VPSServerError2.4")
 
 这次错误提醒变化, 变成服务端没有设置 `Access-Control-Allow-Credentials` 为 `true` 了, 这个 `header` 是来设置允许请求携带 `cookie` 的, 因此设置一下:
 
@@ -228,15 +228,15 @@ app.get('/', function(req, res, next){
 });
 ```
 
-![VPSServerError2.5]({{site.static_url}}/img/in-post/2016/VPSServerError2.5.png "VPSServerError2.5")
+![VPSServerError2.5](https://static.xheldon.cn/img/in-post/2016/VPSServerError2.5.png "VPSServerError2.5")
 
 仍然没有, 看下 `Chrome` 的 `cookie`:
 
-![VPSServerError2.6]({{site.static_url}}/img/in-post/2016/VPSServerError2.6.png "VPSServerError2.6")
+![VPSServerError2.6](https://static.xheldon.cn/img/in-post/2016/VPSServerError2.6.png "VPSServerError2.6")
 
 确实是设置了 `cookie` 啊, 什么情况? 不服, 想着 `req.headers` 是 `express` 格式化之后的, 看看原始 `headers` `rawHeaders`:
 
-![VPSServerError2.7]({{site.static_url}}/img/in-post/2016/VPSServerError2.7.png "VPSServerError2.7")
+![VPSServerError2.7](https://static.xheldon.cn/img/in-post/2016/VPSServerError2.7.png "VPSServerError2.7")
 
 还是没看到, `cookie` 被狗吃了吗?
 
@@ -244,7 +244,7 @@ app.get('/', function(req, res, next){
 
 OK, 找不到问题的时候就吃个冰淇淋吧. 下楼买了个香菜味的雀巢冰激凌(吃不起哈根达斯), 然后在上楼的时候灵光一闪, 好像我们这个属于是第三方 `cookie`, 会不会是我禁止浏览器追踪导致的呢? 于是吃完冰激凌我在 `chrome` 的设置中, 把 `随浏览流量一起发送"不跟踪"请求` 的钩钩给去掉了:
 
-![VPSServerError2.8]({{site.static_url}}/img/in-post/2016/VPSServerError2.8.png "VPSServerError2.8")
+![VPSServerError2.8](https://static.xheldon.cn/img/in-post/2016/VPSServerError2.8.png "VPSServerError2.8")
 
 对了, 这次我把 `req.headers` 放到了 `app.use` 里面以防万一(其实不会有什么万一)：
 
@@ -268,13 +268,13 @@ app.get('/', function(req, res, next){
 
 因为有非简单头部, 因此和之前一样, 显示的是两个请求:
 
-![VPSServerError2.9]({{site.static_url}}/img/in-post/2016/VPSServerError2.9.png "VPSServerError2.9")
+![VPSServerError2.9](https://static.xheldon.cn/img/in-post/2016/VPSServerError2.9.png "VPSServerError2.9")
 
-![VPSServerError2.9.1]({{site.static_url}}/img/in-post/2016/VPSServerError2.9.1.png "VPSServerError2.9.1")
+![VPSServerError2.9.1](https://static.xheldon.cn/img/in-post/2016/VPSServerError2.9.1.png "VPSServerError2.9.1")
 
 服务器也没有接收到, 说明和这个 `Chrome` 设置无关, 因此为了控制变量 `不跟踪` 和之前一样, 我把它又钩上了, 服务器端(只放了 `GET` 请求):
 
-![VPSServerError2.9.2]({{site.static_url}}/img/in-post/2016/VPSServerError2.9.2.png "VPSServerError2.9.2")
+![VPSServerError2.9.2](https://static.xheldon.cn/img/in-post/2016/VPSServerError2.9.2.png "VPSServerError2.9.2")
 
 还是没有 `Cookie` 字段, 为什么呢?
 
@@ -325,11 +325,11 @@ b.com 的 index.html 代码:
 
 OK, 我们首先访问 `b.com`:
 
-![VPSServerError4]({{site.static_url}}/img/in-post/2016/VPSServerError4.png "VPSServerError4")
+![VPSServerError4](https://static.xheldon.cn/img/in-post/2016/VPSServerError4.png "VPSServerError4")
 
 没毛病, 正常返回网页, 正常设置 `cookie`, 接下来我们在 `a.com` 下, 点击按钮发送请求:
 
-![VPSServerError4.1]({{site.static_url}}/img/in-post/2016/VPSServerError4.1.png "VPSServerError4.1")
+![VPSServerError4.1](https://static.xheldon.cn/img/in-post/2016/VPSServerError4.1.png "VPSServerError4.1")
 
 可以看到在 `a.com` 发起的 `ajax` 请求, 带上了 `b.com` 的 `cookie`.
 
@@ -359,7 +359,7 @@ function xhrSend(e){
 }
 ```
 
-![LocalServer3]({{site.static_url}}/img/in-post/2016/LocalServer3.png "LocalServer3")
+![LocalServer3](https://static.xheldon.cn/img/in-post/2016/LocalServer3.png "LocalServer3")
 
 发现并没有出现 `header` 的 `Cookie` 字段, 意料之中, 想着万一 `getAllResponseHeaders()` 遍历 `header` 的没有 `Cookie` 是因为其被设置成 `enumerable: false` 了呢? 于是我又尝试了 `getResponseHeader()`:
 
@@ -379,7 +379,7 @@ function xhrSend(e){
 }
 ```
 
-![LocalServer3.1]({{site.static_url}}/img/in-post/2016/LocalServer3.1.png "LocalServer3.1")
+![LocalServer3.1](https://static.xheldon.cn/img/in-post/2016/LocalServer3.1.png "LocalServer3.1")
 
 还是意料之中, 因为服务端没有设置暴露出来的 `header` 内容, 于是我在 `b.com` 设置了 `Access-Control-Expose-Header`:
 
@@ -394,7 +394,7 @@ res.set({
 
 然后重新执行 `getResponseHeader('Cookie')` 和 `getAllResponseHeaders()`
 
-![LocalServer3.2]({{site.static_url}}/img/in-post/2016/LocalServer3.2.png "LocalServer3.2")
+![LocalServer3.2](https://static.xheldon.cn/img/in-post/2016/LocalServer3.2.png "LocalServer3.2")
 
 没有错误了, 但是还是无法获取到 `b.com` 的 `cookie`, 即使 `b.com` 服务端都同意了也不行.
 
@@ -423,7 +423,7 @@ xhr.onreadystatechange = function(){
 };
 ```
 
-![LocalServer3.3]({{site.static_url}}/img/in-post/2016/LocalServer3.3.png "LocalServer3.3")
+![LocalServer3.3](https://static.xheldon.cn/img/in-post/2016/LocalServer3.3.png "LocalServer3.3")
 
 就是这样.
 
@@ -458,7 +458,7 @@ xhr.onreadystatechange = function(){
 
 以下摘自 `RFC 6749`
 
-![AUTH]({{site.static_url}}/img/in-post/2016/AUTH.png "AUTH")
+![AUTH](https://static.xheldon.cn/img/in-post/2016/AUTH.png "AUTH")
 
 
 
@@ -468,9 +468,9 @@ xhr.onreadystatechange = function(){
 
 `Google AD Impl:
 
-![googleWithCredientials]({{site.static_url}}/img/in-post/2016/googleWithCredentials.png "googleWithCredientials")
+![googleWithCredientials](https://static.xheldon.cn/img/in-post/2016/googleWithCredentials.png "googleWithCredientials")
 
-![googleWithCredientials2]({{site.static_url}}/img/in-post/2016/googleWithCredentials2.png "googleWithCredientials2")
+![googleWithCredientials2](https://static.xheldon.cn/img/in-post/2016/googleWithCredentials2.png "googleWithCredientials2")
 
 ## 注意
 
