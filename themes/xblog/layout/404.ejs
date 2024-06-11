@@ -12,29 +12,6 @@ layout: layout
     headerStyle: page.headerStyle || 'full',
     title: page.title || 'Xheldon Blog'
 })%>
-
 <script>
-    document.body.classList.add('page-fullscreen');
-</script>
-
-<script>
-	// Note: 进入此页面不一定是 404，还可能是因为 42 迁移到 www 而找不到原地址，因此此处尝试跳转
-	var pathArr = location.pathname.split('/');
-	console.log(pathArr);
-	if (
-		pathArr.length === 3
-		&& pathArr[1] !== 'life'
-		&& pathArr[2]
-		&& pathArr[2].lastIndexOf('.html') > -1) {
-		location.href = '{{ site.baseurl }}/life/' + pathArr[2];
-	}
-	if (
-		pathArr.length === 2
-		&& pathArr[0] === ''
-		&& pathArr[1]
-		&& pathArr[1].lastIndexOf('.html') > -1
-	) {
-		// Note: 此时可能是更久远的时候，没有添加 /tech/ 路径时候的请求过来，手动添加 tech 路径
-		location.href = '{{ site.baseurl }}/tech/' + pathArr[1];
-	}
+  document.body.classList.add('page-fullscreen');
 </script>

@@ -1,8 +1,8 @@
 ---
-layout: single-page
+layout: page
 title: 请打钱
-description: "时间就是金钱，所以，请打钱"
-headerImg: "https://static.xheldon.cn/img/donate-bg.png"
+description: '时间就是金钱，所以，请打钱'
+headerImg: 'https://static.xheldon.cn/img/donate-bg.png'
 multilingual: true
 permalink: /donate/
 headerMask: 0.4
@@ -20,9 +20,10 @@ headerMask: 0.4
 
 ## 因此...
 
-如果你觉得我写的东西对你有帮助, 欢迎赞赏~ 金额 1 分不嫌少 1 亿不嫌多（仅限人民币/美元/比特币）, O(∩_∩)O哈哈~
+如果你觉得我写的东西对你有帮助, 欢迎赞赏~ 金额 1 分不嫌少 1 亿不嫌多（仅限人民币/美元/比特币）, O(∩_∩)O 哈哈~
 
-支付宝: 
+支付宝:
+
 <style>
 .donate img {
     width: 200px!important;
@@ -34,7 +35,8 @@ headerMask: 0.4
     <img src="/img/others/alipay.png" alt="支付宝赞赏"/>
 </div>
 
-微信: 
+微信:
+
 <div class="donate">
     <img src="/img/others/wechatpay.png" alt="微信赞赏"/>
 </div>

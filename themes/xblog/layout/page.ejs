@@ -4,67 +4,63 @@ layout: layout
 <!-- Page Header -->
 <!-- 与 Liquid 不同的是，Fornt Matter 仅对 post 文件生效，ejs 模板不能自定义 Front Matter 传入 -->
 
-<%- include('_partial/intro-header-page', {
-    type: 'page', 
-    short: page.short,
-    headerMask: page.headerMask || 0.4,
-    description: page.description || 'The Answer to Life, the Universe and Everything is...',
-    headerImg: page.headerImg || '',
-    headerBgCss: page.headerBgCss || '',
-    headerStyle: page.headerStyle || 'full',
-    title: page.title || 'Xheldon Blog'
-})%>
+<%- include('_partial/intro-header-page', { type: 'page' , short: page.short, headerMask: page.headerMask || 0.4,
+    description: page.description || 'The Answer to Life, the Universe and Everything is...' , headerImg: page.headerImg
+    || '' , headerBgCss: page.headerBgCss || '' , headerStyle: page.headerStyle || 'full' , title: page.title
+    || 'Xheldon Blog' })%>
 <%- include('_partial/loading') %>
 
 <!-- Main Content -->
-<div class="container" <% if (page.fullcontent === true) { %>style="width: 100%;"<% } %>>
-    <div class="row">
-        <% if(!config.sidebar) { %>
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 postlist-container">
-                <%- page.content || body %>
-            </div>
-            <div class="
+<div class="container" <% if (page.fullcontent===true) { %>style="width: 100%;" <% } %>>
+  <div class="row">
+    <% if(!config.sidebar) { %>
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 postlist-container">
+      <%- page.content || body %>
+    </div>
+    <div class="
                 col-lg-8 col-lg-offset-2
                 col-md-10 col-md-offset-1
                 sidebar-container">
-                <% if (!page.nogittalk) { %>
-                    <hr>
-                    <div id="giscus"></div>
-                <% } %>
-                <%- include('_partial/featured-tags') %>
-                <%- include('_partial/friends') %>
-            </div>
-        <%} else { %>
-            <% if (!page.fullcontent) { %>
-                <div class="
+      <% if (!page.nogittalk) { %>
+      <hr>
+      <div id="giscus"></div>
+      <% } %>
+      <%- include('_partial/featured-tags') %>
+      <%- include('_partial/friends') %>
+    </div>
+    <%} else { %>
+    <% if (!page.fullcontent) { %>
+    <div class="
                         col-lg-8 col-lg-offset-1
                         col-md-8 col-md-offset-1
                         col-sm-12
                         col-xs-12
                         postlist-container
                     ">
-                    <%- page.content || body %>
-                    <% if (!page.nogittalk) { %>
-                        <div class="text-danger">- EOF -</div>
-                        <div style="font-size: 12px; color: #ccc!important;">本文最先发布在: <a style="color: #ccc;" href="<%= config.url + page.url %>" title="<%= page.title %>"><%= page.title %> - Xheldon Blog</a></div>
-                        <hr style="visibility: hidden;">
-                        <div class="giscus"></div>
-                        <hr>
-                    <% } %>
-                </div>
-                <div class="
+      <%- page.content || body %>
+      <% if (!page.nogittalk) { %>
+      <div class="text-danger">- EOF -</div>
+      <div style="font-size: 12px; color: #ccc!important;">本文最先发布在: <a style="color: #ccc;" href="<%= config.url + page.url %>" title="<%= page.title %>">
+          <%= page.title %> - Xheldon Blog
+        </a></div>
+      <hr style="visibility: hidden;">
+      <div class="giscus"></div>
+      <hr>
+      <% } %>
+    </div>
+    <div class="
                     col-lg-3 col-lg-offset-0
                     col-md-3 col-md-offset-0
                     col-sm-12
                     col-xs-12
                     sidebar-container
                 ">
-                    <%- include('_partial/featured-tags') %>
-                    <!-- <%- include('_partial/twitter-timeline') %> -->
-                    <%- include('_partial/friends') %>
-                </div>
-            <% } else { %>
-                <div class="
+      <%- include('_partial/featured-tags') %>
+      <!-- <%- include('_partial/twitter-timeline') %> -->
+      <%- include('_partial/friends') %>
+    </div>
+    <% } else { %>
+    <div class="
                         col-lg-12
                         col-md-12
                         col-sm-12
@@ -72,33 +68,35 @@ layout: layout
                         postlist-container
                         post-fullcontent
                     ">
-                    <%- page.content || body %>
-                <div class="text-danger">- EOF -</div>
-                <div style="font-size: 12px; color: #ccc!important;">本文最先发布在: <a style="color: #ccc;" href="<%= config.url + page.url %>" title="<%= page.title %>"><%= page.title %> - Xheldon Blog</a></div>
-                <% if (!page.nogittalk) { %>
-                    <hr style="visibility: hidden;">
-                    <div class="giscus"></div>
-                <% } %>
-                    <hr>
-                </div>
-                <!-- Sidebar Container -->
-                <div class="
+      <%- page.content || body %>
+      <div class="text-danger">- EOF -</div>
+      <div style="font-size: 12px; color: #ccc!important;">本文最先发布在: <a style="color: #ccc;" href="<%= config.url + page.url %>" title="<%= page.title %>">
+          <%= page.title %> - Xheldon Blog
+        </a></div>
+      <% if (!page.nogittalk) { %>
+      <hr style="visibility: hidden;">
+      <div class="giscus"></div>
+      <% } %>
+      <hr>
+    </div>
+    <!-- Sidebar Container -->
+    <div class="
                         col-lg-12
                         col-md-12
                         col-sm-12
                         col-xs-12
                         sidebar-container
                     ">
-                    <%- include('_partial/featured-tags', {bottom: true}) %>
-                    <%- include('_partial/friends') %>
-                </div>
-            <% } %>
-        <% } %>
+      <%- include('_partial/featured-tags', {bottom: true}) %>
+      <%- include('_partial/friends') %>
     </div>
+    <% } %>
+    <% } %>
+  </div>
 </div>
 
 <% if (!page.nogittalk) { %>
-    <%- include('_partial/giscus') %>
+<%- include('_partial/giscus') %>
 <% } %>
 
 <% if (config['page-mathjax']) { %>
@@ -119,42 +117,46 @@ layout: layout
     }
   });
 </script>
-<script type="text/javascript"
-        src="/js/MathJax.js?config=TeX-AMS-MML_SVG">
+<script type="text/javascript" src="/js/MathJax.js?config=TeX-AMS-MML_SVG">
 </script>
 <% } %>
 <% if (page.anchorjs) { %>
 <!-- async load function -->
 <script>
-    function async(u, c) {
-      var d = document, t = 'script',
-          o = d.createElement(t),
-          s = d.getElementsByTagName(t)[0];
-      o.src = u;
-      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-      s.parentNode.insertBefore(o, s);
+  function async (u, c) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) {
+      o.addEventListener('load', function(e) {
+        c(null, e);
+      }, false);
     }
+    s.parentNode.insertBefore(o, s);
+  }
 </script>
 <!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
 <script>
-    async("/js/anchor.min.js",function(){
-        anchors.options = {
-          visible: 'hover',
-          placement: 'right',
-          // icon: '#'
-        };
-        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
-    })
+  async ("/js/anchor.min.js", function() {
+    anchors.options = {
+      visible: 'hover',
+      placement: 'right',
+      // icon: '#'
+    };
+    anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+  })
 </script>
 <style>
-    /* place left on bigger screen */
-    @media all and (min-width: 800px) {
-        .anchorjs-link{
-            position: absolute;
-            left: -0.75em;
-            font-size: 1.1em;
-            margin-top : -0.1em;
-        }
+  /* place left on bigger screen */
+  @media all and (min-width: 800px) {
+    .anchorjs-link {
+      position: absolute;
+      left: -0.75em;
+      font-size: 1.1em;
+      margin-top: -0.1em;
     }
+  }
 </style>
 <% } %>
