@@ -1803,7 +1803,9 @@ html.dark #light-mode {
 html.dark img,
 html.dark iframe,
 html.dark header.intro-header,
-html.dark .switch-mode {
+html.dark .switch-mode,
+html.dark .navbar-custom .nav li a,
+html.dark .navbar-custom .navbar-brand {
   filter: invert(1) hue-rotate(180deg);
 }
 p[caption] {

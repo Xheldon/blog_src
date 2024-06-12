@@ -1,12 +1,12 @@
 ---
 layout: page
 description: 「订阅年年有，今年特别多」
-hide-in-nav: true
-header-img: "https://static.xheldon.cn/img/book-list-bg.png"
+headerImg: 'https://static.xheldon.cn/img/book-list-bg.png'
 permalink: /subscribe/
 multilingual: false
-header-mask: 0.4
+headerMask: 0.4
 fullcontent: true
+noContainer: true
 title: 订阅&付费软件
 lastUpdateTime: 2022-02-23 11:31:59 +0800
 ---

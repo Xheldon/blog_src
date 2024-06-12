@@ -5,8 +5,8 @@
         <description>The Answer to Life, the Universe and Everything is...</description>
         <link>https://www.xheldon.com</link>
         <atom:link href="https://www.xheldon.com/feed.xml" rel="self" type="application/rss+xml" />
-        <pubDate>Wed, 12 Jun 2024 00:09:22 +0800</pubDate>
-        <lastBuildDate>Wed, 12 Jun 2024 00:09:22 +0800</lastBuildDate>
+        <pubDate>Wed, 12 Jun 2024 23:35:17 +0800</pubDate>
+        <lastBuildDate>Wed, 12 Jun 2024 23:35:17 +0800</lastBuildDate>
         <generator>Hexo v7.2.0</generator>
         
         <item>
@@ -46,9 +46,9 @@
             
                 <category>工作流</category>
             
-                <category>Notion</category>
-            
                 <category>Jekyll</category>
+            
+                <category>Notion</category>
             
             
                 <category>tech</category>
@@ -538,13 +538,13 @@
             
                 <category>生活</category>
             
-                <category>苹果</category>
+                <category>Apple</category>
             
                 <category>折腾</category>
             
                 <category>经验</category>
             
-                <category>Apple</category>
+                <category>苹果</category>
             
                 <category>网络</category>
             
@@ -643,6 +643,8 @@
             
                 <category>生活</category>
             
+                <category>使用体验</category>
+            
                 <category>折腾</category>
             
                 <category>经验</category>
@@ -650,8 +652,6 @@
                 <category>特斯拉</category>
             
                 <category>车</category>
-            
-                <category>使用体验</category>
             
                 <category>TeslaMate</category>
             

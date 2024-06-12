@@ -4,7 +4,7 @@
       {
         "title"    : "如何使用 Notion Flow 模块转换",
         "subtitle" : " 我有特别的 Notion Flow 使用技巧~",
-        "tags"     : "技术, 教程, 技巧, 工作流, Notion, Jekyll",
+        "tags"     : "技术, 教程, 技巧, 工作流, Jekyll, Notion",
         "url"      : "/tech/how-i-use-notion-flow.html",
         "date"     : "Sun Mar 31 2024 08:00:00 GMT+0800"
       } ,
@@ -28,7 +28,7 @@
       {
         "title"    : "使用 Apple TV 收看北京联通 IPTV",
         "subtitle" : " 本文介绍了一种使用 Apple TV 观看北京联通 IPTV 的方案，以供需要者参考。",
-        "tags"     : "生活, 苹果, 折腾, 经验, Apple, 网络, 路由器, 教程",
+        "tags"     : "生活, Apple, 折腾, 经验, 苹果, 网络, 路由器, 教程",
         "url"      : "/life/iptv-for-apple-tv-in-beijing.html",
         "date"     : "Mon Oct 30 2023 08:00:00 GMT+0800"
       } ,
@@ -36,7 +36,7 @@
       {
         "title"    : "TeslaMate 使用指南",
         "subtitle" : " 介绍一下 TeslaMate 安装和使用过程中的一些问题。",
-        "tags"     : "生活, 折腾, 经验, 特斯拉, 车, 使用体验, TeslaMate",
+        "tags"     : "生活, 使用体验, 折腾, 经验, 特斯拉, 车, TeslaMate",
         "url"      : "/life/the-use-of-teslamate.html",
         "date"     : "Wed Sep 06 2023 08:00:00 GMT+0800"
       } ,
@@ -100,7 +100,7 @@
       {
         "title"    : "为什么我要有一个香港手机号",
         "subtitle" : " 简单介绍一下我要搞一个香港手机号的理由",
-        "tags"     : "生活, 苹果, 手机卡, 折腾, 服务",
+        "tags"     : "生活, 折腾, 苹果, 手机卡, 服务",
         "url"      : "/life/why-i-need-a-hk-sim-card.html",
         "date"     : "Mon Jan 02 2023 23:25:48 GMT+0800"
       } ,
@@ -140,7 +140,7 @@
       {
         "title"    : "2022 我的家庭网络拓扑结构",
         "subtitle" : " 有限的预算下尽量满足自己的需求是折腾的乐趣之一。",
-        "tags"     : "技术, 折腾, 网络, 软路由, 拓扑, R4S, 旁路由",
+        "tags"     : "技术, 折腾, 软路由, 网络, 拓扑, R4S, 旁路由",
         "url"      : "/tech/my-home-network-2022.html",
         "date"     : "Wed Sep 14 2022 23:56:02 GMT+0800"
       } ,
@@ -156,7 +156,7 @@
       {
         "title"    : "博客自动化流程及体验优化——第二弹",
         "subtitle" : " 博客体验又更上一层楼啦！",
-        "tags"     : "技术, Craft, 插件, 优化, Jekyll, CI, AppleScript",
+        "tags"     : "技术, 优化, Craft, 插件, CI, AppleScript, Jekyll",
         "url"      : "/tech/optimize-of-my-blog-2.html",
         "date"     : "Mon Aug 15 2022 00:13:32 GMT+0800"
       } ,
@@ -188,7 +188,7 @@
       {
         "title"    : "我的家庭观影之路",
         "subtitle" : " 为家人实现观影自由，也是一种幸福。",
-        "tags"     : "生活, 折腾, Apple, 软路由, 自由",
+        "tags"     : "生活, Apple, 折腾, 软路由, 自由",
         "url"      : "/life/the-way-to-watching-tv.html",
         "date"     : "Sun Apr 24 2022 00:57:15 GMT+0800"
       } ,
@@ -204,7 +204,7 @@
       {
         "title"    : "Apple TV 使用体验及相关问题",
         "subtitle" : " 「就是把钱扔水里听响也绝不给国内的某些厂商」——媳妇儿说",
-        "tags"     : "生活, 使用体验, Apple",
+        "tags"     : "生活, Apple, 使用体验",
         "url"      : "/life/apple-tv-using-and-problem.html",
         "date"     : "Thu Mar 17 2022 10:16:48 GMT+0800"
       } ,
@@ -220,7 +220,7 @@
       {
         "title"    : "2022年我的博客自动化流程",
         "subtitle" : " 技术在进步，我也在折腾。",
-        "tags"     : "技术, 集成, Craft, 插件, CI",
+        "tags"     : "技术, Craft, 集成, 插件, CI",
         "url"      : "/tech/my-blog-ci-in-2022.html",
         "date"     : "Wed Feb 23 2022 15:55:30 GMT+0800"
       } ,
@@ -252,7 +252,7 @@
       {
         "title"    : "本文通过 Craft Extension 发送",
         "subtitle" : " ",
-        "tags"     : "集成, Craft, 插件",
+        "tags"     : "Craft, 集成, 插件",
         "url"      : "/tech/use-craft-extension-to-write-blog.html",
         "date"     : "Thu Dec 09 2021 00:28:30 GMT+0800"
       } ,
@@ -300,7 +300,7 @@
       {
         "title"    : "清蒸鲈鱼",
         "subtitle" : "又好吃做起来又简单",
-        "tags"     : "生活, 家常菜, 美食",
+        "tags"     : "生活, 美食, 家常菜",
         "url"      : "/life/qing-zheng-lu-yu.html",
         "date"     : "Sat Apr 10 2021 09:24:00 GMT+0800"
       } ,
@@ -324,7 +324,7 @@
       {
         "title"    : "回锅肉",
         "subtitle" : "川菜中我最爱的一道菜",
-        "tags"     : "生活, 美食, 川菜",
+        "tags"     : "生活, 川菜, 美食",
         "url"      : "/life/hui-guo-rou.html",
         "date"     : "Sat Nov 07 2020 09:37:00 GMT+0800"
       } ,
@@ -428,7 +428,7 @@
       {
         "title"    : "是的, 三年后我又重新开始更新这个小小的博客了",
         "subtitle" : " ",
-        "tags"     : "生活, 技术",
+        "tags"     : "技术, 生活",
         "url"      : "/tech/yes-im-back.html",
         "date"     : "Fri Aug 30 2019 15:28:35 GMT+0800"
       } ,

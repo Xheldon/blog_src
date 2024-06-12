@@ -6,7 +6,7 @@
     "version": "7.2.0"
   },
   "scripts": {
-    "dev": "grunt watch && hexo server",
+    "dev": "grunt watch & hexo server",
     "bs": "grunt"
   },
   "dependencies": {

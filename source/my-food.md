@@ -1,13 +1,13 @@
 ---
 layout: page
 description: 推荐和避坑系列
-hide-in-nav: true
-header-img: "https://static.xheldon.cn/img/book-list-bg.png"
+headerImg: 'https://static.xheldon.cn/img/book-list-bg.png'
 permalink: /my-food/
 multilingual: false
-header-mask: 0.4
+headerMask: 0.4
 fullcontent: true
 title: 美食推荐&避坑
+noContainer: true
 lastUpdateTime: 2022-04-01 13:19:59 +0800
 ---
 
@@ -94,7 +94,6 @@ lastUpdateTime: 2022-04-01 13:19:59 +0800
                     li.innerHTML = `<b style="font-size: 18px;">${p}</b>`;
                     li.appendChild(ul);
                     document.querySelector('.list-container').appendChild(li);
-
                 });
                 console.log('data:', data);
                 var map = new BMapGL.Map('container');
@@ -112,8 +111,8 @@ lastUpdateTime: 2022-04-01 13:19:59 +0800
                 map.addControl(cr); //添加版权控件
                 var bs = map.getBounds();   //返回地图可视区域
                 cr.addCopyright({
-                    id: 1, 
-                    content: "<a href='https://twitter.com/_Xheldon' target='_blank' style='font-size:18px;color:#337ab7;'><b>@_Xheldon</b></a>", 
+                    id: 1,
+                    content: "<a href='https://twitter.com/_Xheldon' target='_blank' style='font-size:18px;color:#337ab7;'><b>@_Xheldon</b></a>",
                     bounds: bs
                 });
                 const pointArr = [];
@@ -174,4 +173,5 @@ lastUpdateTime: 2022-04-01 13:19:59 +0800
             }
         });
     })
+
 </script>

@@ -1,28 +1,29 @@
 ---
 layout: post
-title:  "JavaScript 中的数据结构和算法"
-date:   2019-10-08 00:17:33 +0800
+title: 'JavaScript 中的数据结构和算法'
+date: 2019-10-08 00:17:33 +0800
 mermaid: true
 categories: tech
 header-style: text
 tags:
-    - 技术
-    - 数据结构
-    - 算法
-    - JavaScript
+  - 技术
+  - 数据结构
+  - 算法
+  - JavaScript
 ---
 
 ## 前言
 
 虽然知道自己很努力, 也进入过大公司. 但是一直以来自己在计算机科学的基础方面都很薄弱, 因为自己并不是科班出身, 因此很希望能够通过后天弥补拉近与科班出身同学的差距, 因此作为程序员的三大梦(语言/算法/图形)之一, 数据结构和算法一直是我心头的一个心病, 总是在空闲的时间逛一些技术社区的时候被一些标题党的数据和算法相关标题吸引进去, 点进去看后又空洞无物. 因此终于下定决心要好好学习一下算法(基础).
 
-这篇文章即是我学习后记录的产物, 是在看 <学习 JavaScript 数据结构与算法(第2版)> 时候的总结和备忘, 先从数据结构入手, 然后是数据结构的各种算法. 大部分使用 ES5 方法, 少部分使用 ES6 方法. 只实现效果, 不考虑一些诸如执行开销等不相关问题(如使用在每个实例上添加方法而不是使用原型链等)
+这篇文章即是我学习后记录的产物, 是在看 <学习 JavaScript 数据结构与算法(第 2 版)> 时候的总结和备忘, 先从数据结构入手, 然后是数据结构的各种算法. 大部分使用 ES5 方法, 少部分使用 ES6 方法. 只实现效果, 不考虑一些诸如执行开销等不相关问题(如使用在每个实例上添加方法而不是使用原型链等)
 
 ## 栈
 
 ### 栈的基本概念和方法
 
 栈是一种遵从后进先出(LIFO)原则的有序集合. 新添加或待删除的元素保存在栈的一端, 称作栈顶, 另一端称作栈底. 在栈里, 新元素都靠近栈顶, 旧元素都靠近栈底. 形象的例子就是一摞书. 栈数据结构有以下方法:
+
 1. `push(element)` 添加一个或几个元素
 2. `pop()` 移除栈顶的元素, 返回被移除的元素
 3. `peek()` 返回栈顶的元素, 不修改原始栈
@@ -32,18 +33,18 @@ tags:
 
 ### 栈的 JavaScript 实现
 
-1. [栈]({{site.res_static_url}}/example-code/2019/Stack.js)
+1. [栈](https://static.xheldon.cn/example-code/2019/Stack.js)
 
 ### 栈的应用
 
-1. [十进制转二进制]({{site.res_static_url}}/example-code/2019/DecimalToBinary.js)
-2. [汉诺塔]({{site.res_static_url}}/example-code/2019/TowerOfHanoi.js)
+1. [十进制转二进制](https://static.xheldon.cn/example-code/2019/DecimalToBinary.js)
+2. [汉诺塔](https://static.xheldon.cn/example-code/2019/TowerOfHanoi.js)
 
 ## 队列
 
 ### 队列的基本概念和方法
 
-队列是遵循FIFO(First In First Out 先进先出)原则的一组有序项. 队列在尾部添加新元素, 并从顶部移除元素. 最新添加的元素必须排在队列的末尾. 队列数据结构有以下方法:
+队列是遵循 FIFO(First In First Out 先进先出)原则的一组有序项. 队列在尾部添加新元素, 并从顶部移除元素. 最新添加的元素必须排在队列的末尾. 队列数据结构有以下方法:
 
 1. `enqueue(element)` 向队列尾部添加一个(或多个)新的项
 2. `dequeue()` 移除队列的第一项(最先添加的元素), 并返回被移除的元素
@@ -53,8 +54,8 @@ tags:
 
 ### 队列的 JavaScript 实现
 
-1. [队列]({{site.res_static_url}}/example-code/2019/Queue.js)
-2. [加权队列]({{site.res_static_url}}/example-code/2019/PriorityQueue.js)
+1. [队列](https://static.xheldon.cn/example-code/2019/Queue.js)
+2. [加权队列](https://static.xheldon.cn/example-code/2019/PriorityQueue.js)
 
 ## 链表
 
@@ -95,9 +96,9 @@ tags:
 
 ### 链表的 JavaScript 实现
 
-1. [单向链表]({{site.res_static_url}}/example-code/2019/LinkedList.js){:data-open=""}
-2. [双向链表]({{site.res_static_url}}/example-code/2019/DoublyLinkedList.js){:data-open=""}
-3. [循环链表]({{site.res_static_url}}/example-code/2019/CircularLinkedList.js){:data-open=""}
+1. [单向链表](https://static.xheldon.cn/example-code/2019/LinkedList.js){:data-open=""}
+2. [双向链表](https://static.xheldon.cn/example-code/2019/DoublyLinkedList.js){:data-open=""}
+3. [循环链表](https://static.xheldon.cn/example-code/2019/CircularLinkedList.js){:data-open=""}
 
 ## 集合
 
@@ -147,7 +148,7 @@ tags:
 
 你可能会问, 为什么需要散列表呢? 在 JavaScript 中, 直接使用对象来获取键值映射, 就是 O(1) 的速度了呀. 这话没错, 但是试想如果有重复的键, 该怎么办呢? 比如, 想要构建一个花名册, 来记录不同同学的信息. 那么同名的同学怎么办呢? 这时候就需要一种算法来使每个同学的名字作为输入, 而输出都是独一无二的, 这样才能做到`一一对应`, 从而实现 O(1) 的算法, 此谓之完美散列, 数学中这叫做完全单射函数. 但是这样如果存储上百万个数据, 会使得该 `Object` 对象非常之庞大, 导致性能问题. 因此需要散列算法, 来使得时间和空间做一个平衡.
 
-还拿上述花名册做例子, 如果有同名的同学, 则依然以这个名字作为键, 只是值不再单单的是一个同学的信息, 而是一个同学信息的数组(或链表), 给定同学名后, 如果发现对应的值是数组, 则遍历该数组直到找到准确的同学信息. 这样就平衡了时间(比之前的时间O(1)要长❌)和空间(比之前的 Object 对象占用的空间要小✅). 一个好的散列算法, 应该能保证每个键上的数组都是相差不大的.
+还拿上述花名册做例子, 如果有同名的同学, 则依然以这个名字作为键, 只是值不再单单的是一个同学的信息, 而是一个同学信息的数组(或链表), 给定同学名后, 如果发现对应的值是数组, 则遍历该数组直到找到准确的同学信息. 这样就平衡了时间(比之前的时间 O(1)要长 ❌)和空间(比之前的 Object 对象占用的空间要小 ✅). 一个好的散列算法, 应该能保证每个键上的数组都是相差不大的.
 
 ### 散列表的基本方法
 
@@ -160,13 +161,13 @@ tags:
 > 以输入是字符串为例, 暂时不考虑相同字符串, 数据结构使用数组, 这样可以将 key 作为键
 
 ```js
-let loseloseHashCode = function(key){
-    let hash = 0;
-    for (let i = 0; i < key.length; i++) {
-        hash += key.charCodeAt(i);
-    }
-    return hash % 37;
-}
+let loseloseHashCode = function (key) {
+  let hash = 0;
+  for (let i = 0; i < key.length; i++) {
+    hash += key.charCodeAt(i);
+  }
+  return hash % 37;
+};
 ```
 
 ### 解决散列表中的冲突
@@ -174,14 +175,14 @@ let loseloseHashCode = function(key){
 通过上述散列算法可以看到, 算出来的键是可能冲突的, 也就是说数组中相同 key 可能有不同的值, 这样就会被覆盖, 因此需要解决冲突. 有三种方案:
 
 1. `分离链接` 即如果散列算法生成的键相同的时候, 键不再直接指向值, 而是指向一个数组/链表, 将问题转化为数组/链表插入/查找
-2. `线性探查` 即如果散列算法生成的键相同的时候, 键自动+1再次尝试存储, 如果仍然键冲突, 则继续+1, 知道找到为空的位置(适用于键是数字的散列表形式, 如数组), 还有些更棒的针对数字键的散列实现在 [这个地方](http://web.archive.org/web/20071223173210/http://www.concentric.net/~Ttwang/tech/inthash.htm)
+2. `线性探查` 即如果散列算法生成的键相同的时候, 键自动+1 再次尝试存储, 如果仍然键冲突, 则继续+1, 知道找到为空的位置(适用于键是数字的散列表形式, 如数组), 还有些更棒的针对数字键的散列实现在 [这个地方](http://web.archive.org/web/20071223173210/http://www.concentric.net/~Ttwang/tech/inthash.htm)
 3. `双散列法` 即如果散列算法生成的键相同的时候, 再次对冲突使用另一个或者相同散列函数进行键的生成.
 
 ### 散列表的 JavaScript 实现
 
-1. [普通散列表实现]({{site.res_static_url}}/example-code/2019/HashTable.js)
-2. [分离链接]({{site.res_static_url}}/example-code/2019/HashCollisionSeparateChaining.js)
-3. [线性探查]({{site.res_static_url}}/example-code/2019/HashCollisionLinearProbing.js)
+1. [普通散列表实现](https://static.xheldon.cn/example-code/2019/HashTable.js)
+2. [分离链接](https://static.xheldon.cn/example-code/2019/HashCollisionSeparateChaining.js)
+3. [线性探查](https://static.xheldon.cn/example-code/2019/HashCollisionLinearProbing.js)
 
 ## 树
 
@@ -225,56 +226,57 @@ graph TD;
 2. `sertch(key)` 查找一个节点或返回 null
 3. `inOrderTraverse` 中序遍历所有节点
 4. `preOrderTraverse` 先序遍历所有节点
-4. `postOrderTraverse` 后序遍历所有节点
-5. `min` 返回树中的最小的值
-6. `max` 返回树种最大的值
-7. `remove(key)` 移除树中某项
+5. `postOrderTraverse` 后序遍历所有节点
+6. `min` 返回树中的最小的值
+7. `max` 返回树种最大的值
+8. `remove(key)` 移除树中某项
 
 ### 树的遍历图示:
 
 1. 中序遍历---常用来对树进行排序操作
-   
-    ```mermaid
-    graph TD;
-        11---7;
-        11---15;
-        7---5;
-        7---9;
-        5---3;
-        5---6;
-        9---8;
-        9---10;
-        15---13;
-        15---20;
-        13---12;
-        13---14;
-        20---18;
-        20---25;
-        3-.->5
-        5-.->6;
-        6-.->7;
-        7-.->8;
-        8-.->9;
-        9-.->10;
-        10-.->11;
-        11-.->12;
-        12-.->13;
-        13-.->14;
-        14-.->15;
-        15-.->18;
-        18-.->20;
-        20-.->25;
-    ```
 
-    遍历顺序是:3 5 6 7 8 9 10 11 12 13 14 15 18 20 25
+   ```mermaid
+   graph TD;
+       11---7;
+       11---15;
+       7---5;
+       7---9;
+       5---3;
+       5---6;
+       9---8;
+       9---10;
+       15---13;
+       15---20;
+       13---12;
+       13---14;
+       20---18;
+       20---25;
+       3-.->5
+       5-.->6;
+       6-.->7;
+       7-.->8;
+       8-.->9;
+       9-.->10;
+       10-.->11;
+       11-.->12;
+       12-.->13;
+       13-.->14;
+       14-.->15;
+       15-.->18;
+       18-.->20;
+       20-.->25;
+   ```
+
+   遍历顺序是:3 5 6 7 8 9 10 11 12 13 14 15 18 20 25
 
 2. 先序遍历---常用来打印一个结构化的文档, 示例图中的遍历顺序是: 11 7 5 3 6 9 8 10 15 13 12 14 20 18 25
 
 3. 后序遍历---应用于计算一个目录和它的子目录中所有文件所占空间的大小, 示例图中的遍历顺序是: 3 6 5 8 10 9 7 12 14 13 18 25 20 15 11
 
-### Adelson-Velskii-Landi 树(AVL树)
+### Adelson-Velskii-Landi 树(AVL 树)
 
 VAL 树是一种自平衡树. 二叉树在某些情况下可能会导致有个子树过深, 而某些子树过浅, 如下图:
+
 ```mermaid
 graph TD;
     11---7;
@@ -300,7 +302,6 @@ graph TD;
 #### AVL 树的平衡因子及计算
 
 在 AVL 树种插入和删除节点和 BST 完全相同, AVL 的不同之处在于需要在插入/删除的时候检查它的`平衡因子`, 如果有需要则将其应用于树的自平衡. 在 AVL 树中需要对每个节点计算右子树高度(hr)和左子树高度(hl)的差值, 如果该值(hr-hl)不是 0/1/-1 的其中一个值, 则需要平衡该 VAL 树. 这就是平衡因子的概念.下面三颗树都是平衡的:
-
 
 ```mermaid
 graph TD;
@@ -331,7 +332,8 @@ graph TD;
 3. `左---右(LR)` 向右的双旋转
 4. `右---左(RL)` 向左的双旋转
 
-右---右(RR): 向左的单旋转示意图(mermaid绘图这个地方无法绘制成二叉树导致80在左边50在右边):
+右---右(RR): 向左的单旋转示意图(mermaid 绘图这个地方无法绘制成二叉树导致 80 在左边 50 在右边):
+
 ```mermaid
 graph TD;
     subgraph 之后
@@ -350,7 +352,8 @@ graph TD;
     end
 ```
 
-左---左(LL)): 向右的单旋转示意图(mermaid绘图这个地方无法绘制成二叉树导致50在左边10在右边):
+左---左(LL)): 向右的单旋转示意图(mermaid 绘图这个地方无法绘制成二叉树导致 50 在左边 10 在右边):
+
 ```mermaid
 graph TD;
     subgraph 之后
@@ -369,7 +372,8 @@ graph TD;
     end
 ```
 
-左---右(LR): 向右的双旋转示意图(基本上就是做一次RR旋转后再做一次LL旋转):
+左---右(LR): 向右的双旋转示意图(基本上就是做一次 RR 旋转后再做一次 LL 旋转):
+
 ```mermaid
 graph TD;
     subgraph 之后
@@ -388,7 +392,8 @@ graph TD;
     end
 ```
 
-右---左(RL): 向左的双旋转示意图(基本上就是做一次LL旋转后再做一次RR旋转, mermaid绘图这个地方无法绘制成二叉树导致80在左边70在右边):
+右---左(RL): 向左的双旋转示意图(基本上就是做一次 LL 旋转后再做一次 RR 旋转, mermaid 绘图这个地方无法绘制成二叉树导致 80 在左边 70 在右边):
+
 ```mermaid
 graph TD;
     subgraph 之后
@@ -411,9 +416,9 @@ graph TD;
 
 ### 树的基本方法的 JavaScript 实现
 
-1. [二叉树]({{site.res_static_url}}/example-code/2019/BinarySearchTree.js)
-2. [AVL 树]({{site.res_static_url}}/example-code/2019/AVLTree.js)
-3. [红黑树]({{site.res_static_url}}/example-code/2019/RedBlackTree.js)
+1. [二叉树](https://static.xheldon.cn/example-code/2019/BinarySearchTree.js)
+2. [AVL 树](https://static.xheldon.cn/example-code/2019/AVLTree.js)
+3. [红黑树](https://static.xheldon.cn/example-code/2019/RedBlackTree.js)
 4. [堆积树](http://goo.gl/SFlhW6)
 
 ## 图
@@ -452,7 +457,7 @@ graph TD;
 1. 由一条边连接在一起的顶点称为`相邻顶点`
 2. 一个顶点的`度`是其相邻顶点的数量, 上图中 A 和其他三个顶点相邻, 因此 A 的度为 3; E 的度为 2;
 3. `路径`是顶点 v1, v2,...vk 的一个连续序列, 其中 vi 和 v(i+1) 是相邻的. 上图中包含路径 ABEI 和 ACDG
-4. `简单路径`要求不包括重复的顶点, 如 ADG 是一条简单路径. 除去最后一个顶点(因为它和第一个顶点是相同顶点), `环`也是一个简单路径, 如 ADCA(最后一个顶点重新回到A))
+4. `简单路径`要求不包括重复的顶点, 如 ADG 是一条简单路径. 除去最后一个顶点(因为它和第一个顶点是相同顶点), `环`也是一个简单路径, 如 ADCA(最后一个顶点重新回到 A))
 5. 如果图中不存在环, 则称该图是`无环`的. 如果图中每两个顶点间都存在路径, 则该图是`连通的`
 6. 图可以使`有向的`(边有方向)也可以是`无向的`(边没有方向), 上图是一个`无向图`
 7. 如果图中每两个顶点间在双向上都存在路径, 则该图是`强连通`的
@@ -464,17 +469,17 @@ graph TD;
 
 图最常见的实现是邻接矩阵, 每个节点都和一个整数相关联, 该证书将作为数组的索引. 用一个二维数组来表示顶点之间的连接. 如果索引为 i 的节点和索引为 j 的节点相邻, 则 array[i][j] === 1 否则 array[i][j] === 0. 上述的图用邻接矩阵表示为:
 
-||A|B|C|D|E|F|G|H|I
--|-|-|-|-|-|-|-|-|-
-A|0|1|1|1|0|0|0|0|0
-B|1|0|0|0|1|1|0|0|0
-C|1|0|0|1|0|0|1|0|0
-D|1|0|1|0|0|0|1|1|0
-E|0|1|0|0|0|0|0|0|1
-F|0|1|0|0|0|0|0|0|0
-G|0|0|1|1|0|0|0|0|0
-H|0|0|0|1|0|0|0|0|0
-I|0|0|0|0|1|0|0|0|0
+|     | A   | B   | C   | D   | E   | F   | G   | H   | I   |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| A   | 0   | 1   | 1   | 1   | 0   | 0   | 0   | 0   | 0   |
+| B   | 1   | 0   | 0   | 0   | 1   | 1   | 0   | 0   | 0   |
+| C   | 1   | 0   | 0   | 1   | 0   | 0   | 1   | 0   | 0   |
+| D   | 1   | 0   | 1   | 0   | 0   | 0   | 1   | 1   | 0   |
+| E   | 0   | 1   | 0   | 0   | 0   | 0   | 0   | 0   | 1   |
+| F   | 0   | 1   | 0   | 0   | 0   | 0   | 0   | 0   | 0   |
+| G   | 0   | 0   | 1   | 1   | 0   | 0   | 0   | 0   | 0   |
+| H   | 0   | 0   | 0   | 1   | 0   | 0   | 0   | 0   | 0   |
+| I   | 0   | 0   | 0   | 0   | 1   | 0   | 0   | 0   | 0   |
 
 不是强连通的图称为`稀疏图`, 如果用邻接矩阵来表示, 矩阵中将会有很多 0, 这意味着我们浪费了计算机中的存储空间来表示根本不存在的边.
 
@@ -482,16 +487,16 @@ I|0|0|0|0|1|0|0|0|0
 
 邻接表由图中每个顶点的相邻顶点列表所组成. 存在好几种方式来表示这种数据结构. 可以用列表(数组)/链表/甚至是散列表或者字典来表示相邻顶点列表. 上述图可以用下面的邻接表表示:
 
-A|B|C|D||
--|-|-|-|-
-B|A|E|F
-C|A|D|G
-D|A|C|G|H
-E|B|I
-F|B
-G|C|D
-H|D
-I|E
+| A   | B   | C   | D   |     |
+| --- | --- | --- | --- | --- |
+| B   | A   | E   | F   |
+| C   | A   | D   | G   |
+| D   | A   | C   | G   | H   |
+| E   | B   | I   |
+| F   | B   |
+| G   | C   | D   |
+| H   | D   |
+| I   | E   |
 
 #### 关联矩阵(略)
 
@@ -519,18 +524,18 @@ I|E
 `最小生成树`是网络设计中常见的问题. 如你的公司有几间办公室, 要以最低的成本实现办公室电话线路相互连通, 以节省资金, 最好的办法是什么? 这也可以应用于岛桥问题. 设想你要在 n 个岛屿之间建造桥梁, 想用最低的成本实现所有岛屿的相互连通. 这两个问题都可以用`MST算法`来解决:
 
 1. Prim 算法
-    
-    用来求解加权无向连通图的MST问题的贪心算法, 它能找出一个边的子集, 使得其构成的树包含图中所有顶点, 且边的权值之和最小.
+
+   用来求解加权无向连通图的 MST 问题的贪心算法, 它能找出一个边的子集, 使得其构成的树包含图中所有顶点, 且边的权值之和最小.
 
 2. Kruskal 算法
-    
-    和上面一样也是求加权无向连通图MST问题的贪心算法.
+
+   和上面一样也是求加权无向连通图 MST 问题的贪心算法.
 
 #### 图的 JavaScript 实现
 
-1. [图]({{site.res_static_url}}/example-code/2019/Graph.js)
-2. [最短路径算法]({{site.res_static_url}}/example-code/2019/ShortestPath.js)
-3. [最小生成树]({{site.res_static_url}}/example-code/2019/MinimumSpanningTree.js)
+1. [图](https://static.xheldon.cn/example-code/2019/Graph.js)
+2. [最短路径算法](https://static.xheldon.cn/example-code/2019/ShortestPath.js)
+3. [最小生成树](https://static.xheldon.cn/example-code/2019/MinimumSpanningTree.js)
 
 ## 排序和搜索算法
 
@@ -544,8 +549,8 @@ I|E
 6. `堆排序` 把数组当做二叉树来排序, 规则是:
    1. 索引 0 是树的根节点
    2. 除根节点以外. 任意节点 N 的父节点是 N/2
-   3. 节点 L 的左子节点是 2 * L
-   4. 节点 R 的右子节点是 2 * R + 1
+   3. 节点 L 的左子节点是 2 \* L
+   4. 节点 R 的右子节点是 2 \* R + 1
    5. 如数组 [3, 5, 1, 6, 4, 7, 2] 可以看做下面的树:
       ```mermaid
       graph TD;
@@ -567,7 +572,7 @@ I|E
 
 ### 排序/搜索算法的 JavaScript 实现
 
-1. [各种排序/搜索算法汇总]({{site.res_static_url}}/example-code/2019/SortingSearchingAlgorithms.js)
+1. [各种排序/搜索算法汇总](https://static.xheldon.cn/example-code/2019/SortingSearchingAlgorithms.js)
 
 ## 算法模式
 
@@ -581,18 +586,18 @@ I|E
 
 ### 算法模式的 JavaScript 实现
 
-1. [递归]({{site.res_static_url}}/example-code/2019/Recursion.js)
-2. [最少硬币找零DP算法]({{site.res_static_url}}/example-code/2019/MinCoinChangeDP.js)
-2. [最少硬币找零贪心算法]({{site.res_static_url}}/example-code/2019/MinCoinChangeGreedy.js)
-3. [背包问题DP算法]({{site.res_static_url}}/example-code/2019/KnapsackProblemDP.js)
-4. [背包问题递归算法]({{site.res_static_url}}/example-code/2019/KnapSackProblemRecursive.js)
-5. [背包问题贪心算法]({{site.res_static_url}}/example-code/2019/KnapSackProblemGreedy.js)
-6. [最长公共子序列DP算法]({{site.res_static_url}}/example-code/2019/LongestCommonSubsequenceDP.js)
-7. [最长公共子序列递归算法]({{site.res_static_url}}/example-code/2019/LongestCommonSubsequenceRecursive.js)
-8. [矩阵链相乘DP算法]({{site.res_static_url}}/example-code/2019/MatrixChainMultiplicationDP.js)
-9. [矩阵链相乘递归算法]({{site.res_static_url}}/example-code/2019/MatrixChainMultiplicationRecursive.js)
+1. [递归](https://static.xheldon.cn/example-code/2019/Recursion.js)
+2. [最少硬币找零 DP 算法](https://static.xheldon.cn/example-code/2019/MinCoinChangeDP.js)
+3. [最少硬币找零贪心算法](https://static.xheldon.cn/example-code/2019/MinCoinChangeGreedy.js)
+4. [背包问题 DP 算法](https://static.xheldon.cn/example-code/2019/KnapsackProblemDP.js)
+5. [背包问题递归算法](https://static.xheldon.cn/example-code/2019/KnapSackProblemRecursive.js)
+6. [背包问题贪心算法](https://static.xheldon.cn/example-code/2019/KnapSackProblemGreedy.js)
+7. [最长公共子序列 DP 算法](https://static.xheldon.cn/example-code/2019/LongestCommonSubsequenceDP.js)
+8. [最长公共子序列递归算法](https://static.xheldon.cn/example-code/2019/LongestCommonSubsequenceRecursive.js)
+9. [矩阵链相乘 DP 算法](https://static.xheldon.cn/example-code/2019/MatrixChainMultiplicationDP.js)
+10. [矩阵链相乘递归算法](https://static.xheldon.cn/example-code/2019/MatrixChainMultiplicationRecursive.js)
 
-## NP完全理论概述
+## NP 完全理论概述
 
 一般来说, 如果一个算法的复杂度为 O(n<sup>k</sup>), 其中 k 是常数, 我们就认为这个算法是高效的, 这就是多项式算法. 对于给定的问题, 如果存在多项式算法, 则计为 P(polynomial, 多项式)
 
@@ -601,6 +606,7 @@ I|E
 如果一个问题存在多项式算法, 自然可以再多项式时间内验证其解, 因此所有的 P 都是 NP. 然而, P=NP 是否成立, 仍然不得而知.
 
 NP 问题最难的是 `NP完全` 问题, 它满足以下两个条件:
+
 1. 是 NP 问题, 也就是说, 可以在多项式时间内验证解, 但还没找到多项式算法
 2. 所有的 NP 问题都能在多项式时间内归约为它
 
@@ -611,4 +617,3 @@ NP 问题最难的是 `NP完全` 问题, 它满足以下两个条件:
 最后, 刚才有些问题是`不可解`的, 然后仍然有办法在符合要求的时间内找到一个近似解. `启发式算法` 就是其中之一. 启发式算法得到的未必是最优解, 单足够解决问题了.
 
 启发式算法的例子有`局部搜索`, `遗传算法`, `启发式导航`, `机器学习`等. 更多可以[查看这里](http://goo.gl/gxIu9w)
-

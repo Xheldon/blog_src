@@ -7,67 +7,55 @@ title: Xheldon Blog
 SEOTitle: Xheldon Blog
 header-img: /img/index-bg.png
 email: c1006044256@gmail.com
-description: "The Answer to Life, the Universe and Everything is..."
-keyword: "Xheldon, 生活, 美食, 旅游, 前端, 技术, 分享"
+description: 'The Answer to Life, the Universe and Everything is...'
+keyword: 'Xheldon, 生活, 美食, 旅游, 前端, 技术, 分享'
 author: Xheldon
 url: http://www.xheldon.com
-baseurl: ""
+baseurl: ''
 
 root: /
 # 注意这里与 Jekyll 不用的是，这个地方用的是 category 但 post 中使用的是 categories
 # name 才是最终的文件名，title 是相对于 _posts 的完整路径
 permalink: :category/:name.html
 
-
 # Custom part
 # SNS settings
 RSS: true
-github_username:    xheldon
-twitter_username:   _xheldon
+github_username: xheldon
+twitter_username: _xheldon
 weibo_username: xheldon
-telegram_username:  xheldon_tech
+telegram_username: xheldon_tech
 youtube_username: xheldon
 bilibili_username: 13835416
 
 # Build settings
-anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`                 # set to false if you want to use Comment without Sharing
-
+anchorjs: true # if you want to customize anchor. check out line:181 of `post.html`                 # set to false if you want to use Comment without Sharing
 
 # Analytics settings
 # Google Analytics
-ga_track_id: 'UA-79359216-1'            # Format: UA-xxxxxx-xx
+ga_track_id: 'UA-79359216-1' # Format: UA-xxxxxx-xx
 ga_domain: www.xheldon.com
 
-
 # Sidebar settings
-sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "The answer to Life, the Universe and Everything is..."
-sidebar-avatar: img/logo.png     # use absolute URL, seeing it's used in both `/` and `/about/`
-
+sidebar: true # whether or not using Sidebar.
+sidebar-about-description: 'The answer to Life, the Universe and Everything is...'
+sidebar-avatar: img/logo.png # use absolute URL, seeing it's used in both `/` and `/about/`
 
 # Featured Tags
-featured-tags: true                     # whether or not using Feature-Tags
-featured-condition-size: 1              # A tag will be featured if the size of it is more than this condition value
+featured-tags: true # whether or not using Feature-Tags
+featured-condition-size: 1 # A tag will be featured if the size of it is more than this condition value
 
 # Progressive Web Apps
-chrome-tab-theme-color: "#000000"
+chrome-tab-theme-color: '#000000'
 service-worker: true
 
 # Friends
-friends: [
-    {
-        title: "ProseMirror 中文",
-        href: "https://prosemirror.xheldon.com"
-    },
-    {
-        title: "Slate 中文",
-        href: "https://slate.xheldon.com"
-    },
-    {
-        title: "Notion Flow",
-        href: "https://notion-flow.xheldon.com"
-    }
-]
+friends:
+  [
+    { title: 'ProseMirror 中文', href: 'https://prosemirror.xheldon.com' },
+    { title: 'Slate 中文', href: 'https://slate.xheldon.com' },
+    { title: 'Notion Flow', href: 'https://notion-flow.xheldon.com' },
+  ]
 
 static_url: https://static.xheldon.cn
 # static_url: /
@@ -103,6 +91,8 @@ highlight:
   tab_replace: ' '
   wrap: true
   hljs: true
+  exclude_languages:
+    - mermaid
 
 # Category & Tag
 default_category: life

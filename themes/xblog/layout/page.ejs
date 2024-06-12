@@ -37,9 +37,13 @@ layout: layout
                         col-xs-12
                         postlist-container
                     ">
+      <% if (!page.noContainer) { %>
       <div class="zh post-container">
+        <% } %>
         <%- page.content || body %>
+        <% if (!page.noContainer) { %>
       </div>
+      <% } %>
       <% if (!page.nogittalk) { %>
       <div class="text-danger">- EOF -</div>
       <div style="font-size: 12px; color: #ccc!important;">本文最先发布在: <a style="color: #ccc;" href="<%= config.url + page.url %>" title="<%= page.title %>">
@@ -70,7 +74,13 @@ layout: layout
                         postlist-container
                         post-fullcontent
                     ">
-      <%- page.content || body %>
+      <% if (!page.noContainer) { %>
+      <div class="zh post-container">
+        <% } %>
+        <%- page.content || body %>
+        <% if (!page.noContainer) { %>
+      </div>
+      <% } %>
       <div class="text-danger">- EOF -</div>
       <div style="font-size: 12px; color: #ccc!important;">本文最先发布在: <a style="color: #ccc;" href="<%= config.url + page.url %>" title="<%= page.title %>">
           <%= page.title %> - Xheldon Blog

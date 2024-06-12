@@ -32,11 +32,11 @@ headerMask: 0.4
 }
 </style>
 <div class="donate">
-    <img src="/img/others/alipay.png" alt="支付宝赞赏"/>
+    <img src="https://static.xheldon.cn/img/others/alipay.png" alt="支付宝赞赏"/>
 </div>
 
 微信:
 
 <div class="donate">
-    <img src="/img/others/wechatpay.png" alt="微信赞赏"/>
+    <img src="https://static.xheldon.cn/img/others/wechatpay.png" alt="微信赞赏"/>
 </div>
