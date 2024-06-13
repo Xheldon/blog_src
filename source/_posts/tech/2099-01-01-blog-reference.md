@@ -1,13 +1,13 @@
 ---
 layout: post
-title:  "新博客地址说明"
-date:   2021-10-01 12:00:00 +0800
+title: '新博客地址说明'
+date: 2021-10-01 12:00:00 +0800
 categories: tech
-no-catalog: true
+noCatalog: true
 header-style: text
 tags:
-    - 技术
-    - 迁移
+  - 技术
+  - 迁移
 ---
 
 之前的技术文章放在 www 域名下，而生活类的放在 42 域名下，维护起来比较麻烦。

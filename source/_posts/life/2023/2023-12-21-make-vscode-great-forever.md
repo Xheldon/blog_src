@@ -4,24 +4,24 @@ layout: post
 date: 2023-12-21 8:0:00 +0800
 cos: 2023/make-vscode-great-forever
 path: _posts/life/2023/2023-12-21-make-vscode-great-forever.md
-header-mask: 0.4
+headerMask: 0.4
 header-style: full
 callout: 本文介绍我作为一名前端工程师，是如何优化 VSCode 设置，让它更好用的。
 categories: life
-reference: 
-no-catalog: 
+reference:
+noCatalog:
 lastUpdateTime: 2023-12-26 8:0:00 +0800
-header-img: https://static.xheldon.cn/img/in-post/2023/make-vscode-great-forever/LzFlM2U3YzA1LWZjMTEtNDAzOC05Zjc2LTkyZGIzMmI5ODgyNC8xY2JmZGRjMy1kNDU3LTRkM2ItOTQ0OC1iNDEyYjFiYTM1ZDkvQ2xlYW5TaG90XzIwMjNfMTJfMjUtMjJfMDNfNTAyeC5wbmc=-985292be-c0f7-4584-9641-e964d96cc1de.webp
+headerImg: https://static.xheldon.cn/img/in-post/2023/make-vscode-great-forever/LzFlM2U3YzA1LWZjMTEtNDAzOC05Zjc2LTkyZGIzMmI5ODgyNC8xY2JmZGRjMy1kNDU3LTRkM2ItOTQ0OC1iNDEyYjFiYTM1ZDkvQ2xlYW5TaG90XzIwMjNfMTJfMjUtMjJfMDNfNTAyeC5wbmc=-985292be-c0f7-4584-9641-e964d96cc1de.webp
 notion: https://xheldon.notion.site/VSCode-985292bec0f745849641e964d96cc1de?pvs=4
 tags:
-    - 技巧
-    - 教程
-    - 折腾
-    - JavaScript
-    - 工作流
-    - 生活
-    - VSCode
-    - 设置
+  - 技巧
+  - 教程
+  - 折腾
+  - JavaScript
+  - 工作流
+  - 生活
+  - VSCode
+  - 设置
 ---
 
 {% render_callout icon="☝🏻" color="" bgcolor="rgb(241, 241, 239)" %}后面计划出一期视频说明，因为有些设置的效果需要演示才能看出差异，而我又懒得制作动图在博客中了。{% endrender_callout %}
@@ -450,7 +450,7 @@ sticky 的最大级数也可以修改，默认是 7，足够了（编辑器 stic
 ![鼠标前进后退](https://static.xheldon.cn/img/in-post/2023/make-vscode-great-forever/254a8290-8b0a-4ebc-ac36-d453a855719d.webp)
 {% endrender_caption %}
 
-这是个默认选项，但是我也说一下，对于有左侧按键（右手），也即 4、5按键的鼠标而言，的鼠标直接就可以用来导航，非常好用。
+这是个默认选项，但是我也说一下，对于有左侧按键（右手），也即 4、5 按键的鼠标而言，的鼠标直接就可以用来导航，非常好用。
 
 ### tab 固定
 
@@ -508,7 +508,7 @@ Some of the editors like notepad++ provide Double Click to close a TAB. It would
 
 紧凑布局有利于掌控全局+不占地方。
 
-### ~~双击  tab 关闭（？）~~
+### ~~双击 tab 关闭（？）~~
 
 {% render_caption caption="没懂这个设置" img="https://static.xheldon.cn/img/in-post/2023/make-vscode-great-forever/3385a990-b192-4aec-963a-ee5996faf19d.webp" %}
 ![没懂这个设置](https://static.xheldon.cn/img/in-post/2023/make-vscode-great-forever/3385a990-b192-4aec-963a-ee5996faf19d.webp)
@@ -688,7 +688,7 @@ git 有个全局默认的 ignore，打开该选项可以在搜索的时候将其
 
 如图，描述的很清楚了，建议开启，少一步操作。
 
-## 第三方扩展 
+## 第三方扩展
 
 其实没什么好说的，毕竟都装扩展了，肯定是有自己的需求才会装的，所以按照自己的需求配置即可。
 

@@ -4,22 +4,22 @@ date: 2023-01-06 12:14:58 +0800
 categories: tech
 path: _posts/tech/2023/2023-01-06-prosemirror-comparison-with-slatejs.md
 cos: 2023/prosemirror-comparison-with-slatejs
-header-mask: 0.4
+headerMask: 0.4
 tags:
-    - 技术
-    - SlateJS
-    - ProseMirror
-    - 对比
-    - 编辑器
-    - 选型
-    - 框架
+  - 技术
+  - SlateJS
+  - ProseMirror
+  - 对比
+  - 编辑器
+  - 选型
+  - 框架
 craft: https://www.craft.do/s/WCeEgxNhxwF2cu
-no-catalog: true
+noCatalog: true
 callout: Slate 和 Prosemirror 各用过两年后的简单对比总结
 title: Slate 和 ProseMirror 简单对比
-header-img: https://static.xheldon.cn/img/in-post/2023/prosemirror-comparison-with-slatejs/photo-1546900703-cf06143d1239.webp
-header-img-credit: Joshua Aragon / Unsplash
-header-img-credit-href: https://unsplash.com/@goshua13?utm_source=xheldon_blog&utm_medium=referral
+headerImg: https://static.xheldon.cn/img/in-post/2023/prosemirror-comparison-with-slatejs/photo-1546900703-cf06143d1239.webp
+headerImgCredit: Joshua Aragon / Unsplash
+headerImgCreditHref: https://unsplash.com/@goshua13?utm_source=xheldon_blog&utm_medium=referral
 sha: 07e482ad2b44ecb04a8eca83c1a2cf2704eb6b39
 lastUpdateTime: 2023-01-09 20:11:20 +0800
 ---
@@ -68,9 +68,9 @@ lastUpdateTime: 2023-01-09 20:11:20 +0800
 
 1. 没有 Slate 那么容易崩溃，报错也不会导致整个编辑器框架不可用，稳定性较高。
 
-1. 作者是自由工作者，靠捐款维持生活，名正言顺的接受付费解 Bug，按小时计费，每小时 200欧（邮件问过，没记错的话）。
+1. 作者是自由工作者，靠捐款维持生活，名正言顺的接受付费解 Bug，按小时计费，每小时 200 欧（邮件问过，没记错的话）。
 
-1. 文档树模型我觉得很好用，Schema 限制严格以及基于文本/Token偏移的定位系统是精髓，不过也是难以协同的地方。
+1. 文档树模型我觉得很好用，Schema 限制严格以及基于文本/Token 偏移的定位系统是精髓，不过也是难以协同的地方。
 
 1. 不跟任意的视图框架依赖，可以用 React、View、Angular 开发视图框架，不过一般只有定制组件才需要，像 paragraph、heading、list 等，无需自定义 View 层，只需要使用 API 描述 DOM 结构即可。
 
@@ -82,7 +82,7 @@ lastUpdateTime: 2023-01-09 20:11:20 +0800
 
 1. 模块分散非开箱即用，需要一定的上手成本才能跑起来。
 
-1. 基于 PM 的协同方案，实现起来相较于 Slate 来说比较困难，作者17年开了个 issue，说要写一个协同的 demo，现在还没写。
+1. 基于 PM 的协同方案，实现起来相较于 Slate 来说比较困难，作者 17 年开了个 issue，说要写一个协同的 demo，现在还没写。
 
 1. 上手难度较大，往往需要两周甚至一个月的时间才能开始开发基础功能。
 
@@ -90,7 +90,7 @@ lastUpdateTime: 2023-01-09 20:11:20 +0800
 
 1. 几乎不可能魔改源码，成本很高，只能靠作者来修复。
 
-可以看下这个答主的对比，说的基本没什么大问题： 
+可以看下这个答主的对比，说的基本没什么大问题：
 
 {% render_bookmark url="https://www.zhihu.com/question/404836496/answer/1323431059" title="主流的开源「富文本编辑器」都有什么缺陷？ - 知乎" img="https://static.zhihu.com/heifetz/assets/apple-touch-icon-60.362a8eac.png" yid="" bid="" %}
 先占个坑……如何不借助 contentEditable 实现富文本编辑器？联动一下之前我在类似问题的回答我主要调研…
@@ -99,7 +99,7 @@ lastUpdateTime: 2023-01-09 20:11:20 +0800
 美团的学城用的是 PM：
 
 {% render_bookmark url="https://www.zhihu.com/question/404836496/answer/1326453810" title="主流的开源「富文本编辑器」都有什么缺陷？ - 知乎" img="https://static.zhihu.com/heifetz/assets/apple-touch-icon-60.362a8eac.png" yid="" bid="" %}
-美团的知识管理系统-学城，其富文本编辑器是基于prosemirror来实现的，我在其中开发了内部团队接入版本及…
+美团的知识管理系统-学城，其富文本编辑器是基于 prosemirror 来实现的，我在其中开发了内部团队接入版本及…
 {% endrender_bookmark %}
 
 ## 总结

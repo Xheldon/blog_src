@@ -1,40 +1,48 @@
 <!-- 因为一些原因，page 类型传入参数是驼峰命名，post 类型是短斜杠命名 -->
 <style type="text/css">
-    header.intro-header{
-        position: relative;
-        background-image: url("<%= headerImg || config['header-img'] %>");
-        <% if (headerBgCss) { %>
-        background: <%= headerBgCss %>;
-        <% } %>
+  header.intro-header {
+    position: relative;
+    background-image: url("<%= headerImg || config['headerImg'] %>");
+
+    <% if (headerBgCss) {
+      %>background: <%=headerBgCss %>;
+      <%
     }
 
-    <% if (headerMask) { %>
-        header.intro-header .header-mask {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            background: rgba(0,0,0, <%= headerMask %>);
-        }
-    <% } %>
+    %>
+  }
+
+  <% if (headerMask) {
+    %>header.intro-header .headerMask {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background: rgba(0, 0, 0, <%=headerMask %>);
+    }
+
+    <%
+  }
+
+  %>
 </style>
 <% if (headerStyle === 'text') { %>
-    <header class="intro-header style-text">
-<% } else { %>
-    <header class="intro-header">
-<% } %>
-    <div class="header-mask"></div>
+<header class="intro-header style-text">
+  <% } else { %>
+  <header class="intro-header">
+    <% } %>
+    <div class="headerMask"></div>
     <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <% if (short) { %>
-                    <div class="site-heading" id="tag-heading">
-                <% } else { %>
-                    <div class="site-heading">
-                <% } %>
-                <h1><%= title %></h1>
-                <span class="subheading"><%= description %></span>
-                </div>
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <% if (short) { %>
+          <div class="site-heading" id="tag-heading">
+            <% } else { %>
+            <div class="site-heading">
+              <% } %>
+              <h1><%= title %></h1>
+              <span class="subheading"><%= description %></span>
             </div>
+          </div>
         </div>
-  </div>
-</header>
+      </div>
+  </header>

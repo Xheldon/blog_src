@@ -1,29 +1,29 @@
 ---
-layout:     post
-title:      "清蒸鲈鱼"
-subtitle:   "又好吃做起来又简单"
-date:       2021-04-10 09:24:00
-header-img: "img/in-post/qing-zheng-lu-yu/head.png"
+layout: post
+title: '清蒸鲈鱼'
+subtitle: '又好吃做起来又简单'
+date: 2021-04-10 09:24:00
+headerImg: 'img/in-post/qing-zheng-lu-yu/head.png'
 categories: life
 # 如果头图太白的话，使用此设置进行调暗
-header-mask: 0.4
+headerMask: 0.4
 # header-bg-css: "linear-gradient(to right, #24b94a, #38ef7d);"
 tags:
-    - 家常菜
-    - 美食
-    - 生活
+  - 家常菜
+  - 美食
+  - 生活
 ---
 
 ### 食材
 
-* 鲈鱼 1 条，两个人吃大概 1.2~1.5 斤左右
-* 小葱 2 颗
-* 柠檬 1 个
-* 鱼露 2 勺
-* 糖 1 小勺
-* 盐 2 克
-* 蒜瓣 3 颗
-* 剁椒或者小米椒
+- 鲈鱼 1 条，两个人吃大概 1.2~1.5 斤左右
+- 小葱 2 颗
+- 柠檬 1 个
+- 鱼露 2 勺
+- 糖 1 小勺
+- 盐 2 克
+- 蒜瓣 3 颗
+- 剁椒或者小米椒
 
 ### 准备工作
 
@@ -81,6 +81,6 @@ tags:
 
 ![](https://static.xheldon.cn/img/in-post/qing-zheng-lu-yu/IMG_3796.png)
 
-撒上葱花，将切成片的柠檬摆盘，即可食用，配上[一碗大米饭](/food/da-mi-fan.html){:target="_blank"}，效果更佳哦：
+撒上葱花，将切成片的柠檬摆盘，即可食用，配上[一碗大米饭](/food/da-mi-fan.html){:target="\_blank"}，效果更佳哦：
 
 ![](https://static.xheldon.cn/img/in-post/qing-zheng-lu-yu/IMG_3797.png)

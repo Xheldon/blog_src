@@ -4,20 +4,20 @@ layout: post
 date: 2023-5-9 8:0:00 +0800
 cos: 2023/arc-a-easy-use-browser
 path: _posts/life/2023/2023-05-09-arc-a-easy-use-browser.md
-header-mask: 0.4
+headerMask: 0.4
 header-style: full
 callout: 为什么我在短短使用 Arc 1 天后就决定将它作为默认浏览器？
 categories: life
-reference: 
-no-catalog: 
+reference:
+noCatalog:
 lastUpdateTime: 2023-6-6 8:0:00 +0800
-header-img: https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/L3Bob3RvLTE1MDc5MDQxMzkzMTYtM2M3NDIyYTk3YTQ5-dae90c66-1893-4c9f-b43b-3e5b41dabe23.webp
+headerImg: https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/L3Bob3RvLTE1MDc5MDQxMzkzMTYtM2M3NDIyYTk3YTQ5-dae90c66-1893-4c9f-b43b-3e5b41dabe23.webp
 notion: https://xheldon.notion.site/Arc-dae90c6618934c9fb43b3e5b41dabe23
 tags:
-    - 初体验
-    - 浏览器
-    - 折腾
-    - 生活
+  - 初体验
+  - 浏览器
+  - 折腾
+  - 生活
 ---
 
 {% render_callout icon="⚠️" color="" bgcolor="rgb(253, 235, 236)" %}目前 Arc 处于公测阶段，需要邀请码或者排队申请才能使用，而每个使用的人有 5 个邀请码可以分发给朋友，有想体验 Arc 浏览器的可以私聊找我。{% endrender_callout %}
@@ -48,7 +48,7 @@ tags:
 
 地址栏顾名思义就是为了显示当前页面地址。但是很多情况下，用户并不关心当前页面的路径（路径指的是域名后面的内容，如 `www.baidu.com/personal.html` 中，`/personal.html` 即为路径，`www.baidu.com` 即为域名 ）是什么——其实用户也不需要知道，只要知道当前域名即可——查看域名是为了谨防钓鱼假冒网站。
 
-这方面，Chrome 不能设置，它一定会显示完整链接： 
+这方面，Chrome 不能设置，它一定会显示完整链接：
 
 {% render_caption caption="只能显示完整链接的 Chrome" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/54077239-7ec1-4cfc-9f21-fd29f0c6ee22.webp" %}
 ![只能显示完整链接的 Chrome](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/54077239-7ec1-4cfc-9f21-fd29f0c6ee22.webp)
@@ -80,9 +80,9 @@ tags:
 
 收藏夹也叫书签，顾名思义就是收藏存储一些为了方面后续进一步查看，或者会经常用到的地址而准备的。但是这里有两个问题：
 
-* 时间长了，收藏的网页较多，查找困难。
+- 时间长了，收藏的网页较多，查找困难。
 
-* 有些网页仅仅是为了「稍后查看，看完即删」，但是收藏完转头就忘，日积月累提高了未来使用收藏功能的成本。
+- 有些网页仅仅是为了「稍后查看，看完即删」，但是收藏完转头就忘，日积月累提高了未来使用收藏功能的成本。
 
 {% render_caption caption="时不时就需要整理一下的 Chrome 书签" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/b49a76ef-6d2f-458d-b1b3-6bed0b575b9a.webp" %}
 ![时不时就需要整理一下的 Chrome 书签](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/b49a76ef-6d2f-458d-b1b3-6bed0b575b9a.webp)
@@ -118,7 +118,7 @@ tags:
 
 1. 处理完成后，在众多浏览器 tab 中，准确找到刚刚朋友发的几个链接打开的 tab，一一关闭———你可能需要费劲半天去找哪些是刚刚朋友发的链接打开的 tab，因为打开的太多了。
 
-👇🏻你能在下面的浏览器一堆 tab 中准确判断哪些是你刚刚通过朋友给的链接打开的、仅仅是临时的、处理完成后就要关闭的浏览器窗口吗？尤其是在你不清楚新打开的 tab 会相对于正在使用的 tab 的哪一侧打开的时候。
+👇🏻 你能在下面的浏览器一堆 tab 中准确判断哪些是你刚刚通过朋友给的链接打开的、仅仅是临时的、处理完成后就要关闭的浏览器窗口吗？尤其是在你不清楚新打开的 tab 会相对于正在使用的 tab 的哪一侧打开的时候。
 
 {% render_caption caption="打开了很多标签页" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/59b7e7da-66b2-4466-ac05-95842521dab9.webp" %}
 ![打开了很多标签页](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/59b7e7da-66b2-4466-ac05-95842521dab9.webp)
@@ -160,11 +160,11 @@ Little Arc 的设计原则是，临时打开的窗口，也即从别的应用调
 
 **普通浏览器操作（以 Chrome 为例）：**
 
-* 点击顶部栏的「历史记录」。
+- 点击顶部栏的「历史记录」。
 
-* 点击「显示全部历史记录」。
+- 点击「显示全部历史记录」。
 
-* 点击「从其他设备打开的标签页」，选择你刚刚才公司打开的那个 tab 后，打开。
+- 点击「从其他设备打开的标签页」，选择你刚刚才公司打开的那个 tab 后，打开。
 
 **Arc 浏览器操作：**
 
@@ -186,9 +186,9 @@ Little Arc 的设计原则是，临时打开的窗口，也即从别的应用调
 
 **普通浏览器操作（以 Chrome 为例）：**
 
-* （可选）打开隐身窗口刷微博，在普通窗口浏览器 review。美中不足的是正在刷一个小姐姐跳舞的视频时高 T 经过，赶紧关闭了隐身窗口，过后回想起小姐姐曼妙的身姿时再想打开的时候找不到地址了。
+- （可选）打开隐身窗口刷微博，在普通窗口浏览器 review。美中不足的是正在刷一个小姐姐跳舞的视频时高 T 经过，赶紧关闭了隐身窗口，过后回想起小姐姐曼妙的身姿时再想打开的时候找不到地址了。
 
-* （可选）将微博放到 tab 组中隐藏起来，~~切换自如~~。
+- （可选）将微博放到 tab 组中隐藏起来，~~切换自如~~。
 
 {% render_caption caption="Chrome 的标签组打开关闭的逻辑我一直没搞懂" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/d81d0779-fa6b-440a-988b-b8c28c532171.gif" %}
 ![Chrome 的标签组打开关闭的逻辑我一直没搞懂](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/d81d0779-fa6b-440a-988b-b8c28c532171.gif)
@@ -226,7 +226,7 @@ Pinned 的页面因为优先级比较高，Arc 团队适配了一些网站，因
 ![预览 Gmail](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/078fdd57-be1f-42a4-9b63-967c0bd6d919.webp)
 {% endrender_caption %}
 
-目前支持的网站部分在设置中可以单独设置预览效果： 
+目前支持的网站部分在设置中可以单独设置预览效果：
 
 {% render_caption caption="部分支持 Preview 的网站" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/650e06a0-1409-4a4a-8d90-fc6e44ee07d7.webp" %}
 ![部分支持 Preview 的网站](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/650e06a0-1409-4a4a-8d90-fc6e44ee07d7.webp)
@@ -310,56 +310,54 @@ https://www.chromium.org/chromium-projects/
 
 ### 其他
 
-* **快捷键：**Arc 对快捷键的支持是第一优先级的，这就有个问题，一些网站如 Notion，有自己的快捷键，那这些快捷键与 Arc 的快捷键冲突了怎么办？答案就是设置优先级。可以设置按下快捷键后，优先相应网站的还是优先响应 Arc 的，再按一次可以响应另一个。也可以只响应其中一个的，还是很实用的。
-{% render_caption caption="可以选择响应顺序或只响应某一方的快捷键" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/6cf3b729-d67c-412d-8a27-f286fdba5287.webp" %}
-![可以选择响应顺序或只响应某一方的快捷键](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/6cf3b729-d67c-412d-8a27-f286fdba5287.webp)
-{% endrender_caption %}
+- **快捷键：**Arc 对快捷键的支持是第一优先级的，这就有个问题，一些网站如 Notion，有自己的快捷键，那这些快捷键与 Arc 的快捷键冲突了怎么办？答案就是设置优先级。可以设置按下快捷键后，优先相应网站的还是优先响应 Arc 的，再按一次可以响应另一个。也可以只响应其中一个的，还是很实用的。
+  {% render_caption caption="可以选择响应顺序或只响应某一方的快捷键" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/6cf3b729-d67c-412d-8a27-f286fdba5287.webp" %}
+  ![可以选择响应顺序或只响应某一方的快捷键](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/6cf3b729-d67c-412d-8a27-f286fdba5287.webp)
+  {% endrender_caption %}
 
-* **搜索 bar：**实用关了 Alfred 或者 VS Code 的同学会比较习惯按下快捷键后出现搜索栏，然后输入你想要的内容，这点 Arc 也实现了（按下 CMD + T）。全局搜索 bar 还有很多细节，如初始状态下，内容的展示等，有兴趣的同学可以自己体验一下。
-{% render_caption caption="Arc 的搜索功能，使用频率非常高" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/7e18fcd4-5c5c-4e76-8209-904fbbc96572.webp" %}
-![Arc 的搜索功能，使用频率非常高](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/7e18fcd4-5c5c-4e76-8209-904fbbc96572.webp)
-{% endrender_caption %}
-这里比较期待的是能开放这个搜索接口，以集成到 Alfred 中。
+- **搜索 bar：**实用关了 Alfred 或者 VS Code 的同学会比较习惯按下快捷键后出现搜索栏，然后输入你想要的内容，这点 Arc 也实现了（按下 CMD + T）。全局搜索 bar 还有很多细节，如初始状态下，内容的展示等，有兴趣的同学可以自己体验一下。
+  {% render_caption caption="Arc 的搜索功能，使用频率非常高" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/7e18fcd4-5c5c-4e76-8209-904fbbc96572.webp" %}
+  ![Arc 的搜索功能，使用频率非常高](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/7e18fcd4-5c5c-4e76-8209-904fbbc96572.webp)
+  {% endrender_caption %}
+  这里比较期待的是能开放这个搜索接口，以集成到 Alfred 中。
 
-* **文件夹集成：**在网页下载某个文件后，可以在浏览器左下角看到相关的文件：
-{% render_caption caption="hover 左下角查看下载内容，点击后有进一步的功能（下面）" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/6923fdf0-2b4e-4fe7-8800-db83ced94f69.webp" %}
-![hover 左下角查看下载内容，点击后有进一步的功能（下面）](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/6923fdf0-2b4e-4fe7-8800-db83ced94f69.webp)
-{% endrender_caption %}
-也可以点击进去查看其他的被 Arc 归类的文件夹，如 媒体、下载等，点击这里还有其他的功能如全部 Space 一览视图等，可以自己摸索。
+- **文件夹集成：**在网页下载某个文件后，可以在浏览器左下角看到相关的文件：
+  {% render_caption caption="hover 左下角查看下载内容，点击后有进一步的功能（下面）" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/6923fdf0-2b4e-4fe7-8800-db83ced94f69.webp" %}
+  ![hover 左下角查看下载内容，点击后有进一步的功能（下面）](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/6923fdf0-2b4e-4fe7-8800-db83ced94f69.webp)
+  {% endrender_caption %}
+  也可以点击进去查看其他的被 Arc 归类的文件夹，如 媒体、下载等，点击这里还有其他的功能如全部 Space 一览视图等，可以自己摸索。
 
-* **笔记&绘图：**可以有，但是没必要，有谁会在浏览器中用鼠标画图？不过聊胜于无，而且可能从埋点看这个功能用户用的也少，因此该功能的更新也自推出后几乎没怎么更新过。
-{% render_caption caption="上一步说的点击后，有这些二级访问菜单，优先级较低。" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/770bd145-ec91-4be0-ad12-ae763ea35ca4.webp" %}
-![上一步说的点击后，有这些二级访问菜单，优先级较低。](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/770bd145-ec91-4be0-ad12-ae763ea35ca4.webp)
-{% endrender_caption %}
-笔记似乎是原生技术实现的，反正是不让你看源码（无法 CMD + ALT + I 打开控制台）：
-{% render_caption caption="" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/d6474846-fad8-4cdb-8437-cda4fc32fa45.webp" %}
-![](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/d6474846-fad8-4cdb-8437-cda4fc32fa45.webp)
-{% endrender_caption %}
+- **笔记&绘图：**可以有，但是没必要，有谁会在浏览器中用鼠标画图？不过聊胜于无，而且可能从埋点看这个功能用户用的也少，因此该功能的更新也自推出后几乎没怎么更新过。
+  {% render_caption caption="上一步说的点击后，有这些二级访问菜单，优先级较低。" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/770bd145-ec91-4be0-ad12-ae763ea35ca4.webp" %}
+  ![上一步说的点击后，有这些二级访问菜单，优先级较低。](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/770bd145-ec91-4be0-ad12-ae763ea35ca4.webp)
+  {% endrender_caption %}
+  笔记似乎是原生技术实现的，反正是不让你看源码（无法 CMD + ALT + I 打开控制台）：
+  {% render_caption caption="" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/d6474846-fad8-4cdb-8437-cda4fc32fa45.webp" %}
+  ![](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/d6474846-fad8-4cdb-8437-cda4fc32fa45.webp)
+  {% endrender_caption %}
 
 ### 细节
 
-* **Mini 播放器。**音乐播放网站如 Apple Music、Spotify 的网页版（其他如网易云音乐没有尝试），会在播放的时候显示在下方一个小的编辑器按钮，方便你全局随时控制：
-{% render_caption caption="细节满满的 Mini 播放器" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/e78992ef-912f-4094-948d-8050a848b1e8.gif" %}
-![细节满满的 Mini 播放器](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/e78992ef-912f-4094-948d-8050a848b1e8.gif)
-{% endrender_caption %}
+- **Mini 播放器。**音乐播放网站如 Apple Music、Spotify 的网页版（其他如网易云音乐没有尝试），会在播放的时候显示在下方一个小的编辑器按钮，方便你全局随时控制：
+  {% render_caption caption="细节满满的 Mini 播放器" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/e78992ef-912f-4094-948d-8050a848b1e8.gif" %}
+  ![细节满满的 Mini 播放器](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/e78992ef-912f-4094-948d-8050a848b1e8.gif)
+  {% endrender_caption %}
 
-* **本地开发支持。**普通的网站打开后，页面是没有任何内容的（见上方的 Arc 页面截图），但是如果打开的是 [localhost]([object Object]) 的地址，则会进入「开发模式」，会将当前启用的插件、快捷打开 console 等 web 开发者常用的功能放到顶部供快捷访问。
-{% render_caption caption="本地开发支持" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/66de83b6-ea88-49f9-9b08-e8c253ccdbdf.webp" %}
-![本地开发支持](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/66de83b6-ea88-49f9-9b08-e8c253ccdbdf.webp)
-{% endrender_caption %}
+- **本地开发支持。**普通的网站打开后，页面是没有任何内容的（见上方的 Arc 页面截图），但是如果打开的是 [localhost]([object Object]) 的地址，则会进入「开发模式」，会将当前启用的插件、快捷打开 console 等 web 开发者常用的功能放到顶部供快捷访问。
+  {% render_caption caption="本地开发支持" img="https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/66de83b6-ea88-49f9-9b08-e8c253ccdbdf.webp" %}
+  ![本地开发支持](https://static.xheldon.cn/img/in-post/2023/arc-a-easy-use-browser/66de83b6-ea88-49f9-9b08-e8c253ccdbdf.webp)
+  {% endrender_caption %}
 
 ## 缺点
 
 金无足赤，人无完人。马克思唯物辩证法之所以是宇宙中的唯一真理，它的真理性就在于它并不是一成不变的，而是是随着时代在变化的，不同的时代有不同的解释。因此，我们要以马克思主义唯物辩证法的思想，来辩证的看待 Arc 浏览器的设计理念。
 
-* 没有 iPad 特供版，这点我是理解不能的，如果有 iPad 版的话，浏览器自带的绘图和笔记功能的使用频率会大幅提高。
+- 没有 iPad 特供版，这点我是理解不能的，如果有 iPad 版的话，浏览器自带的绘图和笔记功能的使用频率会大幅提高。
 
-* iPhone 版打开网页后，如果想新打开另一个网页，只有两个选择：要么下滑关闭当前页面（这样你就需要费劲的从 Archived 中找到被下滑关闭的网页）；要么点击右下角的图钉按钮，将页面放到 Folder 中。其实哪一点我都接受不了，下滑并没有主动点击 x 的操作，给我打开放到 tabs 列表中不好吗？
+- iPhone 版打开网页后，如果想新打开另一个网页，只有两个选择：要么下滑关闭当前页面（这样你就需要费劲的从 Archived 中找到被下滑关闭的网页）；要么点击右下角的图钉按钮，将页面放到 Folder 中。其实哪一点我都接受不了，下滑并没有主动点击 x 的操作，给我打开放到 tabs 列表中不好吗？
 
-* iPhone 端没有隐身模式。隐身模式很有用，懂的都懂。
+- iPhone 端没有隐身模式。隐身模式很有用，懂的都懂。
 
 ## 结语
 
 Arc 算是浏览器中的异类，但是很多的设计又是非常符合直觉的，能在当今众多浏览器中杀出一条血路，也可见市场对它所期望解决的问题方案的认可，感兴趣的朋友可以试试！
-
-

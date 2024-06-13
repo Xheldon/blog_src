@@ -1,30 +1,30 @@
 ---
-layout:     post
-title:      "排骨白菜炖粉条"
-subtitle:   "东北菜，炖就完了~"
-date:       2020-11-21 13:00:23
-header-img: "img/in-post/pai-gu-bai-cai-dun-fen-tiao/IMG_2621.png"
+layout: post
+title: '排骨白菜炖粉条'
+subtitle: '东北菜，炖就完了~'
+date: 2020-11-21 13:00:23
+headerImg: 'img/in-post/pai-gu-bai-cai-dun-fen-tiao/IMG_2621.png'
 categories: life
-header-mask: 0.4
+headerMask: 0.4
 catalog: true
 author: Xheldon
 tags:
-    - 东北菜
-    - 美食
-    - 生活
+  - 东北菜
+  - 美食
+  - 生活
 ---
 
 ### 食材
 
-* 排骨（肋排/小肋排）一斤半，最好是小肋排，我买的不是（图便宜），所以吃起来骨头太多不太好
-* 大葱
-* 花椒、大料、干辣椒、香叶、桂皮
-* 冰糖
-* 料酒
-* 生抽
-* 老抽
-* 耗油
-* 盐、油
+- 排骨（肋排/小肋排）一斤半，最好是小肋排，我买的不是（图便宜），所以吃起来骨头太多不太好
+- 大葱
+- 花椒、大料、干辣椒、香叶、桂皮
+- 冰糖
+- 料酒
+- 生抽
+- 老抽
+- 耗油
+- 盐、油
 
 ### 准备工作
 
@@ -59,7 +59,7 @@ tags:
 
 ### 开始做
 
-用油滑锅，否则的话下食材会粘锅，没错我们家锅买了好几年，涂层有点老化，如果你感兴趣可以送给我一口锅，[点击直达送锅现场]({{ site.baseurl }}/donate/){:target="_blank"}：
+用油滑锅，否则的话下食材会粘锅，没错我们家锅买了好几年，涂层有点老化，如果你感兴趣可以送给我一口锅，[点击直达送锅现场]({{ site.baseurl }}/donate/){:target="\_blank"}：
 ![](https://static.xheldon.cn/img/in-post/pai-gu-bai-cai-dun-fen-tiao/IMG_2588.png)
 
 开大火放冰糖炒，用来上色：

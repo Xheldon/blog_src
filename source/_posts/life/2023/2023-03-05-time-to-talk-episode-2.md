@@ -5,14 +5,14 @@ categories: life
 path: _posts/life/2023/2023-03-05-time-to-talk-episode-2.md
 cos: 2023/time-to-talk-episode-2
 tags:
-    - 泡脚时间
-    - 生活
+  - 泡脚时间
+  - 生活
 callout: 每次会根据五个观点、主题、想法等展开，本系列不定期更新，纯个人观点，请勿上纲上线。
 craft: https://www.craft.do/s/lwTFUkOWWx3Tqb
 title: 【泡脚时间】第二期：简单粗暴
-header-img: https://static.xheldon.cn/img/in-post/2023/time-to-talk-episode-2/photo-1446776811953-b23d57bd21aa.webp
-header-img-credit: NASA / Unsplash
-header-img-credit-href: https://unsplash.com/@nasa?utm_source=xheldon_blog&utm_medium=referral
+headerImg: https://static.xheldon.cn/img/in-post/2023/time-to-talk-episode-2/photo-1446776811953-b23d57bd21aa.webp
+headerImgCredit: NASA / Unsplash
+headerImgCreditHref: https://unsplash.com/@nasa?utm_source=xheldon_blog&utm_medium=referral
 sha: ea55a8f96cde4228656c4bfc910a4dd901c7ae38
 lastUpdateTime: 2023-03-05 20:20:37 +0800
 ---

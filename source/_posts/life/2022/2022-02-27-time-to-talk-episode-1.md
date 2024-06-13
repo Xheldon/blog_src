@@ -5,14 +5,14 @@ categories: life
 path: _posts/life/2022/2022-02-27-time-to-talk-episode-1.md
 cos: 2022/time-to-talk-episode-1
 tags:
-    - 泡脚时间
-    - 生活
+  - 泡脚时间
+  - 生活
 callout: 每次会根据五个观点、主题、想法等展开，本系列不定期更新，纯个人观点，请勿上纲上线。
 craft: https://www.craft.do/s/VbRThrovTvFWSW
 title: 【泡脚时间】第一期：为什么主流国产历史剧让人感觉非常假？
-header-img: https://static.xheldon.cn/img/in-post/2022/time-to-talk-episode-1/photo-1585400674058-1040b6e1a5f7.webp
-header-img-credit: Anelya Okapova / Unsplash
-header-img-credit-href: https://unsplash.com/@okaneri?utm_source=xheldon_blog&utm_medium=referral
+headerImg: https://static.xheldon.cn/img/in-post/2022/time-to-talk-episode-1/photo-1585400674058-1040b6e1a5f7.webp
+headerImgCredit: Anelya Okapova / Unsplash
+headerImgCreditHref: https://unsplash.com/@okaneri?utm_source=xheldon_blog&utm_medium=referral
 sha: d41557852afdfe56eefdbfeeb0343969831e1167
 lastUpdateTime: 2023-03-05 20:15:02 +0800
 ---
@@ -63,9 +63,9 @@ lastUpdateTime: 2023-03-05 20:15:02 +0800
 
 真相，是一个美好的词，类似的还有 希望、奋斗，但现实是残酷的，所以我觉得那些认为「不管怎样，真相就是真相」的人是「原教旨主义者」，太理想，太极端了。也许这也是国人如此支持如今遍地都是监控摄像头的原因：如果你问心无愧，就不怕被别人看见；如果你害怕被人看见，你一定是做了亏心事。我相信政府也一定是这么认为的：社会影响比真相更重要，因此附上南京彭宇案后续：
 
-> 2007年10月15日下午，中共江苏省委书记李源潮在十七大江苏省分组讨论会上发表讲话，专门提到了彭宇案，以其为案例介绍江苏省“大调解”机制，作为其工作政绩的展现。此讲话可视为省政府影响此案调解、审理结果的证据。同时标示着官方公开表示此案以庭外“和解”告结。
+> 2007 年 10 月 15 日下午，中共江苏省委书记李源潮在十七大江苏省分组讨论会上发表讲话，专门提到了彭宇案，以其为案例介绍江苏省“大调解”机制，作为其工作政绩的展现。此讲话可视为省政府影响此案调解、审理结果的证据。同时标示着官方公开表示此案以庭外“和解”告结。
 
-> 和解结果：和解结果并未对媒体公布，相关细节不得而知。据悉，该案和解的结果是彭宇承担了10%的责任（原本法院判了40%，4万多元），赔偿1万余元，传言为“第三方”支付，但此传言未获官方确认。
+> 和解结果：和解结果并未对媒体公布，相关细节不得而知。据悉，该案和解的结果是彭宇承担了 10%的责任（原本法院判了 40%，4 万多元），赔偿 1 万余元，传言为“第三方”支付，但此传言未获官方确认。
 
 {% render_caption caption="真相" img="https://static.xheldon.cn/img/in-post/2022/time-to-talk-episode-1/D264829D-CCFC-482C-97A8-9A7EDD925079_2.webp" %}
 ![真相](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/758C49F3-6C60-46E6-B48C-994F1DA81096/D264829D-CCFC-482C-97A8-9A7EDD925079_2/yKUyoUl7gyv3xNUdW59JMWMxfrGJONtPD6IQf7uy5NEz/D264829D-CCFC-482C-97A8-9A7EDD925079_2.jpeg)
@@ -73,7 +73,7 @@ lastUpdateTime: 2023-03-05 20:15:02 +0800
 
 ## 我非常讨厌又笨又努力的人
 
-👆🏻这是一个我的观点。一直以来，你能接触到的人类的所有传播介质，如书籍、广播、互联网、广告、动漫、电影电视剧，都会有一个共同的观点，那就是即使你很笨，但是也应该努力。
+👆🏻 这是一个我的观点。一直以来，你能接触到的人类的所有传播介质，如书籍、广播、互联网、广告、动漫、电影电视剧，都会有一个共同的观点，那就是即使你很笨，但是也应该努力。
 
 为什么？因为你不努力的话永远只能维持在现状，而努力之后才可能突破现状。但是这个「可能」的概率是多少，没有人知道。有人说，重点在奋斗的过程，于是说「人的一生应该这样度过…」。
 

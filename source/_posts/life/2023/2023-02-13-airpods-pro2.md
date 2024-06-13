@@ -4,26 +4,26 @@ date: 2023-02-13 22:32:05 +0800
 categories: life
 path: _posts/life/2023/2023-02-13-airpods-pro2.md
 cos: 2023/airpods-pro2
-header-mask: 0.4
+headerMask: 0.4
 tags:
-    - 生活
-    - 初体验
-    - 苹果
-    - 开箱
-    - 耳机
+  - 生活
+  - 初体验
+  - 苹果
+  - 开箱
+  - 耳机
 craft: https://www.craft.do/s/HkJNc6V6PYCW8M
 callout: AirPods Pro 2 代发布半年后的最晚开箱
 title: 开箱：AirPods Pro 2代初体验
-header-img: https://static.xheldon.cn/img/in-post/2023/airpods-pro2/photo-1673448884901-ea493321b1d1.webp
-header-img-credit: Francesco Liotti / Unsplash
-header-img-credit-href: https://unsplash.com/@francesco_liotti?utm_source=xheldon_blog&utm_medium=referral
+headerImg: https://static.xheldon.cn/img/in-post/2023/airpods-pro2/photo-1673448884901-ea493321b1d1.webp
+headerImgCredit: Francesco Liotti / Unsplash
+headerImgCreditHref: https://unsplash.com/@francesco_liotti?utm_source=xheldon_blog&utm_medium=referral
 sha: c1f5d022d6a25ae973d99e79eda2dd955821dbdd
 lastUpdateTime: 2023-02-13 22:58:28 +0800
 ---
 
 ## 前言
 
-我总共有三个耳机，一个是 AirPods 2代路上用，其他两个都是 17 年买的索尼耳机，一个是 mdr-1000x，在公司用；另一个是 mdr-100abn，在家用。
+我总共有三个耳机，一个是 AirPods 2 代路上用，其他两个都是 17 年买的索尼耳机，一个是 mdr-1000x，在公司用；另一个是 mdr-100abn，在家用。
 
 {% render_caption caption="MDR-1000X 当年的旗舰" img="https://static.xheldon.cn/img/in-post/2023/airpods-pro2/DDD53165-79DD-4B4A-BE01-3A6974F886D1_2.webp" %}
 ![MDR-1000X 当年的旗舰](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/E96CAC1B-F7D2-4EF1-88BC-A7A3D99ADCEF/DDD53165-79DD-4B4A-BE01-3A6974F886D1_2/SIs2bcpHmp6EWnAq9nBf2cx7wwEXxN3mZ3ORoGwxsPUz/Image.jpeg)
@@ -37,13 +37,13 @@ lastUpdateTime: 2023-02-13 22:58:28 +0800
 ![AirPods 2代](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/E96CAC1B-F7D2-4EF1-88BC-A7A3D99ADCEF/E20D3B83-863E-44B9-A096-009F75C2AF2B_2/mmVd2m0LUn7pkfCbjYL5V8L4gbllPSvAisbCyxPgCtQz/Image.jpeg)
 {% endrender_caption %}
 
-本来，100abn 是领导买来用的，但是用了两次就不用了，说太沉了压头，其实我的 1000x 也是如此，后来我和领导双双换了 AirPods 2代，这两个索尼的耳机就在家吃灰好些年。
+本来，100abn 是领导买来用的，但是用了两次就不用了，说太沉了压头，其实我的 1000x 也是如此，后来我和领导双双换了 AirPods 2 代，这两个索尼的耳机就在家吃灰好些年。
 
 平常使用的话，1000x 和 100abn 用的较少，因为他们比较沉戴着不舒服，还一个就是会压头发，尤其是我这种头发短的更是如此，压一下就很难恢复原来的俊美发型，很影响我的盛世美颜。所以 100abn 多半是周末在家里打 PS5 游戏的时候插线用一用，在公司也是多用 AirPods 2 代来开会。
 
-但是因为一些我不知道的原因，AirPods 2代的麦克风坏掉了，这导致我无法接打电话和正常开会，每次在听歌的时候电话来了，我只能手动选择使用手机的麦克风和话筒进行接听，非常不方便。
+但是因为一些我不知道的原因，AirPods 2 代的麦克风坏掉了，这导致我无法接打电话和正常开会，每次在听歌的时候电话来了，我只能手动选择使用手机的麦克风和话筒进行接听，非常不方便。
 
-于是我就向领导申请换一个耳机，意料之中的，领导说：「you see see you有多少耳机了？还 buy？i 还 want 二环里的 big house 呢！」于是我又说：「我的耳机坏掉了，我确实需要一个在路上通勤的耳机，要不把现在我的那个 1000x 和 AirPods 2代都卖掉回血，再买一个 AirPods Pro 2代可否？」领导这才勉强同意。
+于是我就向领导申请换一个耳机，意料之中的，领导说：「you see see you 有多少耳机了？还 buy？i 还 want 二环里的 big house 呢！」于是我又说：「我的耳机坏掉了，我确实需要一个在路上通勤的耳机，要不把现在我的那个 1000x 和 AirPods 2 代都卖掉回血，再买一个 AirPods Pro 2 代可否？」领导这才勉强同意。
 
 于是当即下单，等了三天后终于到了，于是就有了这篇在耳机发布了快半年后的开箱。
 
@@ -77,7 +77,7 @@ lastUpdateTime: 2023-02-13 22:58:28 +0800
 ![耳机本体](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/E96CAC1B-F7D2-4EF1-88BC-A7A3D99ADCEF/50FBB679-E411-4472-80E0-3933FC129DC1_2/x2xDwyGgrd18aaPVhDpz9on2YOyfzam2WYgegflVEuEz/Image.jpeg)
 {% endrender_caption %}
 
-这里，我选了激光刻印，印的是一个五角星 「☆」为什么刻五角星呢？因为很随意刻的，没有为什么。要强行解释的话就是七龙珠的星星、JoJo 的奇妙冒险中 Dio 及其后代身上的星星、五星红旗的星星…等瞎扯的，存粹是随便刻的，原则是： 
+这里，我选了激光刻印，印的是一个五角星 「☆」为什么刻五角星呢？因为很随意刻的，没有为什么。要强行解释的话就是七龙珠的星星、JoJo 的奇妙冒险中 Dio 及其后代身上的星星、五星红旗的星星…等瞎扯的，存粹是随便刻的，原则是：
 
 1. 对称
 
@@ -103,7 +103,7 @@ lastUpdateTime: 2023-02-13 22:58:28 +0800
 ![可以使用空间音频](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/E96CAC1B-F7D2-4EF1-88BC-A7A3D99ADCEF/7CBAF3A1-7E17-4865-A488-E2B66787485E_2/xPFXdLqphFObn1DVZlGvSxx4bIcDOeCXdyo8y4RDK5wz/Image.png)
 {% endrender_caption %}
 
-空间音频会扫描你的左耳和右耳和正面的形状： 
+空间音频会扫描你的左耳和右耳和正面的形状：
 
 {% render_caption caption="扫描面部和左右耳" img="https://static.xheldon.cn/img/in-post/2023/airpods-pro2/DD50A93A-480D-4116-BA06-D9F102D4ECD2_2.webp" %}
 ![扫描面部和左右耳](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/E96CAC1B-F7D2-4EF1-88BC-A7A3D99ADCEF/DD50A93A-480D-4116-BA06-D9F102D4ECD2_2/zgPmBK3JZ8sUoUXfCpGHkQDVojQ5jfPXsbwMSMGqYqAz/Image.png)
@@ -125,7 +125,7 @@ lastUpdateTime: 2023-02-13 22:58:28 +0800
 
 ## 遇到的小问题
 
-短短使用了几个小时，就遇到了一个两个小问题： 
+短短使用了几个小时，就遇到了一个两个小问题：
 
 1. 不知道是刚设置好的原因还是咋回事，正在用 iPhone 听歌，来了短信，但是此时耳机传来的是类似于电视台没声音雪花点那种滋啦滋啦的声音，短信消失后才恢复正常，我全程没做任何操作自动恢复的。
 

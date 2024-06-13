@@ -4,19 +4,19 @@ date: 2022-04-24 00:57:15 +0800
 categories: life
 path: _posts/life/2022/2022-04-24-the-way-to-watching-tv.md
 cos: 2022/the-way-to-watching-tv
-header-mask: 0.4
+headerMask: 0.4
 tags:
-    - 生活
-    - Apple
-    - 折腾
-    - 软路由
-    - 自由
+  - 生活
+  - Apple
+  - 折腾
+  - 软路由
+  - 自由
 craft: https://www.craft.do/s/zRTAMsyWRqPewN
 callout: 为家人实现观影自由，也是一种幸福。
 title: 我的家庭观影之路
-header-img: https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/photo-1440404653325-ab127d49abc1.webp
-header-img-credit: Noom Peerapong / Unsplash
-header-img-credit-href: https://unsplash.com/@imnoom?utm_source=xheldon_blog&utm_medium=referral
+headerImg: https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/photo-1440404653325-ab127d49abc1.webp
+headerImgCredit: Noom Peerapong / Unsplash
+headerImgCreditHref: https://unsplash.com/@imnoom?utm_source=xheldon_blog&utm_medium=referral
 sha: 3fd91a90a666554d5fee290db85de291dd4f8cf5
 lastUpdateTime: 2023-01-05 11:52:10 +0800
 ---
@@ -31,19 +31,19 @@ lastUpdateTime: 2023-01-05 11:52:10 +0800
 
 ### 设备
 
-* 索尼 65X90J 电视作为播放设备，京东 618 买的，￥6000+，实际任意电视均可。
+- 索尼 65X90J 电视作为播放设备，京东 618 买的，￥ 6000+，实际任意电视均可。
 
-* Apple TV 4K 2021 款作为附属播放设备，京东国际买的 ￥1300，Infuse 只在苹果平台有，直接在电脑上播放也行。
+- Apple TV 4K 2021 款作为附属播放设备，京东国际买的 ￥ 1300，Infuse 只在苹果平台有，直接在电脑上播放也行。
 
-* 联通宽带送的普通 ZTE WiFi6 路由器作为主路由，免费。
+- 联通宽带送的普通 ZTE WiFi6 路由器作为主路由，免费。
 
-* NanoPi R4S 作为[软路由](https://baike.baidu.com/item/%E8%BD%AF%E8%B7%AF%E7%94%B1/4824918)，OpenWrt 系统，淘宝买的 ￥500左右，其他软路由系统/硬件均可。
+- NanoPi R4S 作为[软路由](https://baike.baidu.com/item/%E8%BD%AF%E8%B7%AF%E7%94%B1/4824918)，OpenWrt 系统，淘宝买的 ￥ 500 左右，其他软路由系统/硬件均可。
 
-* [Infuse Pro 订阅](https://firecore.com/infuse) 软件做为播放客户端，Apple 美区买的，订阅一年 ￥70 左右，其他支持 WebDAV 等协议的播放软件均可。
+- [Infuse Pro 订阅](https://firecore.com/infuse) 软件做为播放客户端，Apple 美区买的，订阅一年 ￥ 70 左右，其他支持 WebDAV 等协议的播放软件均可。
 
-* 联通宽带作为基础设施。
+- 联通宽带作为基础设施。
 
-> 注：我的 R4S 的连接方式是 [旁路由](https://sspai.com/post/59708) 方式，这样家里一些无需特殊上网的设备就不会异常，比如家里的 360监控摄像头、华为智能灯、小米晾衣架、小天鹅智能洗衣机等，这些智障硬件在家里网络特殊的情况下，无法连接网络，尤其是 360监控摄像头。因此这些设备必须直连，所以只能使用旁路由的方式，大部分的设备默认走直连，少部分设备特殊配置后走特殊网络即可。
+> 注：我的 R4S 的连接方式是 [旁路由](https://sspai.com/post/59708) 方式，这样家里一些无需特殊上网的设备就不会异常，比如家里的 360 监控摄像头、华为智能灯、小米晾衣架、小天鹅智能洗衣机等，这些智障硬件在家里网络特殊的情况下，无法连接网络，尤其是 360 监控摄像头。因此这些设备必须直连，所以只能使用旁路由的方式，大部分的设备默认走直连，少部分设备特殊配置后走特殊网络即可。
 
 ### 需求
 
@@ -53,7 +53,7 @@ lastUpdateTime: 2023-01-05 11:52:10 +0800
 
 1. 看会被阿里网盘和百度网盘和谐的电影/电视剧，比如当下正在影院放映的电影、流媒体正在热播的电视剧、爱国敬业诚信友善的电影等。
 
-1. 无聊的时候就想听个响，随便放点动画什么的如《猫和老鼠》、《哆啦A梦》、《蜡笔小新》等每集独立的电视节目等。
+1. 无聊的时候就想听个响，随便放点动画什么的如《猫和老鼠》、《哆啦 A 梦》、《蜡笔小新》等每集独立的电视节目等。
 
 1. 看一些蓝光画质的纪录片。
 
@@ -65,7 +65,7 @@ lastUpdateTime: 2023-01-05 11:52:10 +0800
 
 1. 对电脑软件有洁癖，能不装尽量不装新软件，如果一个软件能解决的，不会装两个；即使装软件，也尽可能的不影响电脑的环境（此处特指从 Github 上下载的软件），因此优先考虑 [Docker](https://www.docker.com/get-started/#) 安装。
 
-> 注：有些人喜欢自动化，比如使用 Sonarr + Jackett + qBittorrent ，设置好之后就可以实现自动追剧，即剧集有更新后自动下载，全程不用手动，但是我的需求没这么强烈，因为我看的大多数剧集大多数都是能通过阿里云盘转存看的国内的剧集，比如一些CCTV 的纪录片和常见的国外剧集如一些 BBC 的纪录片、老友记之类的。因此我没有使用此自动化方案，一来是因为需要额外购买大容量硬盘，二来是因为我主力看电影途径还是通过阿里云盘进行的。
+> 注：有些人喜欢自动化，比如使用 Sonarr + Jackett + qBittorrent ，设置好之后就可以实现自动追剧，即剧集有更新后自动下载，全程不用手动，但是我的需求没这么强烈，因为我看的大多数剧集大多数都是能通过阿里云盘转存看的国内的剧集，比如一些 CCTV 的纪录片和常见的国外剧集如一些 BBC 的纪录片、老友记之类的。因此我没有使用此自动化方案，一来是因为需要额外购买大容量硬盘，二来是因为我主力看电影途径还是通过阿里云盘进行的。
 
 ## 前期的无效折腾
 
@@ -87,7 +87,7 @@ lastUpdateTime: 2023-01-05 11:52:10 +0800
 
 1. 配合 R4S，通过阿里云盘提供的[ WebDAV 协议](https://baike.baidu.com/item/WebDAV/4610909?fr=aladdin)，使用 Infuse 进行电影观看，只需要网上搜索想看的电影名 + 阿里云盘 转存即可，高阶一点的，电视剧的话搜 电视剧名 + 阿里云盘 + 刮削（意即整理好剧集名和海报、演员表、每季的海报介绍等各种信息了，可以直接在 Infuse 上以电视剧的形式查看）。
 
-1. 配合 R4S，通过 qBittorrent 配合 Jackett 搜索插件和软路由的外接硬盘，实现将电影下载到外接硬盘上观看，这样也不会损害电脑的 SSD，同时也不用在电脑上多下一个软件等，此途径是为了弥补上面阿里云盘因为一些原因而被和谐的电影的一种方案。 
+1. 配合 R4S，通过 qBittorrent 配合 Jackett 搜索插件和软路由的外接硬盘，实现将电影下载到外接硬盘上观看，这样也不会损害电脑的 SSD，同时也不用在电脑上多下一个软件等，此途径是为了弥补上面阿里云盘因为一些原因而被和谐的电影的一种方案。
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/869A0533-9AE7-463E-9664-D9A61AD17D47_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/869A0533-9AE7-463E-9664-D9A61AD17D47_2/Z2TVyLvW5v33yKkjRrUyYy0edYo67LuIgNwGYkh7xqgz/Image)
@@ -105,7 +105,7 @@ lastUpdateTime: 2023-01-05 11:52:10 +0800
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/FAD4964F-C3B3-4DA1-8E22-59CC9F206DE8_2/ZcgcA4ZcNsky3KN42X2ZkjGnoBzrLS7E5fieiVTi7rUz/Image)
 {% endrender_caption %}
 
-插件装好后非常简单配置一下即可，主要是两个配置，一个是 `Refresh Token` 这个需要使用 Chrome 手动打开阿里云盘的 Web 页面，按 `cmd` + `opt` + `i` 打开控制台，然后在 `Application` Tab 中，点击左侧的 `Local Storage` 查找 `token` 这个键，在下方的值中找到 `refresh_token` 的值，粘贴到上图中即可： 
+插件装好后非常简单配置一下即可，主要是两个配置，一个是 `Refresh Token` 这个需要使用 Chrome 手动打开阿里云盘的 Web 页面，按 `cmd` + `opt` + `i` 打开控制台，然后在 `Application` Tab 中，点击左侧的 `Local Storage` 查找 `token` 这个键，在下方的值中找到 `refresh_token` 的值，粘贴到上图中即可：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/A081D0DA-BD8E-4440-8E88-304941A8182C_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/A081D0DA-BD8E-4440-8E88-304941A8182C_2/seCyxp685o0FIwJ3BzmcjXNNtYi799tLyVSxR796Y3Iz/Image)
@@ -113,25 +113,25 @@ lastUpdateTime: 2023-01-05 11:52:10 +0800
 
 > 注：这个 refresh_token 顾名思义，是用来获取真正 token 的值，我看过其代码，其逻辑是每 117 分钟重新获取一次（可能 token 是 2 小时过期），否则的话 token 就会过期。因此如果 R4S 断电、网络断开之后，如果发现阿里云盘无法访问了，需要重新获取一次该 refresh_token 填入。
 
-端口的话，就随便写一个不会冲突的即可，我这里设置的是 `8982` ，然后勾选 `启用` 后，点击右下方的保存并应用，即配置完毕。此时你可以直接使用浏览器访问（假设家里路由器地址是 `192.168.7.2:8982` ）： 
+端口的话，就随便写一个不会冲突的即可，我这里设置的是 `8982` ，然后勾选 `启用` 后，点击右下方的保存并应用，即配置完毕。此时你可以直接使用浏览器访问（假设家里路由器地址是 `192.168.7.2:8982` ）：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/C09F1F1F-4743-4F33-8400-36E0E237814F_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/C09F1F1F-4743-4F33-8400-36E0E237814F_2/MwTwcP968ZyrLe3likF00omZ9AOZyq0yLw3nyVNdyK8z/Image)
 {% endrender_caption %}
 
-然后再在 `Infuse`  中配置，让其识别到局域网的这个 WebDAV 服务即可，操作如下，进入设置-网络-共享-添加共享： 
+然后再在 `Infuse` 中配置，让其识别到局域网的这个 WebDAV 服务即可，操作如下，进入设置-网络-共享-添加共享：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/61069572-196F-4874-8122-BAD70096CE68_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/61069572-196F-4874-8122-BAD70096CE68_2/dUxGr7C2ZZ8Vyjxa2vCEjfnxtQUDuss4hf5Ovd5vhEYz/Image)
 {% endrender_caption %}
 
-位址就是刚刚的局域网 ip 地址，下方高级中填写端口。然后进入设置-媒体库，把阿里云盘中的文件夹都打上勾，这样就可以在首页看到文件夹了，记住，每次如果有文件删除和新增，如果想及时看到的话，都需要执行一次打勾/取消打勾的操作： 
+位址就是刚刚的局域网 ip 地址，下方高级中填写端口。然后进入设置-媒体库，把阿里云盘中的文件夹都打上勾，这样就可以在首页看到文件夹了，记住，每次如果有文件删除和新增，如果想及时看到的话，都需要执行一次打勾/取消打勾的操作：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/C12D97E3-66AB-41F5-B1CF-559752C3B721_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/C12D97E3-66AB-41F5-B1CF-559752C3B721_2/03XR5sdHXZmRfJOpFMD1HRgqcxceEexMwdPEyUdUI5Qz/Image)
 {% endrender_caption %}
 
-首页视图： 
+首页视图：
 
 {% render_caption caption="压缩" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/48F4102C-C6AA-4DB0-8372-8FF271EC5CF5_2.webp" %}
 ![压缩](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/48F4102C-C6AA-4DB0-8372-8FF271EC5CF5_2/VrSytPdmBtPlMxxqOU4xlwueh2ctAr2xLYvzsLBMp8Ez/48F4102C-C6AA-4DB0-8372-8FF271EC5CF5_2.png)
@@ -143,13 +143,13 @@ lastUpdateTime: 2023-01-05 11:52:10 +0800
 
 有时候阿里云盘因为一些众所周知的原因，部分资源会被和谐掉，因此为了下载一些热门剧，或者下载国外的一些剧集的话，只能采用此种方法。
 
-[qBittorrent](https://baike.baidu.com/item/qbittorrent/9179482) 支持磁力下载和 BT 下载，可以直接在电脑上安装此软件，但是 BT 下载对 SSD 是有损伤的，我不想直接在新买的 Mac Studio 上使用，于是就将其放到软路由上，然后在 R4S 挂载外接硬盘使用。需要配置一下，才能在路由器上使用此软件，过程如下： 
+[qBittorrent](https://baike.baidu.com/item/qbittorrent/9179482) 支持磁力下载和 BT 下载，可以直接在电脑上安装此软件，但是 BT 下载对 SSD 是有损伤的，我不想直接在新买的 Mac Studio 上使用，于是就将其放到软路由上，然后在 R4S 挂载外接硬盘使用。需要配置一下，才能在路由器上使用此软件，过程如下：
 
 #### 挂载外接硬盘
 
 家里有一个大学时期买的 500G 的机械硬盘（磁盘分区类型建议是 [exFAT](https://baike.baidu.com/item/exFAT)，Mac 的 APFS 不被识别，可以使用 Mac 的磁盘管理工具进行格式化），一直放在抽屉吃灰，于是拿来用了。硬盘直接插到 R4S 上可以识别，但是需要挂载，这是个 [计算机概念](https://baike.baidu.com/item/%E6%8C%82%E8%BD%BD)，就好比是对软路由来说，有一个外接的硬件通过通用协议 USB 接入到系统中，但是并不知道接入后要如何对待这个硬件。因此此处外接硬盘后，软路由会显示一个挂载点虚拟挂载点（下方的 `/dev/sda` ），表示这个硬盘挂载到路由系统的这个路径下，然后你需要配置一下要将该挂载点映射到实际位于 `/mnt/` 物理挂载点的哪个路径，才能正确访问该路径下的该外接硬盘设备。
 
-进入到 `系统-磁盘管理` ，可以看到已经设备了外接硬盘（红框指示的地方），这时需要点下方的`挂载点` 然后添加该设备即可： 
+进入到 `系统-磁盘管理` ，可以看到已经设备了外接硬盘（红框指示的地方），这时需要点下方的`挂载点` 然后添加该设备即可：
 
 {% render_caption caption="SCR-20220419-w94" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/7EEFE44B-F57F-4FC9-AF8A-FEB0D88B90A1_2.webp" %}
 ![SCR-20220419-w94](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/7EEFE44B-F57F-4FC9-AF8A-FEB0D88B90A1_2/cQOfaJzYMgyCAZU1roiu29A4mniduSeDvoc8RlJwy6Yz/SCR-20220419-w94.png)
@@ -169,13 +169,13 @@ lastUpdateTime: 2023-01-05 11:52:10 +0800
 
 > 此处先配置路由器的[ Samba 共享](https://baike.baidu.com/item/samba/455025)（也即 SMB 协议）的原因是，这样的话就不用使用 SSH 终端登陆路由器来通过命令行修改配置文件了，对小白比较友好，因此将这一步放到首位。
 
-浏览器进入到路由器配置页面，然后进入 `网络存储-网络共享` ， 进行如下填写，其中主机名是显示在 Finder 中的名字，描述和工作组默认就可以，可以看到默认状态下 `自动共享` 选项是打开的，也就是我上一节说的这一步其实不是很需要。但是如果默认自动共享的话，是共享的根目录，会将 `/mnt/sda1` 也显示出来，我这个强迫症一定要改掉，于是配置下方的 `共享目录` 即可： 
+浏览器进入到路由器配置页面，然后进入 `网络存储-网络共享` ， 进行如下填写，其中主机名是显示在 Finder 中的名字，描述和工作组默认就可以，可以看到默认状态下 `自动共享` 选项是打开的，也就是我上一节说的这一步其实不是很需要。但是如果默认自动共享的话，是共享的根目录，会将 `/mnt/sda1` 也显示出来，我这个强迫症一定要改掉，于是配置下方的 `共享目录` 即可：
 
 {% render_caption caption="SCR-20220419-w73" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/7C7C0A2E-520C-4B00-9374-36214F11E288_2.webp" %}
 ![SCR-20220419-w73](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/7C7C0A2E-520C-4B00-9374-36214F11E288_2/heK4MLC0ePxlaoyDvMNuGqcNacCw9C1y7a6WV7EnuZMz/SCR-20220419-w73.png)
 {% endrender_caption %}
 
-此处需要注意的是，需要配置一下本页面的第二个 Tab，即 `编辑模板` 然后将需要使用密码和 security 共享类型为 User 的配置改成不需要使用密码和共享类型是 Share 即允许匿名连接，否则需要输入账号密码，麻烦： 
+此处需要注意的是，需要配置一下本页面的第二个 Tab，即 `编辑模板` 然后将需要使用密码和 security 共享类型为 User 的配置改成不需要使用密码和共享类型是 Share 即允许匿名连接，否则需要输入账号密码，麻烦：
 
 {% render_caption caption="SCR-20220419-w6i" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/79FA04AC-4689-412A-8C81-EBE17EF8A0D8_2.webp" %}
 ![SCR-20220419-w6i](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/79FA04AC-4689-412A-8C81-EBE17EF8A0D8_2/SSC7ohx7OR1KNuar9joscwUFBF1Zraht5tpvLdPu1pwz/SCR-20220419-w6i.png)
@@ -183,13 +183,13 @@ lastUpdateTime: 2023-01-05 11:52:10 +0800
 
 然后点击右下角的 `保存并应用` 即可。
 
-做完以后，直接在 Mac 中的 Finder-网络 就可以看到： 
+做完以后，直接在 Mac 中的 Finder-网络 就可以看到：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/AD4BFF23-BC65-4601-B44B-DEAB0D0E27C6_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/AD4BFF23-BC65-4601-B44B-DEAB0D0E27C6_2/yYjMbNk61zMy0kgmS5d7eKeeojimRpWJqEVQJ4buBBYz/Image)
 {% endrender_caption %}
 
-也可以手动连接服务器，如图： 
+也可以手动连接服务器，如图：
 
 {% render_caption caption="SCR-20220419-wcv" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/F81F6D6A-210E-41E4-84A5-BE6F7828E555_2.webp" %}
 ![SCR-20220419-wcv](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/F81F6D6A-210E-41E4-84A5-BE6F7828E555_2/oqRTeZeu7xqOSCulkcWhktyWKNdL3LVugdk7B3PyVjUz/SCR-20220419-wcv.png)
@@ -201,13 +201,13 @@ lastUpdateTime: 2023-01-05 11:52:10 +0800
 
 #### 配置 qBittorrent
 
-进入软路由 `网络存储-qBittorrent` 插件中，根据上面的挂载点和挂载目录为 `/mnt/sda2/` 按如下配置即可： 
+进入软路由 `网络存储-qBittorrent` 插件中，根据上面的挂载点和挂载目录为 `/mnt/sda2/` 按如下配置即可：
 
 {% render_caption caption="SCR-20220419-wdl" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/A1529EB2-17DE-4825-8DB5-8EC285616B16_2.webp" %}
 ![SCR-20220419-wdl](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/A1529EB2-17DE-4825-8DB5-8EC285616B16_2/FunUGixxgUfpveVDJ7rPxwLvFlOd0dCFkIj1O8UxfCIz/SCR-20220419-wdl.png)
 {% endrender_caption %}
 
-主要配置的是 配置文件存放路径 和 下载文件存放目录，改成外接硬盘的地址 `/mnt/sda2` 下面的路径即可（上图中是已经启动后的界面，未启动的话不会有 「打开 Web 页面」和「qBittorrent 运行中」的提示）。设置完成后点击保存，先不要应用，然后进入到`下载设置` tab中，将`启用临时目录` 选项关闭，否则会产生大量的临时文件： 
+主要配置的是 配置文件存放路径 和 下载文件存放目录，改成外接硬盘的地址 `/mnt/sda2` 下面的路径即可（上图中是已经启动后的界面，未启动的话不会有 「打开 Web 页面」和「qBittorrent 运行中」的提示）。设置完成后点击保存，先不要应用，然后进入到`下载设置` tab 中，将`启用临时目录` 选项关闭，否则会产生大量的临时文件：
 
 {% render_caption caption="SCR-20220419-wdu" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/C64A0BF2-23FB-4F40-AB39-9757904C1010_2.webp" %}
 ![SCR-20220419-wdu](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/C64A0BF2-23FB-4F40-AB39-9757904C1010_2/isHf3YCSs6vT2S8UcmtzzOJd1WxKaArA64FzN7sdHtAz/SCR-20220419-wdu.png)
@@ -227,13 +227,13 @@ lastUpdateTime: 2023-01-05 11:52:10 +0800
 
 #### 设置 qBittorrent 的 Jackett 搜索插件
 
-该插件可以直接在 qBittorrent 中调用 Jackett 服务搜索资源然后右键下载，如下： 
+该插件可以直接在 qBittorrent 中调用 Jackett 服务搜索资源然后右键下载，如下：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/D10C0DCC-31AB-405D-B7E9-8FEA68D23414_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/D10C0DCC-31AB-405D-B7E9-8FEA68D23414_2/kVaAlnTKnQAm2GEIby8dFPcDmzZxWiOJpBo8N8CDYqQz/Image)
 {% endrender_caption %}
 
-但是这并不是默认配置（好像如果直接下载 qBittorrent 的 Win 或者 Mac 客户端，Jackett 搜索插件是默认启用的，但是路由器没有带任何默认插件），需要单独安装，步骤如下，直接看图： 
+但是这并不是默认配置（好像如果直接下载 qBittorrent 的 Win 或者 Mac 客户端，Jackett 搜索插件是默认启用的，但是路由器没有带任何默认插件），需要单独安装，步骤如下，直接看图：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/0C025BE5-98C1-4260-9F38-C0AB79199FD5_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/0C025BE5-98C1-4260-9F38-C0AB79199FD5_2/5xN3KvokNEvyUswjZyUoxxyUYdTZeDDkCpHSqmkeVY4z/Image)
@@ -253,7 +253,7 @@ Docker 可以在官网[ 这里下载](https://www.docker.com/get-started/#)，�
 
 在 Docker 中安装 Jackett 很简单，步骤在官方的 [这个地方](https://github.com/Jackett/Jackett#installation-using-docker)，这里简述一下即可：
 
-打开终端，复制在官方的安装步骤中的 docker cli 代码： 
+打开终端，复制在官方的安装步骤中的 docker cli 代码：
 
 ```Bash
 docker run -d \
@@ -271,13 +271,13 @@ docker run -d \
 
 比如上面的配置，我的本地硬盘路径就是 `~/Code/Docker/config` 和 `~/Code/Docker/downloads` 。这个配置简单解释一下就是，映射本机端口 9117 到 Docker 容器的 9117 端口，启用自动更新，禁止重启停止除非已经意外停止。
 
-之后就可以在 Docker 中看到这个服务了（默认直接启动了）： 
+之后就可以在 Docker 中看到这个服务了（默认直接启动了）：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/5CD0C81A-15D4-46F6-B174-C158A782675D_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/5CD0C81A-15D4-46F6-B174-C158A782675D_2/fyULDhnqCQDyPFIJBNjfUbBmlMHlHYDhgY7nITaWFhsz/Image)
 {% endrender_caption %}
 
-然后在浏览器访问该地址： `127.0.0.1:9117` （或者如下图访问本机局域网 ip 也行，是一样的）即可看到 Jackett 的 Web 配置页面： 
+然后在浏览器访问该地址： `127.0.0.1:9117` （或者如下图访问本机局域网 ip 也行，是一样的）即可看到 Jackett 的 Web 配置页面：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/6DAB50B8-BBFC-442C-A707-D7E2E542808E_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/6DAB50B8-BBFC-442C-A707-D7E2E542808E_2/itXN2MdhxSW0O9hxnSGxKQpUa7zpxgaCjCGgWZHn7kYz/Image)
@@ -285,19 +285,19 @@ docker run -d \
 
 这里记住这个 API Key，下一步会用到，接下来配置 qBittorrent 中的 Jackett。
 
-因为 Jackett 是安装在本地的，因此如果想让安装在路由器的 qBittorrent 的插件能够访问安装在本地的 Jackett，需要知道本机的局域网 ip，可以在系统设置中查看： 
+因为 Jackett 是安装在本地的，因此如果想让安装在路由器的 qBittorrent 的插件能够访问安装在本地的 Jackett，需要知道本机的局域网 ip，可以在系统设置中查看：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/13072C1C-51B3-4AA2-94AA-7F6380094D6A_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/13072C1C-51B3-4AA2-94AA-7F6380094D6A_2/4x5FrNQcnrk2c7oJrA2Q3QRXbSsA4W6VdGom1ukAsZoz/Image)
 {% endrender_caption %}
 
-之后，在 Finder 中打开 qBittorrent 的配置目录（还记得刚才设置 qBittorrent 的配置目录吗？我们存放在了软路由外接硬盘中），Finder 路径是 `config/qBittorrent/data/nova3/engines/jackett.json`设置该地址和端口： 
+之后，在 Finder 中打开 qBittorrent 的配置目录（还记得刚才设置 qBittorrent 的配置目录吗？我们存放在了软路由外接硬盘中），Finder 路径是 `config/qBittorrent/data/nova3/engines/jackett.json`设置该地址和端口：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/7B4A1D7C-6A2F-44C4-A486-4839C7604284_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/7B4A1D7C-6A2F-44C4-A486-4839C7604284_2/SkgOidlDPIRRkAZrsmZJ83I6hW4pvLU4twIyKDuyasYz/Image)
 {% endrender_caption %}
 
-然后刷新 qBittorrent 的页面，打开插件设置，就可以看到该地址和该插件已经配置成功了： 
+然后刷新 qBittorrent 的页面，打开插件设置，就可以看到该地址和该插件已经配置成功了：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/5EA4A29E-0CD0-4ED6-9AAA-43BF96F70307_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/5EA4A29E-0CD0-4ED6-9AAA-43BF96F70307_2/UH8P5sPqGzwlhRjCydcdJELz3xvakC1zrs6ia83Ztdoz/Image)
@@ -307,7 +307,7 @@ docker run -d \
 
 > 注：配置完 Jackett 后，还要在 Jackett 服务中添加 Indexer ，让 Jackett 知道从哪些网站搜索种子，这个过程比较简单，如下：
 
-点击 Add Indexer 然后从弹出来的界面，右侧点击 + 即可，我是将所有类型是 Public 的同时语言是中文或者英文的站点都加入了（加入后这个待加入列表就不显示已经加入后的了，所以截图中很少有中文、英文和 Public 的站点）。Private 的需要会员 cookie： 
+点击 Add Indexer 然后从弹出来的界面，右侧点击 + 即可，我是将所有类型是 Public 的同时语言是中文或者英文的站点都加入了（加入后这个待加入列表就不显示已经加入后的了，所以截图中很少有中文、英文和 Public 的站点）。Private 的需要会员 cookie：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/9643CEC0-1D25-4931-8411-B37EB09F96FF_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/9643CEC0-1D25-4931-8411-B37EB09F96FF_2/xe6C2yhF435W7PoP8HBosixyhdOcBmy2ybg0FhK0Cgkz/Image)
@@ -321,13 +321,13 @@ Categories 顾名思义就是网站资源类型，其中 XXX 是 你懂的，不
 
 另外因为一些历史原因，国内的资源很少，而国外的资源无论多旧，总是很多且很快，哎，大环境下我们每个人都有责任，这里不多说。
 
-比如下载一个旧的两年前的国产电影《疯狂的外星人》： 
+比如下载一个旧的两年前的国产电影《疯狂的外星人》：
 
 {% render_caption caption="SCR-20220421-x9x" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/6F54A106-42DB-40AB-A8D9-A9DD5A7E5F66_2.webp" %}
 ![SCR-20220421-x9x](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/6F54A106-42DB-40AB-A8D9-A9DD5A7E5F66_2/zlGi6ymyj0hcoUDOrEoSmW8c1ULIiyooxZxOgDtkV0Uz/SCR-20220421-x9x.png)
 {% endrender_caption %}
 
-做种和资源都很少，但是下载一个十几年前的国外电影 Harry Potter 却很多： 
+做种和资源都很少，但是下载一个十几年前的国外电影 Harry Potter 却很多：
 
 {% render_caption caption="SCR-20220421-x8k" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/3A378FA4-66BD-474D-A38B-CA2DF8FA6CE8_2.webp" %}
 ![SCR-20220421-x8k](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/3A378FA4-66BD-474D-A38B-CA2DF8FA6CE8_2/zTPsXXytyBMxf3hhCKNtTY0ynxTljMB7CHQ8K0Euozcz/SCR-20220421-x8k.png)
@@ -339,9 +339,9 @@ Categories 顾名思义就是网站资源类型，其中 XXX 是 你懂的，不
 
 至此路由器端配置结束，接下来就是最后一步，在播放端如 Infuse 中添加软路由外接硬盘，观看上面的电影了。
 
-#### 配置 Infuse 
+#### 配置 Infuse
 
-这一个步骤就比较简单了，用的还是刚才的配置 WebDAV 的那个方式，只是这次把 WebDAV 协议换成了 SMB 协议，直接上图： 
+这一个步骤就比较简单了，用的还是刚才的配置 WebDAV 的那个方式，只是这次把 WebDAV 协议换成了 SMB 协议，直接上图：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/A467446C-B096-4ADD-B14E-E6454425FA34_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/A467446C-B096-4ADD-B14E-E6454425FA34_2/5xWy7cBlTJb0agDsWt74XoPhjGhy8PJlFXYuGhM61NUz/Image)
@@ -349,7 +349,7 @@ Categories 顾名思义就是网站资源类型，其中 XXX 是 你懂的，不
 
 其中 `位址` 就是软路由地址，我的就是 `192.168.7.2`. 端口默认 445 即可。
 
-下面是效果图： 
+下面是效果图：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/DA2FBBEA-E138-4BD0-A330-4F3C17A98AFD_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/DA2FBBEA-E138-4BD0-A330-4F3C17A98AFD_2/7SLEVbSViLNUU5Sk61Motml7pkpyMAlO5J99pf3bfEsz/Image)
@@ -361,7 +361,7 @@ Categories 顾名思义就是网站资源类型，其中 XXX 是 你懂的，不
 
 ## 测试
 
-试试阿里云盘的网速测试： 
+试试阿里云盘的网速测试：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/the-way-to-watching-tv/1BC91F6C-490D-4F64-9B97-7CEFE566C169_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/0E418850-554B-40BB-A623-D7B8520BB8DC/1BC91F6C-490D-4F64-9B97-7CEFE566C169_2/SHpdGMdyNGTUcGSF16g10eggLjzAHFZyPRIv2mfyWTkz/Image)

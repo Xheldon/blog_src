@@ -4,29 +4,26 @@ date: 2024-3-31 8:0:00 +0800
 lastUpdateTime: 2024-4-1 22:34:00 +0800
 name: how-i-use-notion-flow
 layout: post
-tags: 
-    - 技术
-    - 技巧
-    - 教程
-    - 工作流
-    - Notion
-    - Jekyll
+tags:
+  - 技术
+  - 技巧
+  - 教程
+  - 工作流
+  - Notion
+  - Jekyll
 categories: tech
 header-style: text
 notion: https://xheldon.notion.site/Notion-Flow-91ba709f00ff40a1afb6c23195d87fb3?pvs=4
 callout: 我有特别的 Notion Flow 使用技巧~
-no-catalog: true
+noCatalog: true
 ---
-    
+
 一周前，我构建了 Notion Flow 浏览器扩展：
 
 {% render_bookmark url="https://twitter.com/_Xheldon/status/1770466495560294583" title="Xheldon on Twitter / X" img="" yid="" bid="" %}
-Notion Flow 浏览器插件终于发布了，配置和介绍见视频：https://t.co/pw4yYwnt8h官网见：https://t.co/6326Q4gIWC插件用来将 Notion 内容以 Markdown 或者你自定义的任意格式发送到 Github，我用它来写使用了 Github Pages 的 Jekyll 博客，插件会在配置 OSS 后自动处理图片内容到 CDN，非常好用~。— Xheldon (@_Xheldon) March 20, 2024
-
-
+Notion Flow 浏览器插件终于发布了，配置和介绍见视频：https://t.co/pw4yYwnt8h官网见：https://t.co/6326Q4gIWC插件用来将 Notion 内容以 Markdown 或者你自定义的任意格式发送到 Github，我用它来写使用了 Github Pages 的 Jekyll 博客，插件会在配置 OSS 后自动处理图片内容到 CDN，非常好用~。— Xheldon (@\_Xheldon) March 20, 2024
 
 {% endrender_bookmark %}
-
 
 而刚刚更新的 0.4.1 版本：
 
@@ -34,13 +31,11 @@ Notion Flow 浏览器插件终于发布了，配置和介绍见视频：https://
 Feature
 {% endrender_bookmark %}
 
-
 支持了兼容 AWS S3 API 的自建 OSS 服务，如 Cloudflare R2：
 
 {% render_bookmark url="https://www.cloudflare.com/zh-cn/developer-platform/r2/" title="Cloudflare R2 | 零出口费用分布式对象存储 | Cloudflare | Cloudflare" img="https%3A%2F%2Fcf-assets.www.cloudflare.com%2Fslt3lc6tev37%2F53qCYhQbir5WtIU0VDWESo%2F954a48bfb17f429acf469e5f14345d83%2Funnamed-3.png" yid="" bid="" %}
 Cloudflare R2 是兼容 S3、零出口费用的全球分布式对象存储。 自由移动数据，构建自己期望的多云架构。
 {% endrender_bookmark %}
-
 
 本篇文章简单介绍一下我是如何使用这个浏览器扩展用于我的 Github Jekyll 博客的。
 
@@ -118,22 +113,28 @@ Liquid::Template.register_tag('render_video', Jekyll::RenderVideoBlock)
 
 ```javascript
 video: function video(block) {
-	if (block.type === 'file') {
-			// 用户自己上传的 video 文件，用默认 video 插件处理
-	    return `{% render_video caption="${block.caption}" img="${block.url}" suffix="${block.suffix}" %}\n![${block.caption}](${block.url})\n{% endrender_video %}\n`;
-	} else if (block.type === 'external') {
-			// 外部链接、youtube 和 bilibili 视频链接，用 bookmark 处理
-	    return `{% render_bookmark url="${block.url}" title="${block.caption || ''}" img="" yid="${block.yid}" bid="${block.bid}" %}{% endrender_bookmark %}\n`;
-	}
+  if (block.type === 'file') {
+    // 用户自己上传的 video 文件，用默认 video 插件处理
+    return `{% render_video caption="${block.caption}" img="${block.url}" suffix="${block.suffix}" %}\n![${block.caption}](${block.url})\n{% endrender_video %}\n`;
+  } else if (block.type === 'external') {
+    // 外部链接、youtube 和 bilibili 视频链接，用 bookmark 处理
+    return `{% render_bookmark url="${block.url}" title="${
+      block.caption || ''
+    }" img="" yid="${block.yid}" bid="${
+      block.bid
+    }" %}{% endrender_bookmark %}\n`;
+  }
 }
 ```
 
 这里需要注意（我不太懂 ruby）， Liquid 模板的标签之间，必须有文本内容（你可以不用），否则，ruby 插件无法生成 HTML。即：
 
 {%raw%}
+
 ```javascript
 {% render_video  %}这里必须有任意内容！{% endrender_video %}
 ```
+
 {%endraw%}
 
 这样在 ruby 插件中，`super` 变量拿到的就是「这里必须有任意内容！」这句话（你可以不使用该变量）。如果没有这段内容，则插件压根不会返回任何内容。

@@ -18,9 +18,7 @@ layout: layout
 
 <div class="container">
   <div class="row">
-    <div
-      class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-12 col-xs-12 postlist-container"
-    >
+    <div class="col-lg-8 col-lg-offset-1 col-md-8 col-md-offset-1 col-sm-12 col-xs-12 postlist-container">
       <% page.posts.forEach(function(post){ %>
       <div class="post-preview">
         <a href="<%- config.root %><%- post.path %>">
@@ -40,21 +38,13 @@ layout: layout
               }) %>
             </span>
           </div>
-          <% if (post['header-img']) { %>
+          <% if (post['headerImg']) { %>
           <!-- https://cloud.tencent.com/document/product/436/42214/ -->
           <div class="post-preview-thum">
-            <% if (post['header-img'].includes("https://")) { -%>
-            <img
-              width="100px"
-              height="100px"
-              src="<%= post['header-img'] %>/hasaki"
-            />
+            <% if (post['headerImg'].includes("https://")) { -%>
+            <img width="100px" height="100px" src="<%= post['headerImg'] %>/hasaki" />
             <% } else { %>
-            <img
-              width="100px"
-              height="100px"
-              src="<%= site.static_url %>/<%= post['header-img'] %>/hasaki"
-            />
+            <img width="100px" height="100px" src="<%= site.static_url %>/<%= post['headerImg'] %>/hasaki" />
             <% } %>
           </div>
           <% } %>
@@ -80,9 +70,7 @@ layout: layout
         <% } %>
       </ul>
     </div>
-    <div
-      class="col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 col-sm-12 col-xs-12 sidebar-container"
-    >
+    <div class="col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 col-sm-12 col-xs-12 sidebar-container">
       <%- include('_partial/featured-tags') %>
       <!-- <%- include('_partial/twitter-timeline') %> -->
       <%- include('_partial/friends') %>

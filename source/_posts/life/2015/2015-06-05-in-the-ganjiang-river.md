@@ -1,19 +1,19 @@
 ---
 layout: post
-title:  "赣江边上, 滕王阁前"
-subtitle:   “阁中帝子今何在？槛外长江空自流”
-date:   2015-06-05 22:13:35 +0800
+title: '赣江边上, 滕王阁前'
+subtitle: “阁中帝子今何在？槛外长江空自流”
+date: 2015-06-05 22:13:35 +0800
 categories: life
-header-img: "img/in-post/in-the-ganjiang-river/ganjiang.png"
+headerImg: 'img/in-post/in-the-ganjiang-river/ganjiang.png'
 author: Xheldon
 tags:
-    - 随笔
-    - 生活
+  - 随笔
+  - 生活
 ---
 
 ## 缘起
 
-南昌连续几天阴雨绵绵，终于在6日的早晨迎来了只持续了2分钟的日出，之后的太阳又隐在了层层的云中。
+南昌连续几天阴雨绵绵，终于在 6 日的早晨迎来了只持续了 2 分钟的日出，之后的太阳又隐在了层层的云中。
 
 江面有层薄雾，远处含羞的是八一大桥，其实在雾中隐去的，还有千古奇人——王勃——的滕王阁。
 
@@ -29,10 +29,8 @@ tags:
 
 (我故意背岔的, 不用提醒)
 
-可惜这扁舟是电动的————纯属娱乐，哈哈 ^_^
+可惜这扁舟是电动的————纯属娱乐，哈哈 ^\_^
 
 ### 附图一张
 
-![赣江](https://static.xheldon.cn/img/in-post/in-the-ganjiang-river/ganjiang.png "赣江边上")
-
-
+![赣江](https://static.xheldon.cn/img/in-post/in-the-ganjiang-river/ganjiang.png '赣江边上')

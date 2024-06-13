@@ -46,7 +46,7 @@ layout: layout
       <% } %>
       <% if (!page.nogittalk) { %>
       <div class="text-danger">- EOF -</div>
-      <div style="font-size: 12px; color: #ccc!important;">本文最先发布在: <a style="color: #ccc;" href="<%= config.url + page.url %>" title="<%= page.title %>">
+      <div style="font-size: 12px; color: #ccc!important;">本文最先发布在: <a style="color: #ccc;" href="<%= config.url + (page.path||'').replace('index.html', '') %>" title="<%= page.title %>">
           <%= page.title %> - Xheldon Blog
         </a></div>
       <hr style="visibility: hidden;">
@@ -82,7 +82,7 @@ layout: layout
       </div>
       <% } %>
       <div class="text-danger">- EOF -</div>
-      <div style="font-size: 12px; color: #ccc!important;">本文最先发布在: <a style="color: #ccc;" href="<%= config.url + page.url %>" title="<%= page.title %>">
+      <div style="font-size: 12px; color: #ccc!important;">本文最先发布在: <a style="color: #ccc;" href="<%= config.url + (page.path||'').replace('index.html', '') %>" title="<%= page.title %>">
           <%= page.title %> - Xheldon Blog
         </a></div>
       <% if (!page.nogittalk) { %>

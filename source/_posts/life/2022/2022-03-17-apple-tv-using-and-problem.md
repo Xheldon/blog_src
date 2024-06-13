@@ -5,15 +5,15 @@ categories: life
 path: _posts/life/2022/2022-03-17-apple-tv-using-and-problem.md
 cos: 2022/apple-tv-using-and-problem
 tags:
-    - Apple
-    - 生活
-    - 使用体验
+  - Apple
+  - 生活
+  - 使用体验
 callout: 「就是把钱扔水里听响也绝不给国内的某些厂商」——媳妇儿说
 craft: https://www.craft.do/s/RJSMrGFbtjsJ5c
 title: Apple TV 使用体验及相关问题
-header-img: https://static.xheldon.cn/img/in-post/2022/apple-tv-using-and-problem/photo-1621685950846-9323d993bbf3.webp
-header-img-credit: Omar Rodriguez / Unsplash
-header-img-credit-href: https://unsplash.com/@e90two?utm_source=xheldon_blog&utm_medium=referral
+headerImg: https://static.xheldon.cn/img/in-post/2022/apple-tv-using-and-problem/photo-1621685950846-9323d993bbf3.webp
+headerImgCredit: Omar Rodriguez / Unsplash
+headerImgCreditHref: https://unsplash.com/@e90two?utm_source=xheldon_blog&utm_medium=referral
 sha: 070a76c33f57ec2ade81ac36f75b8ea6626de3ab
 lastUpdateTime: 2023-01-05 11:46:49 +0800
 ---
@@ -78,7 +78,7 @@ lastUpdateTime: 2023-01-05 11:46:49 +0800
 
 ### Apple TV 本体
 
-本体接口有三个，DC 电源接口、HDMI 接口、网线接口，具体参数可以上网查。需要注意的是，你最好使用一根 HDMI2.1 的线连接电视，才能保证输出 4K 的视频（当前视频得是 4K的）。
+本体接口有三个，DC 电源接口、HDMI 接口、网线接口，具体参数可以上网查。需要注意的是，你最好使用一根 HDMI2.1 的线连接电视，才能保证输出 4K 的视频（当前视频得是 4K 的）。
 
 ### 遥控器
 
@@ -160,7 +160,7 @@ lastUpdateTime: 2023-01-05 11:46:49 +0800
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/6A4A200D-514D-40DA-BA6D-F301A0A9791A/6086592B-D350-4288-AAE4-1052C960B011_2/pmmcjcqx32jzlFU0AbmaKCie8xr58iBAQ7F2AeS9dj0z/Image.png)
 {% endrender_caption %}
 
-正常播放应该是这样子： 
+正常播放应该是这样子：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/apple-tv-using-and-problem/21166625-89F6-4493-B831-2613E5755B9E_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/6A4A200D-514D-40DA-BA6D-F301A0A9791A/21166625-89F6-4493-B831-2613E5755B9E_2/nl6DPWmRRx1TaBWpB1wQVy344KVLjPzyTfy5KpaIqUkz/Image.png)
@@ -184,7 +184,7 @@ lastUpdateTime: 2023-01-05 11:46:49 +0800
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/6A4A200D-514D-40DA-BA6D-F301A0A9791A/84DD7704-7AFF-4103-BF31-72A350E9B9B4_2/AKUrYK1i8O3VTrUpQxG75QD6yDklEJs2BDsKNka1QPcz/Image)
 {% endrender_caption %}
 
-基本原理就是将尽可能多的电影存到硬盘里面（此类硬盘通常以 T 甚至 PB 来计数），然后在连接上网络之后，就可以点播硬盘上任意一部电影，非常适合电影收集癖或者追求高级，非8K 电影、非杜比音效不看的人。
+基本原理就是将尽可能多的电影存到硬盘里面（此类硬盘通常以 T 甚至 PB 来计数），然后在连接上网络之后，就可以点播硬盘上任意一部电影，非常适合电影收集癖或者追求高级，非 8K 电影、非杜比音效不看的人。
 
 {% render_caption caption="SCR-20220324-wqx" img="https://static.xheldon.cn/img/in-post/2022/apple-tv-using-and-problem/9CFAE45F-DBA5-4CB2-85D5-4F49373BBDC3_2.webp" %}
 ![SCR-20220324-wqx](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/6A4A200D-514D-40DA-BA6D-F301A0A9791A/9CFAE45F-DBA5-4CB2-85D5-4F49373BBDC3_2/7EmCXcyZxPyyxjJKyJ0fVkFV99RPJwinPCt68x7IYmYz/SCR-20220324-wqx.jpeg)
@@ -192,7 +192,7 @@ lastUpdateTime: 2023-01-05 11:46:49 +0800
 
 有些 Emby 服务的提供商属于是自产自销类型的（我目前主力机场服务即是），即一边卖科学上网节点的（其靠流量收费），同时提供免费的 Emby 服务，然后限制使用此 Emby 服务观看视频需要使用它们的特定节点进行连接，这就消耗了它们的流量，于是你就需要付费购买流量，形成了一个闭环。
 
-说到这就说一下我的经历，在我使用的这家机场还未提供 Emby 服务的时候，我购买的套餐一个月有 500G 的流量，我平常只是查查资料、看看文档、看看 TED 和 Youtube、刷刷 Tiktok，每月最多使用10 G 的流量，非常浪费。然而当机场提供 Emby 服务之后，我一个周六就可以消耗 70G 的流量，可见该自产自销策略的成功之处。
+说到这就说一下我的经历，在我使用的这家机场还未提供 Emby 服务的时候，我购买的套餐一个月有 500G 的流量，我平常只是查查资料、看看文档、看看 TED 和 Youtube、刷刷 Tiktok，每月最多使用 10 G 的流量，非常浪费。然而当机场提供 Emby 服务之后，我一个周六就可以消耗 70G 的流量，可见该自产自销策略的成功之处。
 
 于是有些人就发现了商机。这些人专门提供 Emby 视频服务，然后和机场服务合作，让其将 Emby 当作一项增值服务提供给它的机场用户，如此一来，既提高了机场用户的粘度，又能让 Emby 服务商专心做 toB 的服务，解决了用户群体的问题，简直双赢。此类服务以 普拉斯影业 为代表。
 
@@ -204,7 +204,7 @@ lastUpdateTime: 2023-01-05 11:46:49 +0800
 ![SCR-20220330-brr](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/6A4A200D-514D-40DA-BA6D-F301A0A9791A/9AFF44A0-6796-4ADA-B5F6-1DE5EDDDA1E0_2/2QfwVlJx6528mqB4vzfdyXR36G9O3NNgT2NJkdpVJscz/SCR-20220330-brr.jpeg)
 {% endrender_caption %}
 
-也即，即使你下载了一个名叫《夏洛T烦恼》（懂得都懂，热门剧刚出的时候，用迅雷下载防和谐会故意将名字改名），它也能正确给你匹配出影片的信息。
+也即，即使你下载了一个名叫《夏洛 T 烦恼》（懂得都懂，热门剧刚出的时候，用迅雷下载防和谐会故意将名字改名），它也能正确给你匹配出影片的信息。
 
 {% render_caption caption="SCR-20220330-bsp" img="https://static.xheldon.cn/img/in-post/2022/apple-tv-using-and-problem/A642EE4B-CE4A-4DE0-B6AE-5CB58FEDBA9B_2.webp" %}
 ![SCR-20220330-bsp](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/6A4A200D-514D-40DA-BA6D-F301A0A9791A/A642EE4B-CE4A-4DE0-B6AE-5CB58FEDBA9B_2/wy0UMy8Y9ryETMEyZdZFyepJlRbBvUyybtnjPMPZCSoz/SCR-20220330-bsp.jpeg)
@@ -216,19 +216,19 @@ lastUpdateTime: 2023-01-05 11:46:49 +0800
 ![SCR-20220324-cgl](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/6A4A200D-514D-40DA-BA6D-F301A0A9791A/E4E8CE18-2FF8-4B11-A012-B8D5975DF451_2/OXyQgSbXh16VRaMoab3xcuSeDyr3KvxxWtXveMZyoSoz/SCR-20220324-cgl.jpeg)
 {% endrender_caption %}
 
-需要额外说一句的是，这个价格只是你的软件价格，视你的美区账号设置的地区情况，你可能需要额外再缴一笔税： 
+需要额外说一句的是，这个价格只是你的软件价格，视你的美区账号设置的地区情况，你可能需要额外再缴一笔税：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/apple-tv-using-and-problem/1D875C5F-9D7B-4055-A147-48E05476D45B_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/6A4A200D-514D-40DA-BA6D-F301A0A9791A/1D875C5F-9D7B-4055-A147-48E05476D45B_2/0dbRWTp7EbxItGdCZMfm510ImAi94DbJrK1B0dEukLMz/Image)
 {% endrender_caption %}
 
-infuse 首次使用时，登陆完 Emby 服务后，会进行一个扫库操作，也即是将该 Emby 服务中的所有电影都扫描一遍 meta 信息，建立索引，以方便你通过搜索进行电影查找。该扫库过程视节点速度、网络带宽、是否高峰期等因素影响，这个过程中右上角的搜索 icon 会一直 loading 转圈，此过程进行的过程中无法播放视频（因为没完全建立索引）。我的 Emby 服务提供商库里面约有 17万部电影，机场峰值速度据称是 300Mbps，扫库这个操作花了大概 1 个小时左右的时间。
+infuse 首次使用时，登陆完 Emby 服务后，会进行一个扫库操作，也即是将该 Emby 服务中的所有电影都扫描一遍 meta 信息，建立索引，以方便你通过搜索进行电影查找。该扫库过程视节点速度、网络带宽、是否高峰期等因素影响，这个过程中右上角的搜索 icon 会一直 loading 转圈，此过程进行的过程中无法播放视频（因为没完全建立索引）。我的 Emby 服务提供商库里面约有 17 万部电影，机场峰值速度据称是 300Mbps，扫库这个操作花了大概 1 个小时左右的时间。
 
 {% render_caption caption="SCR-20220324-cg6" img="https://static.xheldon.cn/img/in-post/2022/apple-tv-using-and-problem/FEAEE241-DDC0-479D-A4BF-AD7A725BBF37_2.webp" %}
 ![SCR-20220324-cg6](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/6A4A200D-514D-40DA-BA6D-F301A0A9791A/FEAEE241-DDC0-479D-A4BF-AD7A725BBF37_2/AxxzWsElyERGi7bryxnOK69Z8E14htYLGlHzRm31b84z/SCR-20220324-cg6.jpeg)
 {% endrender_caption %}
 
-这里需要注意的是，infuse 如果看多了视频的话，似乎很占用空间，我的 Apple TV 是32G 版本的，除去系统占用和其他 App，怎么着也得有个 20G 的空间，但是有一次我打开 infuse 的时候，软件居然提示我文件因为占用空间过多被系统清理了，因此又重头进行扫库操作。
+这里需要注意的是，infuse 如果看多了视频的话，似乎很占用空间，我的 Apple TV 是 32G 版本的，除去系统占用和其他 App，怎么着也得有个 20G 的空间，但是有一次我打开 infuse 的时候，软件居然提示我文件因为占用空间过多被系统清理了，因此又重头进行扫库操作。
 
 {% render_caption caption="SCR-20220324-cgs" img="https://static.xheldon.cn/img/in-post/2022/apple-tv-using-and-problem/64A8E3C7-A5DE-4E89-B3FA-A53EF4B82FDD_2.webp" %}
 ![SCR-20220324-cgs](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/6A4A200D-514D-40DA-BA6D-F301A0A9791A/64A8E3C7-A5DE-4E89-B3FA-A53EF4B82FDD_2/GD5j8TbuFyIB8wxOAOZcMqJdciWbQS9PU08CKp1dd14z/SCR-20220324-cgs.jpeg)
@@ -316,7 +316,7 @@ infuse 首次使用时，登陆完 Emby 服务后，会进行一个扫库操作�
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/6A4A200D-514D-40DA-BA6D-F301A0A9791A/434E2D9C-7661-4BB6-A829-F0F2D38BED07_2/jcoB5RFGiiLeuAcXEjDpVzONK6nrPbeqHgV6qZmlncAz/Image)
 {% endrender_caption %}
 
-还可以通过电脑的 SMB 共享的方式，让 Infuse 播放电脑上下载的电影： 
+还可以通过电脑的 SMB 共享的方式，让 Infuse 播放电脑上下载的电影：
 
 {% render_caption caption="Image" img="https://static.xheldon.cn/img/in-post/2022/apple-tv-using-and-problem/D0234040-BB60-409C-B6E4-77EDCCACCF3F_2.webp" %}
 ![Image](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/6A4A200D-514D-40DA-BA6D-F301A0A9791A/D0234040-BB60-409C-B6E4-77EDCCACCF3F_2/3pA3oKySq2kFEqzV8p6xS6vQ3obWy4UiS60eEkPEQqEz/Image)
@@ -324,7 +324,7 @@ infuse 首次使用时，登陆完 Emby 服务后，会进行一个扫库操作�
 
 ### 其他方案
 
-有一些非正式的、比较 HACK 的方案，我自己没精力搞，各位看官有兴趣可以研究下，如： 
+有一些非正式的、比较 HACK 的方案，我自己没精力搞，各位看官有兴趣可以研究下，如：
 
 #### 在 Apple TV 上刷 B 站：[miao 项目](https://github.com/Paladinfeng/MiaoProject) （网图）
 
@@ -336,7 +336,7 @@ infuse 首次使用时，登陆完 Emby 服务后，会进行一个扫库操作�
 
 有些时候是有看直播的需求的，比如春节联欢晚会、冬奥会开幕式等，此时 Apple TV 就有明显的不足了，你可以淘宝购买一些直播源（如 IPTV 的），然后通过特定软件观看，但是终归不是正途，且这些直播源基本都是有时效性的，很快就会过期，这里不推荐。
 
-如果非要使用的话，可以使用 iPlayTV 这款软件，美区价格 5.99 美元，可以在 github 找一些播放源，如 [这里](https://github.com/imDazui/Tvlist-awesome-m3u-m3u8) ，直接添加地址即可，如下所示： 
+如果非要使用的话，可以使用 iPlayTV 这款软件，美区价格 5.99 美元，可以在 github 找一些播放源，如 [这里](https://github.com/imDazui/Tvlist-awesome-m3u-m3u8) ，直接添加地址即可，如下所示：
 
 {% render_caption caption="SCR-20220410-hbp" img="https://static.xheldon.cn/img/in-post/2022/apple-tv-using-and-problem/94283D89-0867-4BE5-BE82-843DD9F2A6DF_2.webp" %}
 ![SCR-20220410-hbp](https://res.craft.do/user/full/747e0824-8866-cf67-b3ae-2e207380d1f9/doc/6A4A200D-514D-40DA-BA6D-F301A0A9791A/94283D89-0867-4BE5-BE82-843DD9F2A6DF_2/OhTXz51UeqHc2igV6Yhet7xPolAyfPeBMwPpx6DkBH4z/SCR-20220410-hbp.png)
@@ -358,7 +358,7 @@ infuse 首次使用时，登陆完 Emby 服务后，会进行一个扫库操作�
 
 ## 游戏
 
-是的，Apple TV，一个电视盒子是可以打游戏的，不过最新款（2021款）的Apple TV 的遥控器取消了陀螺仪的体感加速计传感器，因此无法使用遥控器玩儿一些需要体感的游戏如赛车了，不过你可以用上一代的遥控器，或者外接配对手柄，手柄我目前自测的支持 PS4，我还有一个 XBox 的手柄，但是没做测试，理论上应该也支持。
+是的，Apple TV，一个电视盒子是可以打游戏的，不过最新款（2021 款）的 Apple TV 的遥控器取消了陀螺仪的体感加速计传感器，因此无法使用遥控器玩儿一些需要体感的游戏如赛车了，不过你可以用上一代的遥控器，或者外接配对手柄，手柄我目前自测的支持 PS4，我还有一个 XBox 的手柄，但是没做测试，理论上应该也支持。
 
 不过，Apple TV 总归是个电视盒子，其主力并不是用来玩儿游戏，因此其机能十分有限（从它才 1000 多的售价就能看出来），因此除了最开始的好奇心之外，我一直没有用它来玩游戏。
 

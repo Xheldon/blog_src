@@ -4,23 +4,23 @@ layout: post
 date: 2023-9-6 8:0:00 +0800
 cos: 2023/the-use-of-teslamate
 path: _posts/life/2023/2023-09-06-the-use-of-teslamate.md
-header-mask: 0.4
+headerMask: 0.4
 header-style: full
 callout: 介绍一下 TeslaMate 安装和使用过程中的一些问题。
 categories: life
-reference: 
-no-catalog: 
+reference:
+noCatalog:
 lastUpdateTime: 2023-9-8 8:0:00 +0800
-header-img: https://static.xheldon.cn/img/in-post/2023/the-use-of-teslamate/L3Bob3RvLTE1NTMyNjAxNjgtNjliMDQxODczZTY1-76e13c1d-ce74-4418-82db-1a746781afb6.webp
+headerImg: https://static.xheldon.cn/img/in-post/2023/the-use-of-teslamate/L3Bob3RvLTE1NTMyNjAxNjgtNjliMDQxODczZTY1-76e13c1d-ce74-4418-82db-1a746781afb6.webp
 notion: https://xheldon.notion.site/TeslaMeta-76e13c1dce74441882db1a746781afb6?pvs=4
 tags:
-    - 折腾
-    - 特斯拉
-    - 车
-    - 经验
-    - 使用体验
-    - 生活
-    - TeslaMate
+  - 折腾
+  - 特斯拉
+  - 车
+  - 经验
+  - 使用体验
+  - 生活
+  - TeslaMate
 ---
 
 {% render_callout icon="💡" color="" bgcolor="rgb(251, 236, 221)" %}本指南需要有一丁点的编程知识，知道什么是终端、什么是命令行。{% endrender_callout %}
@@ -36,7 +36,7 @@ tags:
 TeslaMate 的仓库：
 
 {% render_bookmark url="https://github.com/adriankumpf/teslamate#teslamate" title="GitHub - adriankumpf/teslamate: A self-hosted data logger for your Tesla  🚘" img="https://opengraph.githubassets.com/02a9f6d2407fe41f3b3b57c5eff440cb53893107c92ce54bf33a8a1a1145d140/adriankumpf/teslamate" yid="" bid="" %}
-A self-hosted data logger for your Tesla  🚘. Contribute to adriankumpf/teslamate development by creating an account on GitHub.
+A self-hosted data logger for your Tesla 🚘. Contribute to adriankumpf/teslamate development by creating an account on GitHub.
 {% endrender_bookmark %}
 
 TeslaMate 的文档：
@@ -68,7 +68,7 @@ Docker Desktop is collaborative containerization software for developers. Get st
 安装后启动，然后随便找个目录（TeslaMate 的全部文件后续都会在这个目录，不要删除），将官方给的 `docker-compose.yml` 文件放入其中，我这里放到了 `~/Developer/Docker/TeslaMate` 下，`docker-compose.yml` 内容如下：
 
 ```yaml
-version: "3"
+version: '3'
 
 services:
   teslamate:
@@ -182,7 +182,7 @@ Panel 可以在不同的 Dashboard 之间复制，如下：
 ![Panel 复制](https://static.xheldon.cn/img/in-post/2023/the-use-of-teslamate/2522b63e-34e9-44e2-a0ba-2d74901ea53b.webp)
 {% endrender_caption %}
 
-点击复制后，就可以在另一个 Dashboard 中粘贴，点击 Dashboard 右上角的 Add Panel 按钮（或者首次新建一个Dashboard 的时候）（如果没在上一步对 Panel 点 Copy，下图中的第四个「Paste from Clipboard 」就不会出现）就会出现下面的新建 Panel：
+点击复制后，就可以在另一个 Dashboard 中粘贴，点击 Dashboard 右上角的 Add Panel 按钮（或者首次新建一个 Dashboard 的时候）（如果没在上一步对 Panel 点 Copy，下图中的第四个「Paste from Clipboard 」就不会出现）就会出现下面的新建 Panel：
 
 {% render_caption caption="粘贴刚刚复制的 Panel" img="https://static.xheldon.cn/img/in-post/2023/the-use-of-teslamate/37d13b9a-d6b0-4e19-9bd9-b41712ea5e05.webp" %}
 ![粘贴刚刚复制的 Panel](https://static.xheldon.cn/img/in-post/2023/the-use-of-teslamate/37d13b9a-d6b0-4e19-9bd9-b41712ea5e05.webp)
@@ -290,7 +290,3 @@ Grafana 还有很多其他复杂的功能，不过对于我们特斯拉数据可
 **究极提醒：**修改 Panel 后记得点击右上角的 Save。
 
 **如何定时刷新 Dashboard：**在 Dashboard 右上角可以设置刷新间隔，一般用来放到一个大的显示屏上，全天实时查看数据变化用的。
-
-
-
-

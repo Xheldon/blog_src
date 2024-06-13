@@ -4,15 +4,15 @@ date: 2022-05-26 19:10:28 +0800
 categories: life
 path: _posts/life/2022/2022-05-26-the-problem-of-poor-student.md
 cos: 2022/the-problem-of-poor-student
-header-mask: 0.4
+headerMask: 0.4
 tags:
-    - 生活
+  - 生活
 craft: https://www.craft.do/s/KAUQP53YntXrUD
 callout: 老爹的20多年的教学经验分享
 title: 差生的学习问题
-header-img: https://static.xheldon.cn/img/in-post/2022/the-problem-of-poor-student/photo-1570616969692-54d6ba3d0397.webp
-header-img-credit: Sam Balye / Unsplash
-header-img-credit-href: https://unsplash.com/@sambalye?utm_source=xheldon_blog&utm_medium=referral
+headerImg: https://static.xheldon.cn/img/in-post/2022/the-problem-of-poor-student/photo-1570616969692-54d6ba3d0397.webp
+headerImgCredit: Sam Balye / Unsplash
+headerImgCreditHref: https://unsplash.com/@sambalye?utm_source=xheldon_blog&utm_medium=referral
 sha: 31f35eb1a055929db2bc0e670f6d7d9e354958ad
 lastUpdateTime: 2023-01-05 11:56:45 +0800
 ---

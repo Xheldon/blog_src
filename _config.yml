@@ -5,12 +5,12 @@
 # Site
 title: Xheldon Blog
 SEOTitle: Xheldon Blog
-header-img: /img/index-bg.png
+headerImg: /img/index-bg.png
 email: c1006044256@gmail.com
 description: 'The Answer to Life, the Universe and Everything is...'
 keyword: 'Xheldon, 生活, 美食, 旅游, 前端, 技术, 分享'
 author: Xheldon
-url: http://www.xheldon.com
+url: https://www.xheldon.com
 baseurl: ''
 
 root: /
@@ -123,6 +123,8 @@ markdown:
     breaks: true
     linkify: true
     typographer: true
+  anchors:
+    case: 1
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
