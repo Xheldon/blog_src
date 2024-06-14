@@ -4,24 +4,24 @@ layout: layout
 
 <%- include('_partial/intro-header-page', {
     type: 'page',
-    short: true,
-    headerMask: 0.4,
-    description: '时间是人类发展的舞台',
-    headerImg: 'https://static.xheldon.cn/img/tag-bg.png',
-    headerBgCss: '',
-    headerStyle: 'full',
-    title: '归档',
+    short: page.short,
+    headerMask: page.headerMask,
+    description: page.description,
+    headerImg: page.headerImg,
+    headerBgCss: page.headerBgCss,
+    headerStyle: page.headerStyle,
+    title: page.title,
 }) %>
 
 <div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <div id='tag_cloud' class="tags tags-sup js-tags">
-                <a class="tag-button--all" data-encode="">
-                    全部
-                    <sup><%= site.posts.length %></sup>
-                </a>
-                <% 
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <div id='tag_cloud' class="tags tags-sup js-tags">
+        <a class="tag-button--all" data-encode="">
+          全部
+          <sup><%= site.posts.length %></sup>
+        </a>
+        <% 
                     let tags = site.tags.map(function(tag) {  
                         return {
                             sort: String(site.posts.length - tag.length).padStart(4, '0000'),
@@ -34,52 +34,49 @@ layout: layout
                     });
                 %>
 
-                <% tags.forEach(function(tag) { %>
-                    <a data-sort="<%= tag.sort %>"
-                      data-encode="<%= tag.encode %>"
-                      class="tag-button"
-                      title="<%= tag.name %>" 
-                      rel="<%= tag.length %>">
-                      <%= tag.name %>
-                      <sup><%= tag.length %></sup>
-                    </a>
-                <% }) %>
-            </div>
-            <div class="mini-post-list js-result d-none">
-              <% let _sorted_list = site.posts.slice().sort((a, b) => new Date(b.date) - new Date(a.date)); %>
-            
-              <% let _date = ''; _sorted_list.forEach((_article, index) => { %>
-                <% let _tags = _article.tags.map(_tag => encodeURIComponent(_tag.name.trim())).join(','); %>
-            
-                <% let _currentdate = new Date(_article.date).getFullYear(); %>
-                <% if (_currentdate !== _date) { %>
-                  <% if (index !== 0) { %></section><% } %>
-                  <section>
-                  <span class="fa listing-seperator">
-                    <span class="tag-text"><%= _currentdate %></span>
-                  </span>
-                  <% _date = _currentdate; %>
-                <% } %>
-                <div class="post-preview item" data-tags="<%= _tags %>">
-                    <a href="<%= `/${_article.path}` %>">
-                        <h2 class="post-title">
-                            <%= _article.title %>
-                        </h2>
-                        <% if (_article.subtitle) { %>
-                        <h3 class="post-subtitle">
-                            <%= _article.subtitle %>
-                        </h3>
-                        <% } else if (_article.callout) { %>
-                        <h3 class="post-subtitle">
-                            <%= _article.callout %>
-                        </h3>
-                        <% } %>
-                    </a>
-                  <hr>
-                </div>
-                <% if (index === _sorted_list.length - 1) { %></section><% } %>
-              <% }); %>
-            </div>
-        </div>
+        <% tags.forEach(function(tag) { %>
+        <a data-sort="<%= tag.sort %>" data-encode="<%= tag.encode %>" class="tag-button" title="<%= tag.name %>" rel="<%= tag.length %>">
+          <%= tag.name %>
+          <sup><%= tag.length %></sup>
+        </a>
+        <% }) %>
+      </div>
+      <div class="mini-post-list js-result d-none">
+        <% let _sorted_list = site.posts.slice().sort((a, b) => new Date(b.date) - new Date(a.date)); %>
+
+        <% let _date = ''; _sorted_list.forEach((_article, index) => { %>
+        <% let _tags = _article.tags.map(_tag => encodeURIComponent(_tag.name.trim())).join(','); %>
+
+        <% let _currentdate = new Date(_article.date).getFullYear(); %>
+        <% if (_currentdate !== _date) { %>
+        <% if (index !== 0) { %></section><% } %>
+        <section>
+          <span class="fa listing-seperator">
+            <span class="tag-text"><%= _currentdate %></span>
+          </span>
+          <% _date = _currentdate; %>
+          <% } %>
+          <div class="post-preview item" data-tags="<%= _tags %>">
+            <a href="<%= `/${_article.path}` %>">
+              <h2 class="post-title">
+                <%= _article.title %>
+              </h2>
+              <% if (_article.subtitle) { %>
+              <h3 class="post-subtitle">
+                <%= _article.subtitle %>
+              </h3>
+              <% } else if (_article.callout) { %>
+              <h3 class="post-subtitle">
+                <%= _article.callout %>
+              </h3>
+              <% } %>
+            </a>
+            <hr>
+          </div>
+          <% if (index === _sorted_list.length - 1) { %>
+        </section><% } %>
+        <% }); %>
+      </div>
     </div>
+  </div>
 </div>
